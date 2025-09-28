@@ -1,6 +1,7 @@
 'use client';
 
 import { AuthProvider } from '@/lib/auth-context';
+import { TranslationProvider } from '@/lib/use-translations';
 
 export default function Providers({
     children,
@@ -8,8 +9,10 @@ export default function Providers({
     children: React.ReactNode;
 }) {
     return (
-        <AuthProvider>
-            {children}
-        </AuthProvider>
+        <TranslationProvider>
+            <AuthProvider>
+                {children}
+            </AuthProvider>
+        </TranslationProvider>
     );
 }

@@ -7,7 +7,14 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "type-check": "tsc --noEmit"
+        "type-check": "tsc --noEmit",
+        "setup-firebase": "powershell -ExecutionPolicy Bypass -File scripts/setup-firebase.ps1",
+        "deploy": "powershell -ExecutionPolicy Bypass -File scripts/deploy.ps1",
+        "firebase:emulators": "firebase emulators:start",
+        "firebase:deploy": "firebase deploy",
+        "firebase:deploy:hosting": "firebase deploy --only hosting",
+        "firebase:deploy:firestore": "firebase deploy --only firestore",
+        "firebase:deploy:storage": "firebase deploy --only storage"
     },
     "dependencies": {
         "next": "^15.0.0",
@@ -35,7 +42,6 @@
     },
     "devDependencies": {
         "eslint": "^8.57.0",
-        "eslint-config-next": "^15.0.0",
-        "@types/workbox-webpack-plugin": "^7.0.0"
+        "eslint-config-next": "^15.0.0"
     }
 }

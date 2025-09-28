@@ -1,0 +1,35 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Missionary photos
+    match /missionaries/{missionaryId}/photos/{photoId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == missionaryId;
+      // Allow family to read shared photos
+      allow read: if request.auth != null && 
+        request.auth.token.familyCode != null;
+    }
+    
+    // Profile pictures
+    match /missionaries/{missionaryId}/profile/{profileId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == missionaryId;
+      // Allow family to read
+      allow read: if request.auth != null && 
+        request.auth.token.familyCode != null;
+    }
+    
+    // Album files
+    match /albums/{albumId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.metadata.missionaryId;
+    }
+    
+    // Resource files (public read)
+    match /resources/{resourceId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        request.auth.token.admin == true;
+    }
+  }
+}

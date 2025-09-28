@@ -1,0 +1,47 @@
+{
+    "indexes": [
+        {
+            "collectionGroup": "diary",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "missionaryId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "date",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "photos",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "missionaryId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "date",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "transfers",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "missionaryId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "date",
+                    "order": "DESCENDING"
+                }
+            ]
+        }
+    ],
+    "fieldOverrides": []
+}
