@@ -7,3 +7,6 @@ export function cn(...inputs: ClassValue[]) {
 
 // Re-export date utilities for convenience
 export * from './utils/date-utils';
+
+// Re-export PDF export utilities
+export * from './utils/pdf-export';

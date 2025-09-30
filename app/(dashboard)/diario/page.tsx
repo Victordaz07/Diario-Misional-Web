@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { db } from '@/lib/firebase';
-import { convertFirebaseDate } from '@/lib/utils';
+import { convertFirebaseDate, exportDiaryToPDF, exportToJSON } from '@/lib/utils';
 
 interface DiaryEntry {
     id: string;
@@ -45,11 +45,62 @@ export default function DiaryPage() {
         }
     });
     const [uploadingPhotos, setUploadingPhotos] = useState(false);
+    const [exportingPDF, setExportingPDF] = useState(false);
+    const [showExportMenu, setShowExportMenu] = useState(false);
+
+    // Función para exportar PDF
+    const handleExportPDF = async () => {
+        try {
+            setExportingPDF(true);
+            await exportDiaryToPDF(entries, {
+                filename: `diario-misional-${new Date().toISOString().split('T')[0]}.pdf`,
+                title: 'Mi Diario Misional',
+                subtitle: `${entries.length} entradas registradas`
+            });
+        } catch (error) {
+            console.error('Error al exportar PDF:', error);
+            alert('Error al exportar PDF. Inténtalo de nuevo.');
+        } finally {
+            setExportingPDF(false);
+        }
+    };
+
+    // Función para exportar JSON
+    const handleExportJSON = () => {
+        try {
+            const exportData = {
+                exportedAt: new Date().toISOString(),
+                totalEntries: entries.length,
+                entries: entries.map(entry => ({
+                    ...entry,
+                    createdAt: entry.createdAt.toISOString()
+                }))
+            };
+            exportToJSON(exportData, `diario-misional-${new Date().toISOString().split('T')[0]}.json`);
+        } catch (error) {
+            console.error('Error al exportar JSON:', error);
+            alert('Error al exportar datos. Inténtalo de nuevo.');
+        }
+    };
 
     // Cargar entradas del diario
     useEffect(() => {
         loadDiaryEntries();
     }, []);
+
+    // Cerrar menú de exportación al hacer clic fuera
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (showExportMenu && !(event.target as Element).closest('.relative')) {
+                setShowExportMenu(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showExportMenu]);
 
     const loadDiaryEntries = async () => {
         try {
@@ -314,10 +365,45 @@ export default function DiaryPage() {
                         <p className="text-gray-600">{entries.length} entradas registradas</p>
                     </div>
                     <div className="flex items-center space-x-3">
-                        <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                            <i className="fa-solid fa-download text-gray-600"></i>
-                            <span className="text-sm font-medium text-gray-700">Exportar PDF</span>
-                        </button>
+                        <div className="relative">
+                            <button 
+                                onClick={() => setShowExportMenu(!showExportMenu)}
+                                disabled={entries.length === 0}
+                                className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                <i className="fa-solid fa-download text-gray-600"></i>
+                                <span className="text-sm font-medium text-gray-700">Exportar</span>
+                                <i className="fa-solid fa-chevron-down text-gray-400 text-xs"></i>
+                            </button>
+                            
+                            {showExportMenu && (
+                                <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                                    <div className="py-1">
+                                        <button
+                                            onClick={() => {
+                                                handleExportPDF();
+                                                setShowExportMenu(false);
+                                            }}
+                                            disabled={exportingPDF}
+                                            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2 disabled:opacity-50"
+                                        >
+                                            <i className={`fa-solid fa-file-pdf text-red-600 ${exportingPDF ? 'fa-spin' : ''}`}></i>
+                                            <span>{exportingPDF ? 'Exportando PDF...' : 'Exportar PDF'}</span>
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                handleExportJSON();
+                                                setShowExportMenu(false);
+                                            }}
+                                            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
+                                        >
+                                            <i className="fa-solid fa-file-code text-blue-600"></i>
+                                            <span>Exportar JSON</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                         <button
                             onClick={() => setShowModal(true)}
                             className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors cursor-pointer"
