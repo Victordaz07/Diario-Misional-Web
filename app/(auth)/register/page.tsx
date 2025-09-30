@@ -298,8 +298,8 @@ export default function RegisterPage() {
                                             </div>
                                             {getErrorSuggestion({ code: error.includes('email-already-in-use') ? 'auth/email-already-in-use' : '' }) && (
                                                 <div className="mt-2">
-                                                    <Link 
-                                                        href="/login" 
+                                                    <Link
+                                                        href="/login"
                                                         className="text-sm text-red-600 hover:text-red-500 underline"
                                                     >
                                                         {getErrorSuggestion({ code: 'auth/email-already-in-use' })}

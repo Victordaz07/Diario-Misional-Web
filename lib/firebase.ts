@@ -4,13 +4,19 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { mockStorage } from './mock-storage';
 
+// Función para limpiar variables de entorno (remover saltos de línea)
+const cleanEnvVar = (value: string | undefined): string => {
+    if (!value) return '';
+    return value.trim().replace(/[\r\n]+/g, '');
+};
+
 const firebaseConfig = {
-    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "demo-api-key-for-development",
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "demo-project.firebaseapp.com",
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "demo-project-id",
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "demo-project.appspot.com",
-    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "123456789",
-    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:123456789:web:abcdef123456",
+    apiKey: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_API_KEY) || "demo-api-key-for-development",
+    authDomain: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN) || "demo-project.firebaseapp.com",
+    projectId: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) || "demo-project-id",
+    storageBucket: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) || "demo-project.appspot.com",
+    messagingSenderId: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID) || "123456789",
+    appId: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_APP_ID) || "1:123456789:web:abcdef123456",
 };
 
 // Initialize Firebase only if we have valid config
@@ -75,13 +81,19 @@ const mockSignOut = () => {
     return Promise.resolve();
 };
 
+// Check if we have real Firebase config
+const hasRealConfig = cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_API_KEY) &&
+    cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_API_KEY) !== "demo-api-key-for-development" &&
+    cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_API_KEY) !== "your-api-key-here";
+
 try {
-    // Check if we have real Firebase config
-    const hasRealConfig = process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
-        process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "demo-api-key-for-development" &&
-        process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "your-api-key-here";
 
     if (hasRealConfig) {
+        console.log("🔥 Firebase config detected:", {
+            apiKey: firebaseConfig.apiKey.substring(0, 20) + "...",
+            authDomain: firebaseConfig.authDomain,
+            projectId: firebaseConfig.projectId
+        });
         app = initializeApp(firebaseConfig);
         auth = getAuth(app);
         db = getFirestore(app);
@@ -229,11 +241,6 @@ let collection: any;
 let getDoc: any;
 let updateDoc: any;
 let deleteDoc: any;
-
-// Check if we have real Firebase config
-const hasRealConfig = process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
-    process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "demo-api-key-for-development" &&
-    process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "your-api-key-here";
 
 if (hasRealConfig) {
     // Import from Firebase when we have real config
