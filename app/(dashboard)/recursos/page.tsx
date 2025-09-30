@@ -1024,10 +1024,10 @@ export default function RecursosPage() {
                         <h3 className="text-lg font-semibold text-gray-800">
                             {selectedCategory !== 'all' ?
                                 `Recursos de ${categories.find(c => c.key === selectedCategory)?.label}` :
-                                {t('availableResources')}
+                                t('availableResources')
                             }
                         </h3>
-                        <span className="text-sm text-gray-500">{filteredResources.length} recursos encontrados</span>
+                        <span className="text-sm text-gray-500">{filteredResources.length} {t('resourcesFound')}</span>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
