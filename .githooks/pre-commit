@@ -1,0 +1,40 @@
+#!/bin/sh
+# Pre-commit hook for Diario Misional Web
+
+echo "🔍 Running pre-commit checks..."
+
+# Run TypeScript type checking
+echo "📝 Checking TypeScript types..."
+npm run type-check
+if [ $? -ne 0 ]; then
+  echo "❌ TypeScript type checking failed"
+  exit 1
+fi
+
+# Run ESLint
+echo "🔧 Running ESLint..."
+npm run lint
+if [ $? -ne 0 ]; then
+  echo "❌ ESLint checks failed"
+  exit 1
+fi
+
+# Run Prettier
+echo "💅 Running Prettier..."
+npx prettier --check .
+if [ $? -ne 0 ]; then
+  echo "❌ Prettier formatting check failed"
+  echo "💡 Run 'npx prettier --write .' to fix formatting issues"
+  exit 1
+fi
+
+# Run unit tests
+echo "🧪 Running unit tests..."
+npm run test -- --passWithNoTests
+if [ $? -ne 0 ]; then
+  echo "❌ Unit tests failed"
+  exit 1
+fi
+
+echo "✅ All pre-commit checks passed!"
+exit 0

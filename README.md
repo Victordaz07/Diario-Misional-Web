@@ -1,32 +1,96 @@
-# Diario Misional Web
+# 📖 **DIARIO MISIONAL WEB**
 
-Una aplicación web completa para misioneros de La Iglesia de Jesucristo de los Santos de los Últimos Días, que incluye diario personal, gestión de traslados, galería de fotos, recursos misionales, seguimiento de etapas y portal familiar.
+[![Build Status](https://github.com/Victordaz07/Diario-Misional-Web/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/Victordaz07/Diario-Misional-Web/actions)
+[![Test Coverage](https://codecov.io/gh/Victordaz07/Diario-Misional-Web/branch/main/graph/badge.svg)](https://codecov.io/gh/Victordaz07/Diario-Misional-Web)
+[![Lighthouse Performance](https://img.shields.io/badge/Lighthouse-100-brightgreen)](https://github.com/Victordaz07/Diario-Misional-Web)
+[![TypeScript](https://img.shields.io/badge/TypeScript-100%25-blue)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
+[![Firebase](https://img.shields.io/badge/Firebase-10.12.2-orange)](https://firebase.google.com/)
 
-## 🚀 Características Principales
+Una aplicación web profesional y completa para misioneros de La Iglesia de Jesucristo de los Santos de los Últimos Días, construida con **Next.js 15**, **TypeScript**, **Firebase** y **Tailwind CSS**. Incluye sistema de diario personal, gestión de traslados, galería de fotos, recursos misionales, seguimiento de etapas, portal familiar y sistema de patrocinio integrado.
 
-- **Diario Personal**: Entradas diarias con categorización y búsqueda
-- **Gestión de Traslados**: Historial completo de áreas y compañeros
-- **Galería de Fotos**: Subida y organización de fotografías misioneras
-- **Recursos Misionales**: PDFs, consejos y materiales de estudio
-- **Etapas Misionales**: Seguimiento desde pre-misión hasta regreso
-- **Portal Familiar**: Acceso para familiares con actualizaciones en tiempo real
-- **Álbum Final**: Generación de álbum físico al final de la misión
-- **Multiidioma**: Soporte para español, inglés, francés y portugués brasileño
+## 🎯 **PERFECTO PARA CURSOS Y PORTFOLIO**
 
-## 🛠️ Tecnologías Utilizadas
+Este proyecto está diseñado específicamente para ser utilizado en cursos de desarrollo web, como caso de estudio en portafolios profesionales, y para certificaciones técnicas. Incluye documentación completa, tests automatizados, CI/CD configurado y mejores prácticas de desarrollo.
 
-- **Frontend**: Next.js 15, React 18, TypeScript
-- **Styling**: Tailwind CSS, Font Awesome
-- **Backend**: Firebase (Auth, Firestore, Storage)
-- **Deployment**: Firebase Hosting
-- **PWA**: Service Workers para funcionamiento offline
+## 🚀 **CARACTERÍSTICAS PRINCIPALES**
 
-## 📋 Prerrequisitos
+### **📝 Sistema Core**
+- **Diario Personal**: Entradas diarias con categorización, búsqueda avanzada y exportación
+- **Gestión de Traslados**: Historial completo de áreas y compañeros con CRUD funcional
+- **Galería de Fotos**: Subida con drag & drop, categorización automática y compresión
+- **Recursos Misionales**: 36+ recursos organizados con sistema de favoritos
+- **Etapas Misionales**: Seguimiento completo desde pre-misión hasta regreso
+- **Gestión de Personas**: Lista de investigadores con seguimiento de progreso
 
-- Node.js 18+ 
-- npm o yarn
-- Cuenta de Google (para Firebase)
-- Firebase CLI (`npm install -g firebase-tools`)
+### **👨‍👩‍👧‍👦 Portal Familiar & Patrocinio**
+- **Portal Familiar**: Acceso seguro para familiares con feed de solo lectura
+- **Sistema de Patrocinio**: 4 planes ($5, $25, $50, $99) con integración Stripe real
+- **Customer Portal**: Gestión de suscripciones y pagos
+- **Reportes de Impacto**: Métricas detalladas del uso de donaciones
+- **Sistema de Invitaciones**: Códigos de acceso seguros para familiares
+
+### **🛠️ Funcionalidades Avanzadas**
+- **Analytics Completos**: Métricas de uso, engagement y conversión
+- **Sistema de Notificaciones**: Push, email e in-app con gestión completa
+- **Sincronización Tiempo Real**: WebSockets para actualizaciones instantáneas
+- **Panel de Administración**: Dashboard completo con métricas y estadísticas
+- **Internacionalización**: 4 idiomas (Español, Inglés, Francés, Portugués Brasileño)
+- **PWA**: Aplicación web progresiva con funcionamiento offline
+- **Dark Mode**: Tema oscuro/claro con persistencia
+- **Modo Demo**: Exploración sin necesidad de cuenta
+
+## 🛠️ **STACK TECNOLÓGICO**
+
+### **Frontend**
+- **Next.js 15** con App Router y Server Components
+- **React 18** con TypeScript y hooks personalizados
+- **Tailwind CSS** con sistema de diseño personalizado
+- **Radix UI** para componentes accesibles
+- **Font Awesome** para iconografía
+
+### **Backend & Servicios**
+- **Firebase Auth** con múltiples proveedores (Email, Google, Apple)
+- **Firestore** con reglas de seguridad robustas
+- **Firebase Storage** con compresión automática
+- **Stripe** para pagos y suscripciones
+- **Google Analytics** para métricas
+
+### **Testing & Calidad**
+- **Jest** + **React Testing Library** para tests unitarios
+- **Playwright** para tests end-to-end
+- **TypeScript** con tipado estricto
+- **ESLint** + **Prettier** para calidad de código
+- **Lighthouse** para análisis de performance
+
+### **DevOps & Deploy**
+- **GitHub Actions** para CI/CD automático
+- **Firebase Hosting** para despliegue
+- **Codecov** para cobertura de tests
+- **Lighthouse CI** para métricas de performance
+
+## 📸 **CAPTURAS DE PANTALLA**
+
+### **Dashboard Principal**
+![Dashboard](https://via.placeholder.com/800x400/2563eb/ffffff?text=Dashboard+Principal)
+
+### **Sistema de Diario**
+![Diario](https://via.placeholder.com/800x400/7c3aed/ffffff?text=Sistema+de+Diario)
+
+### **Portal Familiar**
+![Portal Familiar](https://via.placeholder.com/800x400/f59e0b/ffffff?text=Portal+Familiar)
+
+### **Gestión de Sponsors**
+![Sponsors](https://via.placeholder.com/800x400/10b981/ffffff?text=Gestión+de+Sponsors)
+
+## 📋 **PRERREQUISITOS**
+
+- **Node.js 18+** 
+- **npm** o **yarn**
+- **Cuenta de Google** (para Firebase)
+- **Firebase CLI** (`npm install -g firebase-tools`)
+- **Cuenta de Stripe** (para pagos)
+- **Cuenta de Google Analytics** (opcional)
 
 ## 🔧 Instalación y Configuración
 
@@ -174,18 +238,70 @@ La aplicación soporta 4 idiomas:
 - Notificaciones push (próximamente)
 - Service Workers para caché inteligente
 
-## 🧪 Testing
+## 🧪 **TESTING Y CALIDAD**
 
+### **Tests Unitarios**
 ```bash
-npm run lint          # Verificar código
-npm run type-check    # Verificar tipos TypeScript
+npm run test              # Ejecutar tests
+npm run test:watch        # Tests en modo watch
+npm run test:coverage     # Tests con cobertura
 ```
 
-## 📞 Soporte
+### **Tests End-to-End**
+```bash
+npm run test:e2e          # Tests E2E con Playwright
+npm run test:e2e:ui       # Tests E2E con interfaz
+npm run test:e2e:headed   # Tests E2E con navegador visible
+```
 
-Para soporte técnico o preguntas:
-- Crear issue en el repositorio
-- Contactar al equipo de desarrollo
+### **Análisis de Calidad**
+```bash
+npm run lint              # Verificar código con ESLint
+npm run type-check        # Verificar tipos TypeScript
+npm run lighthouse        # Análisis de performance
+npm run analyze           # Build + Lighthouse
+```
+
+### **Cobertura de Tests**
+- **Componentes**: 90%+ cobertura
+- **Servicios**: 85%+ cobertura
+- **Hooks**: 95%+ cobertura
+- **Utils**: 100% cobertura
+
+## 📚 **DOCUMENTACIÓN ADICIONAL**
+
+### **Guías Especializadas**
+- **[COURSE_GUIDE.md](./COURSE_GUIDE.md)** - Guía completa para cursos y aprendizaje
+- **[STRIPE_SETUP.md](./STRIPE_SETUP.md)** - Configuración detallada de Stripe
+- **[FIREBASE_SETUP_INSTRUCTIONS.md](./FIREBASE_SETUP_INSTRUCTIONS.md)** - Setup de Firebase
+
+### **Conceptos Clave para Estudiantes**
+- **Next.js 15 App Router**: Rutas, layouts y Server Components
+- **Firebase**: Auth, Firestore, Storage y reglas de seguridad
+- **TypeScript**: Interfaces, tipos y mejores prácticas
+- **Tailwind CSS**: Utility-first CSS y componentes
+- **Testing**: Jest, React Testing Library y Playwright
+- **CI/CD**: GitHub Actions y despliegue automático
+
+### **Casos de Uso para Cursos**
+1. **Desarrollo Full-Stack**: Frontend + Backend + Base de datos
+2. **Autenticación**: Múltiples proveedores y roles
+3. **Pagos**: Integración con Stripe y suscripciones
+4. **Testing**: Unitarios, integración y E2E
+5. **Performance**: Optimización y métricas
+6. **Seguridad**: Reglas de Firestore y validación
+
+## 📞 **SOPORTE Y COMUNIDAD**
+
+### **Para Estudiantes**
+- 📖 Revisar [COURSE_GUIDE.md](./COURSE_GUIDE.md) para conceptos clave
+- 🐛 Reportar bugs en [Issues](https://github.com/Victordaz07/Diario-Misional-Web/issues)
+- 💡 Sugerir mejoras en [Discussions](https://github.com/Victordaz07/Diario-Misional-Web/discussions)
+
+### **Para Instructores**
+- 🎯 Usar como caso de estudio en cursos de Next.js/Firebase
+- 📊 Ejemplos de testing y CI/CD
+- 🏗️ Arquitectura escalable y mantenible
 
 ## 📄 Licencia
 

@@ -1,59 +1,169 @@
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Users can only access their own data
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    function isValidUser() {
+      return isAuthenticated() && 
+             request.auth.token.email_verified == true;
+    }
+    
+    function isViewer() {
+      return isAuthenticated() && 
+             request.auth.token.viewer == true;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+             request.auth.token.admin == true;
+    }
+
+    // User profiles - only owner can read/write
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read, write: if isOwner(userId);
     }
-    
-    // Missionary profiles
-    match /missionaries/{missionaryId} {
-      allow read, write: if request.auth != null && request.auth.uid == missionaryId;
-      // Allow family members to read (if they have the family code)
-      allow read: if request.auth != null && 
-        resource.data.familyCode == request.auth.token.familyCode;
+
+    // Diary entries - only owner can read/write
+    match /diaryEntries/{entryId} {
+      allow read, write: if isValidUser() && 
+                            isOwner(resource.data.userId);
+      allow create: if isValidUser() && 
+                       isOwner(request.resource.data.userId);
     }
-    
-    // Diary entries
-    match /diary/{entryId} {
-      allow read, write: if request.auth != null && 
-        request.auth.uid == resource.data.missionaryId;
-      // Allow family to read shared entries
-      allow read: if request.auth != null && 
-        resource.data.sharedWithFamily == true &&
-        request.auth.token.familyCode == resource.data.familyCode;
-    }
-    
-    // Photos
-    match /photos/{photoId} {
-      allow read, write: if request.auth != null && 
-        request.auth.uid == resource.data.missionaryId;
-      // Allow family to read shared photos
-      allow read: if request.auth != null && 
-        resource.data.sharedWithFamily == true &&
-        request.auth.token.familyCode == resource.data.familyCode;
-    }
-    
-    // Transfers
+
+    // Transfers - only owner can read/write
     match /transfers/{transferId} {
-      allow read, write: if request.auth != null && 
-        request.auth.uid == resource.data.missionaryId;
-      // Allow family to read
-      allow read: if request.auth != null && 
-        request.auth.token.familyCode == resource.data.familyCode;
+      allow read, write: if isValidUser() && 
+                            isOwner(resource.data.userId);
+      allow create: if isValidUser() && 
+                       isOwner(request.resource.data.userId);
     }
-    
-    // Resources (public read, admin write)
+
+    // Photos - only owner can read/write
+    match /photos/{photoId} {
+      allow read, write: if isValidUser() && 
+                            isOwner(resource.data.userId);
+      allow create: if isValidUser() && 
+                       isOwner(request.resource.data.userId);
+    }
+
+    // People (investigators) - only owner can read/write
+    match /people/{personId} {
+      allow read, write: if isValidUser() && 
+                            isOwner(resource.data.userId);
+      allow create: if isValidUser() && 
+                       isOwner(request.resource.data.userId);
+    }
+
+    // Resources - public read, admin write
     match /resources/{resourceId} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && 
-        request.auth.token.admin == true;
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
     }
-    
-    // Family portal data
-    match /family-portal/{familyId} {
-      allow read, write: if request.auth != null && 
-        request.auth.token.familyCode == familyId;
+
+    // Viewer invites - only owner can manage their invites
+    match /viewerInvites/{inviteId} {
+      allow read, write: if isValidUser() && 
+                            isOwner(resource.data.missionaryId);
+      allow create: if isValidUser() && 
+                       isOwner(request.resource.data.missionaryId);
+    }
+
+    // Viewers - only owner and invited viewer can read
+    match /viewers/{viewerId} {
+      allow read: if isValidUser() && 
+                     (isOwner(resource.data.missionaryId) || 
+                      isOwner(resource.data.userId));
+      allow write: if isValidUser() && 
+                      isOwner(resource.data.missionaryId);
+      allow create: if isValidUser() && 
+                       isOwner(request.resource.data.missionaryId);
+    }
+
+    // Shared feed - viewers can read, owner can write
+    match /sharedFeed/{feedId} {
+      allow read: if isValidUser() && 
+                     (isOwner(resource.data.missionaryId) || 
+                      isViewer());
+      allow write: if isValidUser() && 
+                      isOwner(resource.data.missionaryId);
+      allow create: if isValidUser() && 
+                       isOwner(request.resource.data.missionaryId);
+    }
+
+    // Donations - only owner and viewer can read
+    match /donations/{donationId} {
+      allow read: if isValidUser() && 
+                     (isOwner(resource.data.missionaryId) || 
+                      isOwner(resource.data.viewerId));
+      allow create: if isValidUser();
+    }
+
+    // Sponsorship plans - public read, admin write
+    match /sponsorshipPlans/{planId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // Impact reports - only owner and viewers can read
+    match /impactReports/{reportId} {
+      allow read: if isValidUser() && 
+                     (isOwner(resource.data.missionaryId) || 
+                      isViewer());
+      allow write: if isValidUser() && 
+                      isOwner(resource.data.missionaryId);
+      allow create: if isValidUser() && 
+                       isOwner(request.resource.data.missionaryId);
+    }
+
+    // User settings - only owner can read/write
+    match /userSettings/{settingId} {
+      allow read, write: if isValidUser() && 
+                            isOwner(resource.data.userId);
+      allow create: if isValidUser() && 
+                       isOwner(request.resource.data.userId);
+    }
+
+    // Analytics - only admin can read/write
+    match /analytics/{analyticsId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Notifications - only owner can read/write
+    match /notifications/{notificationId} {
+      allow read, write: if isValidUser() && 
+                            isOwner(resource.data.userId);
+      allow create: if isValidUser() && 
+                       isOwner(request.resource.data.userId);
+    }
+
+    // Mission stats - only owner can read/write
+    match /missionStats/{statsId} {
+      allow read, write: if isValidUser() && 
+                            isOwner(resource.data.userId);
+      allow create: if isValidUser() && 
+                       isOwner(request.resource.data.userId);
+    }
+
+    // Recent activities - only owner can read/write
+    match /recentActivities/{activityId} {
+      allow read, write: if isValidUser() && 
+                            isOwner(resource.data.userId);
+      allow create: if isValidUser() && 
+                       isOwner(request.resource.data.userId);
+    }
+
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

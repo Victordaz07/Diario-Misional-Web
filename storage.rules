@@ -1,35 +1,105 @@
 rules_version = '2';
+
 service firebase.storage {
   match /b/{bucket}/o {
-    // Missionary photos
-    match /missionaries/{missionaryId}/photos/{photoId} {
-      allow read, write: if request.auth != null && 
-        request.auth.uid == missionaryId;
-      // Allow family to read shared photos
-      allow read: if request.auth != null && 
-        request.auth.token.familyCode != null;
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
     }
     
-    // Profile pictures
-    match /missionaries/{missionaryId}/profile/{profileId} {
-      allow read, write: if request.auth != null && 
-        request.auth.uid == missionaryId;
-      // Allow family to read
-      allow read: if request.auth != null && 
-        request.auth.token.familyCode != null;
+    function isOwner(userId) {
+      return request.auth.uid == userId;
     }
     
-    // Album files
-    match /albums/{albumId} {
-      allow read, write: if request.auth != null && 
-        request.auth.uid == resource.metadata.missionaryId;
+    function isValidUser() {
+      return isAuthenticated() && 
+             request.auth.token.email_verified == true;
     }
     
-    // Resource files (public read)
-    match /resources/{resourceId} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && 
-        request.auth.token.admin == true;
+    function isViewer() {
+      return isAuthenticated() && 
+             request.auth.token.viewer == true;
+    }
+    
+    function isValidImageType() {
+      return request.resource.contentType.matches('image/.*');
+    }
+    
+    function isValidFileSize() {
+      return request.resource.size < 5 * 1024 * 1024; // 5MB limit
+    }
+    
+    function isValidFileName() {
+      return request.resource.name.matches('.*\\.(jpg|jpeg|png|webp|gif)$');
+    }
+
+    // User profile images - only owner can upload/read
+    match /profile-images/{userId}/{fileName} {
+      allow read, write: if isValidUser() && 
+                            isOwner(userId) &&
+                            isValidImageType() &&
+                            isValidFileSize() &&
+                            isValidFileName();
+    }
+
+    // Diary photos - only owner can upload/read
+    match /diary-photos/{userId}/{fileName} {
+      allow read, write: if isValidUser() && 
+                            isOwner(userId) &&
+                            isValidImageType() &&
+                            isValidFileSize() &&
+                            isValidFileName();
+    }
+
+    // Mission photos - only owner can upload, owner and viewers can read
+    match /mission-photos/{userId}/{fileName} {
+      allow read: if isValidUser() && 
+                     (isOwner(userId) || isViewer());
+      allow write: if isValidUser() && 
+                      isOwner(userId) &&
+                      isValidImageType() &&
+                      isValidFileSize() &&
+                      isValidFileName();
+    }
+
+    // Shared photos - owner can upload, viewers can read
+    match /shared-photos/{userId}/{fileName} {
+      allow read: if isValidUser() && 
+                     (isOwner(userId) || isViewer());
+      allow write: if isValidUser() && 
+                      isOwner(userId) &&
+                      isValidImageType() &&
+                      isValidFileSize() &&
+                      isValidFileName();
+    }
+
+    // Resource files - authenticated users can read, admin can write
+    match /resources/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isValidUser() && 
+                      request.auth.token.admin == true;
+    }
+
+    // Impact reports - only owner and viewers can read
+    match /impact-reports/{userId}/{fileName} {
+      allow read: if isValidUser() && 
+                     (isOwner(userId) || isViewer());
+      allow write: if isValidUser() && 
+                      isOwner(userId);
+    }
+
+    // Temporary uploads - only owner can upload, auto-delete after 24h
+    match /temp/{userId}/{fileName} {
+      allow read, write: if isValidUser() && 
+                            isOwner(userId) &&
+                            isValidImageType() &&
+                            isValidFileSize() &&
+                            isValidFileName();
+    }
+
+    // Deny all other access
+    match /{allPaths=**} {
+      allow read, write: if false;
     }
   }
 }
