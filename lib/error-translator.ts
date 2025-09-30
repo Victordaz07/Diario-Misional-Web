@@ -17,6 +17,7 @@ export const translateFirebaseError = (error: any): string => {
         'auth/popup-closed-by-user': 'La ventana de autenticación fue cerrada. Intenta de nuevo.',
         'auth/cancelled-popup-request': 'La solicitud de autenticación fue cancelada.',
         'auth/popup-blocked': 'El navegador bloqueó la ventana emergente. Permite ventanas emergentes para este sitio.',
+        'auth/unauthorized-domain': 'Este dominio no está autorizado para autenticación. Contacta al administrador para agregar este dominio a la configuración de Firebase.',
 
         // Errores de Firestore
         'firestore/permission-denied': 'No tienes permisos para realizar esta acción.',
@@ -52,7 +53,8 @@ export const getErrorSuggestion = (error: any): string | null => {
         'auth/user-not-found': '¿Necesitas crear una cuenta? Ve a la página de registro.',
         'auth/weak-password': 'Usa una combinación de letras, números y símbolos.',
         'auth/network-request-failed': 'Verifica tu conexión a internet y vuelve a intentar.',
-        'auth/too-many-requests': 'Espera unos minutos antes de intentar de nuevo.'
+        'auth/too-many-requests': 'Espera unos minutos antes de intentar de nuevo.',
+        'auth/unauthorized-domain': 'El dominio de Vercel necesita ser agregado a Firebase Console → Authentication → Settings → Authorized domains.'
     };
 
     return suggestions[errorCode] || null;
