@@ -366,7 +366,7 @@ export default function DiaryPage() {
                     </div>
                     <div className="flex items-center space-x-3">
                         <div className="relative">
-                            <button 
+                            <button
                                 onClick={() => setShowExportMenu(!showExportMenu)}
                                 disabled={entries.length === 0}
                                 className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -375,7 +375,7 @@ export default function DiaryPage() {
                                 <span className="text-sm font-medium text-gray-700">Exportar</span>
                                 <i className="fa-solid fa-chevron-down text-gray-400 text-xs"></i>
                             </button>
-                            
+
                             {showExportMenu && (
                                 <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
                                     <div className="py-1">

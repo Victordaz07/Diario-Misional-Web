@@ -1,15 +1,15 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { SidebarProvider, useSidebar } from '@/lib/contexts/sidebar-context';
 
-export default function DashboardLayout({
+function DashboardLayoutContent({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const { sidebarOpen, toggleSidebar } = useSidebar();
     const pathname = usePathname();
 
     const navigation = [
@@ -82,7 +82,7 @@ export default function DashboardLayout({
             {sidebarOpen && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-                    onClick={() => setSidebarOpen(false)}
+                    onClick={toggleSidebar}
                 ></div>
             )}
 
@@ -94,7 +94,7 @@ export default function DashboardLayout({
                         <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-4">
                                 <button
-                                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                                    onClick={toggleSidebar}
                                     className="md:hidden p-2 rounded-lg hover:bg-gray-100"
                                 >
                                     <i className="fa-solid fa-bars text-gray-600"></i>
@@ -138,5 +138,19 @@ export default function DashboardLayout({
                 </main>
             </div>
         </div>
+    );
+}
+
+export default function DashboardLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+    return (
+        <SidebarProvider>
+            <DashboardLayoutContent>
+                {children}
+            </DashboardLayoutContent>
+        </SidebarProvider>
     );
 }
