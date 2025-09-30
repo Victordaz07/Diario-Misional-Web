@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthService } from '@/lib/auth-service';
 import { db, doc, setDoc } from '@/lib/firebase';
+import { translateFirebaseError, getErrorSuggestion } from '@/lib/error-translator';
 import Link from 'next/link';
 
 export default function RegisterPage() {
@@ -51,7 +52,8 @@ export default function RegisterPage() {
             // Redirigir al dashboard
             router.push('/dashboard');
         } catch (error: any) {
-            setError(error.message);
+            const translatedError = translateFirebaseError(error);
+            setError(translatedError);
         } finally {
             setLoading(false);
         }
@@ -78,7 +80,8 @@ export default function RegisterPage() {
             await setDoc(doc(db, 'users', user.uid), userProfile, { merge: true });
             router.push('/dashboard');
         } catch (error: any) {
-            setError(error.message);
+            const translatedError = translateFirebaseError(error);
+            setError(translatedError);
         } finally {
             setSocialLoading(null);
         }
@@ -105,7 +108,8 @@ export default function RegisterPage() {
             await setDoc(doc(db, 'users', user.uid), userProfile, { merge: true });
             router.push('/dashboard');
         } catch (error: any) {
-            setError(error.message);
+            const translatedError = translateFirebaseError(error);
+            setError(translatedError);
         } finally {
             setSocialLoading(null);
         }
@@ -282,8 +286,28 @@ export default function RegisterPage() {
 
                             {/* Error Message */}
                             {error && (
-                                <div className="text-red-600 text-sm text-center bg-red-50 border border-red-200 rounded-lg p-3">
-                                    {error}
+                                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                                    <div className="flex items-start">
+                                        <div className="flex-shrink-0">
+                                            <i className="fa-solid fa-exclamation-triangle text-red-600"></i>
+                                        </div>
+                                        <div className="ml-3 flex-1">
+                                            <h3 className="text-sm font-medium text-red-800">Error</h3>
+                                            <div className="mt-1 text-sm text-red-700">
+                                                {error}
+                                            </div>
+                                            {getErrorSuggestion({ code: error.includes('email-already-in-use') ? 'auth/email-already-in-use' : '' }) && (
+                                                <div className="mt-2">
+                                                    <Link 
+                                                        href="/login" 
+                                                        className="text-sm text-red-600 hover:text-red-500 underline"
+                                                    >
+                                                        {getErrorSuggestion({ code: 'auth/email-already-in-use' })}
+                                                    </Link>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             )}
 

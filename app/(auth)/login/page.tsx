@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthService } from '@/lib/auth-service';
+import { translateFirebaseError, getErrorSuggestion } from '@/lib/error-translator';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from '@/lib/use-translations';
@@ -27,7 +28,8 @@ export default function LoginPage() {
             await AuthService.signInWithEmail(email, password);
             router.push('/dashboard');
         } catch (error: any) {
-            setError(error.message);
+            const translatedError = translateFirebaseError(error);
+            setError(translatedError);
         } finally {
             setLoading(false);
         }
@@ -41,7 +43,8 @@ export default function LoginPage() {
             await AuthService.signInWithGoogle();
             router.push('/dashboard');
         } catch (error: any) {
-            setError(error.message);
+            const translatedError = translateFirebaseError(error);
+            setError(translatedError);
         } finally {
             setSocialLoading(null);
         }
@@ -55,7 +58,8 @@ export default function LoginPage() {
             await AuthService.signInWithApple();
             router.push('/dashboard');
         } catch (error: any) {
-            setError(error.message);
+            const translatedError = translateFirebaseError(error);
+            setError(translatedError);
         } finally {
             setSocialLoading(null);
         }
