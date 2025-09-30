@@ -13,6 +13,26 @@ export default function PerfilPage() {
         transfers: 0,
         investigators: 0
     });
+
+    // Estados para modales
+    const [showNotificationsModal, setShowNotificationsModal] = useState(false);
+    const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+
+    // Estados para configuraciones
+    const [notificationSettings, setNotificationSettings] = useState({
+        emailNotifications: true,
+        pushNotifications: true,
+        weeklyReports: true,
+        familyUpdates: true,
+        missionReminders: true
+    });
+
+    const [privacySettings, setPrivacySettings] = useState({
+        profileVisibility: 'private',
+        dataSharing: false,
+        analyticsTracking: false,
+        twoFactorAuth: false
+    });
     const [formData, setFormData] = useState({
         nombreCompleto: 'John David Smith',
         tituloMisional: 'Elder Smith',
@@ -101,6 +121,128 @@ export default function PerfilPage() {
         document.getElementById('formActions')?.classList.add('hidden');
     };
 
+    const handleNotifications = () => {
+        setShowNotificationsModal(true);
+    };
+
+    const handlePrivacy = () => {
+        setShowPrivacyModal(true);
+    };
+
+    const handleExportData = async () => {
+        try {
+            showNotification('Iniciando exportación de datos...', 'success');
+
+            // Recopilar todos los datos del usuario
+            const userData = {
+                profile: formData,
+                stats: stats,
+                exportDate: new Date().toISOString(),
+                missionProgress: {
+                    daysServed,
+                    daysRemaining,
+                    progressPercentage: progressPercentage.toFixed(1),
+                    monthsRemaining
+                }
+            };
+
+            // Crear y descargar el archivo JSON
+            const dataStr = JSON.stringify(userData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+            const exportFileDefaultName = `diario-misional-${formData.tituloMisional.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.json`;
+
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+
+            setTimeout(() => {
+                showNotification('Datos exportados correctamente', 'success');
+            }, 1000);
+        } catch (error) {
+            console.error('Error exporting data:', error);
+            showNotification('Error al exportar los datos', 'error');
+        }
+    };
+
+    const handleDeleteAccount = () => {
+        const confirmed = window.confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.');
+        if (confirmed) {
+            showNotification('Función de eliminación de cuenta en desarrollo', 'error');
+            // Aquí puedes implementar la lógica de eliminación de cuenta
+        }
+    };
+
+    const handleChangePhoto = () => {
+        // Crear un input de archivo oculto
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.style.display = 'none';
+
+        input.onchange = (e: any) => {
+            const file = e.target.files[0];
+            if (file) {
+                // Verificar el tamaño del archivo (máximo 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    showNotification('El archivo es demasiado grande. Máximo 5MB', 'error');
+                    return;
+                }
+
+                // Verificar el tipo de archivo
+                if (!file.type.startsWith('image/')) {
+                    showNotification('Solo se permiten archivos de imagen', 'error');
+                    return;
+                }
+
+                // Crear un objeto URL para previsualizar la imagen
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = document.querySelector('img[alt="Profile"]') as HTMLImageElement;
+                    if (img) {
+                        img.src = event.target?.result as string;
+                    }
+                    showNotification('Foto de perfil actualizada', 'success');
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        // Agregar el input al DOM y hacer clic en él
+        document.body.appendChild(input);
+        input.click();
+        document.body.removeChild(input);
+    };
+
+    const handleSaveNotifications = async () => {
+        try {
+            await db.collection('userSettings').doc('notifications').set({
+                ...notificationSettings,
+                updatedAt: new Date().toISOString()
+            });
+            setShowNotificationsModal(false);
+            showNotification('Configuración de notificaciones guardada', 'success');
+        } catch (error) {
+            console.error('Error saving notifications:', error);
+            showNotification('Error al guardar configuración', 'error');
+        }
+    };
+
+    const handleSavePrivacy = async () => {
+        try {
+            await db.collection('userSettings').doc('privacy').set({
+                ...privacySettings,
+                updatedAt: new Date().toISOString()
+            });
+            setShowPrivacyModal(false);
+            showNotification('Configuración de privacidad guardada', 'success');
+        } catch (error) {
+            console.error('Error saving privacy:', error);
+            showNotification('Error al guardar configuración', 'error');
+        }
+    };
+
     // Calculate mission progress
     const missionStartDate = new Date(formData.fechaInicioMision);
     const today = new Date();
@@ -117,7 +259,10 @@ export default function PerfilPage() {
                 <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
                     <div className="relative">
                         <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Profile" className="w-24 h-24 rounded-full border-4 border-white shadow-lg" />
-                        <button className="absolute bottom-0 right-0 w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white shadow-lg hover:bg-secondary/90 transition-colors">
+                        <button
+                            onClick={handleChangePhoto}
+                            className="absolute bottom-0 right-0 w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white shadow-lg hover:bg-secondary/90 transition-colors cursor-pointer"
+                        >
                             <i className="fa-solid fa-camera text-sm"></i>
                         </button>
                     </div>
@@ -279,7 +424,10 @@ export default function PerfilPage() {
                             <p className="text-sm text-green-600">Conectado con la familia Smith</p>
                             <p className="text-xs text-green-500 mt-1">Código: FAM-2024-789</p>
                         </div>
-                        <button className="text-green-600 hover:text-green-700">
+                        <button
+                            onClick={() => showNotification('Abriendo portal familiar...', 'success')}
+                            className="text-green-600 hover:text-green-700 cursor-pointer"
+                        >
                             <i className="fa-solid fa-external-link-alt"></i>
                         </button>
                     </div>
@@ -346,7 +494,10 @@ export default function PerfilPage() {
                 </div>
 
                 <div className="p-6 space-y-4">
-                    <button className="w-full flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <button
+                        onClick={handleNotifications}
+                        className="w-full flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                    >
                         <div className="flex items-center space-x-3">
                             <i className="fa-solid fa-bell text-gray-600"></i>
                             <span className="font-medium text-gray-800">Notificaciones</span>
@@ -354,7 +505,10 @@ export default function PerfilPage() {
                         <i className="fa-solid fa-chevron-right text-gray-400"></i>
                     </button>
 
-                    <button className="w-full flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <button
+                        onClick={handlePrivacy}
+                        className="w-full flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                    >
                         <div className="flex items-center space-x-3">
                             <i className="fa-solid fa-shield-alt text-gray-600"></i>
                             <span className="font-medium text-gray-800">Privacidad y Seguridad</span>
@@ -362,7 +516,10 @@ export default function PerfilPage() {
                         <i className="fa-solid fa-chevron-right text-gray-400"></i>
                     </button>
 
-                    <button className="w-full flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <button
+                        onClick={handleExportData}
+                        className="w-full flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                    >
                         <div className="flex items-center space-x-3">
                             <i className="fa-solid fa-download text-gray-600"></i>
                             <span className="font-medium text-gray-800">Exportar Datos</span>
@@ -370,7 +527,10 @@ export default function PerfilPage() {
                         <i className="fa-solid fa-chevron-right text-gray-400"></i>
                     </button>
 
-                    <button className="w-full flex items-center justify-between p-4 border border-red-200 rounded-lg hover:bg-red-50 transition-colors text-red-600">
+                    <button
+                        onClick={handleDeleteAccount}
+                        className="w-full flex items-center justify-between p-4 border border-red-200 rounded-lg hover:bg-red-50 transition-colors text-red-600 cursor-pointer"
+                    >
                         <div className="flex items-center space-x-3">
                             <i className="fa-solid fa-trash text-red-600"></i>
                             <span className="font-medium">Eliminar Cuenta</span>
@@ -379,6 +539,199 @@ export default function PerfilPage() {
                     </button>
                 </div>
             </section>
+
+            {/* Modal de Notificaciones */}
+            {showNotificationsModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-xl w-full max-w-md">
+                        <div className="p-6 border-b border-gray-200">
+                            <h3 className="text-lg font-semibold text-gray-800">Configuración de Notificaciones</h3>
+                        </div>
+                        <div className="p-6 space-y-4">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h4 className="font-medium text-gray-800">Notificaciones por Email</h4>
+                                    <p className="text-sm text-gray-500">Recibir actualizaciones por correo electrónico</p>
+                                </div>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={notificationSettings.emailNotifications}
+                                        onChange={(e) => setNotificationSettings({ ...notificationSettings, emailNotifications: e.target.checked })}
+                                        className="sr-only peer"
+                                    />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h4 className="font-medium text-gray-800">Notificaciones Push</h4>
+                                    <p className="text-sm text-gray-500">Recibir notificaciones en tiempo real</p>
+                                </div>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={notificationSettings.pushNotifications}
+                                        onChange={(e) => setNotificationSettings({ ...notificationSettings, pushNotifications: e.target.checked })}
+                                        className="sr-only peer"
+                                    />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h4 className="font-medium text-gray-800">Reportes Semanales</h4>
+                                    <p className="text-sm text-gray-500">Resumen semanal de actividades</p>
+                                </div>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={notificationSettings.weeklyReports}
+                                        onChange={(e) => setNotificationSettings({ ...notificationSettings, weeklyReports: e.target.checked })}
+                                        className="sr-only peer"
+                                    />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h4 className="font-medium text-gray-800">Actualizaciones Familiares</h4>
+                                    <p className="text-sm text-gray-500">Notificaciones del portal familiar</p>
+                                </div>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={notificationSettings.familyUpdates}
+                                        onChange={(e) => setNotificationSettings({ ...notificationSettings, familyUpdates: e.target.checked })}
+                                        className="sr-only peer"
+                                    />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h4 className="font-medium text-gray-800">Recordatorios de Misión</h4>
+                                    <p className="text-sm text-gray-500">Recordatorios de actividades misionales</p>
+                                </div>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={notificationSettings.missionReminders}
+                                        onChange={(e) => setNotificationSettings({ ...notificationSettings, missionReminders: e.target.checked })}
+                                        className="sr-only peer"
+                                    />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                        </div>
+                        <div className="p-6 border-t border-gray-200 flex space-x-3">
+                            <button
+                                onClick={() => setShowNotificationsModal(false)}
+                                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={handleSaveNotifications}
+                                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
+                            >
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal de Privacidad */}
+            {showPrivacyModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-xl w-full max-w-md">
+                        <div className="p-6 border-b border-gray-200">
+                            <h3 className="text-lg font-semibold text-gray-800">Privacidad y Seguridad</h3>
+                        </div>
+                        <div className="p-6 space-y-4">
+                            <div>
+                                <h4 className="font-medium text-gray-800 mb-2">Visibilidad del Perfil</h4>
+                                <select
+                                    value={privacySettings.profileVisibility}
+                                    onChange={(e) => setPrivacySettings({ ...privacySettings, profileVisibility: e.target.value })}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                    <option value="private">Privado</option>
+                                    <option value="mission">Solo Misión</option>
+                                    <option value="public">Público</option>
+                                </select>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h4 className="font-medium text-gray-800">Compartir Datos</h4>
+                                    <p className="text-sm text-gray-500">Permitir uso de datos para mejoras</p>
+                                </div>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={privacySettings.dataSharing}
+                                        onChange={(e) => setPrivacySettings({ ...privacySettings, dataSharing: e.target.checked })}
+                                        className="sr-only peer"
+                                    />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h4 className="font-medium text-gray-800">Seguimiento de Análisis</h4>
+                                    <p className="text-sm text-gray-500">Permitir análisis de uso</p>
+                                </div>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={privacySettings.analyticsTracking}
+                                        onChange={(e) => setPrivacySettings({ ...privacySettings, analyticsTracking: e.target.checked })}
+                                        className="sr-only peer"
+                                    />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h4 className="font-medium text-gray-800">Autenticación de Dos Factores</h4>
+                                    <p className="text-sm text-gray-500">Seguridad adicional para la cuenta</p>
+                                </div>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={privacySettings.twoFactorAuth}
+                                        onChange={(e) => setPrivacySettings({ ...privacySettings, twoFactorAuth: e.target.checked })}
+                                        className="sr-only peer"
+                                    />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                        </div>
+                        <div className="p-6 border-t border-gray-200 flex space-x-3">
+                            <button
+                                onClick={() => setShowPrivacyModal(false)}
+                                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={handleSavePrivacy}
+                                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
+                            >
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

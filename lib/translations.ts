@@ -256,6 +256,136 @@ export interface Translations {
         futureStages: string;
         currentStageMessage: string;
     };
+
+    // Sponsors
+    sponsors: {
+        title: string;
+        subtitle: string;
+        shareWithSponsors: string;
+        manageInvitations: string;
+        shareContent: string;
+        overview: string;
+        invites: string;
+        content: string;
+        settings: string;
+        activeSponsors: string;
+        pendingInvites: string;
+        publishedContent: string;
+        scheduledContent: string;
+        newInvite: string;
+        newContent: string;
+        inviteSponsor: string;
+        shareContent: string;
+        name: string;
+        email: string;
+        relationship: string;
+        family: string;
+        friend: string;
+        ward: string;
+        organization: string;
+        other: string;
+        sendInvite: string;
+        contentType: string;
+        testimony: string;
+        achievement: string;
+        photo: string;
+        weeklyDigest: string;
+        title: string;
+        content: string;
+        blurFaces: string;
+        schedulePublication: string;
+        shareContent: string;
+        whatToShare: string;
+        sharePhotos: string;
+        shareTestimonies: string;
+        shareAchievements: string;
+        shareWeeklyDigest: string;
+        privacySettings: string;
+        blurFacesAutomatically: string;
+        publicationDelay: string;
+        hours: string;
+        autoApprove: string;
+        privacyGuaranteed: string;
+        noExactLocation: string;
+        exifRemoved: string;
+        automaticDelay: string;
+        blurOption: string;
+        youDecide: string;
+        saveSettings: string;
+        accessCode: string;
+        invitedOn: string;
+        expiresOn: string;
+        resend: string;
+        viewDetails: string;
+        revoke: string;
+        accepted: string;
+        pending: string;
+        expired: string;
+        published: string;
+        scheduled: string;
+        draft: string;
+        facesBlurred: string;
+        createdOn: string;
+        publishedOn: string;
+        scheduledFor: string;
+        view: string;
+        edit: string;
+        delete: string;
+    };
+
+    // Portal Familiar
+    portalFamiliar: {
+        title: string;
+        subtitle: string;
+        feed: string;
+        sponsorship: string;
+        reports: string;
+        totalDonated: string;
+        activeSponsor: string;
+        progressFeed: string;
+        lastUpdate: string;
+        privacyProtected: string;
+        facesBlurred: string;
+        publishedDaysAgo: string;
+        supportMission: string;
+        yourSupport: string;
+        familyPlan: string;
+        bronze: string;
+        silver: string;
+        gold: string;
+        mostPopular: string;
+        monthlySponsorship: string;
+        selectPlan: string;
+        oneTimeDonation: string;
+        preferOneTime: string;
+        donationHistory: string;
+        sponsorship: string;
+        oneTimeDonation: string;
+        completed: string;
+        pending: string;
+        failed: string;
+        impactReports: string;
+        totalDonated: string;
+        donations: string;
+        activeMonths: string;
+        impactOfSupport: string;
+        supportedActivities: string;
+        teachings: string;
+        baptisms: string;
+        serviceHours: string;
+        peopleContacted: string;
+        providedResources: string;
+        teachingMaterials: string;
+        transportation: string;
+        communication: string;
+        otherExpenses: string;
+        monthlyReport: string;
+        downloadReport: string;
+        confirmSponsorship: string;
+        proceedToPayment: string;
+        stripeRedirect: string;
+        cancelAnytime: string;
+    };
 }
 
 export const translations: Record<string, Translations> = {
@@ -552,6 +682,221 @@ export const translations: Record<string, Translations> = {
             areaEast: "East Area",
             areaWest: "West Area",
         },
+        photos: {
+            title: "Photo Gallery",
+            subtitle: "Manage your missionary memories",
+            gallery: "Photo Gallery",
+            manageMemories: "Manage your missionary memories",
+            uploadPhoto: "Upload Photo",
+            totalPhotos: "Total photos",
+            thisWeek: "This week",
+            backedUp: "Backed up",
+            inCloud: "In the cloud",
+            stored: "Stored",
+            all: "All",
+            recent: "Recent",
+            service: "Service",
+            teaching: "Teaching",
+            companions: "Companions",
+            places: "Places",
+            loadMore: "Load more photos",
+            uploadNewPhoto: "Upload New Photo",
+            dragPhotoHere: "Drag your photo here or",
+            selectFile: "Select file",
+            photoTitle: "Title",
+            describePhoto: "Describe your photo",
+            category: "Category",
+            selectCategory: "Select category",
+            cancel: "Cancel",
+            upload: "Upload Photo",
+            delete: "Delete",
+            view: "View",
+            daysAgo: "{count} days ago",
+            weeksAgo: "{count} weeks ago",
+            monthsAgo: "{count} months ago",
+            teachingFamily: "Teaching González family",
+            communityService: "Community service",
+            studyWithCompanion: "Study with companion",
+            localChapel: "Local chapel",
+            familyPhoto: "Martínez family",
+            zoneConference: "Zone conference",
+            areaView: "View of my area",
+            baptism: "Carlos' baptism",
+        },
+        resources: {
+            title: "Missionary Resources",
+            subtitle: "Tools and materials for your mission",
+            searchPlaceholder: "Search resources...",
+            allTypes: "All types",
+            allCategories: "All categories",
+            pdfs: "PDFs",
+            tips: "Tips",
+            videos: "Videos",
+            featuredResources: "Featured resources",
+            resources: "Resources",
+            byCategories: "By categories",
+            recentDownloads: "Recent downloads",
+            download: "Download",
+            view: "View",
+            downloads: "Downloads",
+            size: "Size",
+            type: "Type",
+            category: "Category",
+            date: "Date",
+            scriptures: "Scriptures",
+            preachMyGospel: "Preach My Gospel",
+            recipes: "Recipes",
+            practicalTips: "Practical Tips",
+        },
+        stages: {
+            title: "Missionary Stages",
+            subtitle: "Live your mission with purpose and organization",
+            currentStage: "Current Stage",
+            completedStages: "Completed Stages",
+            upcomingStages: "Upcoming Stages",
+            progress: "Progress",
+            monthsInService: "Months in service",
+            stageProgress: "Stage Progress",
+            goals: "Goals",
+            reflections: "Reflections",
+            notes: "Notes",
+            unlockCondition: "Unlock condition",
+            completed: "Completed",
+            current: "Current",
+            locked: "Locked",
+            unlocked: "Unlocked",
+            preMission: "Pre-Mission",
+            mtc: "MTC",
+            ccm: "MTC",
+            field: "Field",
+            postMission: "Post-Mission",
+        },
+        sponsors: {
+            title: "Share with Sponsors",
+            subtitle: "Manage invitations and share your missionary progress securely",
+            shareWithSponsors: "Share with Sponsors",
+            manageInvitations: "Manage Invitations",
+            shareContent: "Share Content",
+            overview: "Overview",
+            invites: "Invites",
+            content: "Content",
+            settings: "Settings",
+            activeSponsors: "Active Sponsors",
+            pendingInvites: "Pending Invites",
+            publishedContent: "Published Content",
+            scheduledContent: "Scheduled",
+            newInvite: "New Invite",
+            newContent: "New Content",
+            inviteSponsor: "Invite Sponsor",
+            shareContent: "Share Content",
+            name: "Name",
+            email: "Email",
+            relationship: "Relationship",
+            family: "Family",
+            friend: "Friend",
+            ward: "Ward/Stake",
+            organization: "Organization",
+            other: "Other",
+            sendInvite: "Send Invite",
+            contentType: "Content Type",
+            testimony: "Testimony",
+            achievement: "Achievement",
+            photo: "Photo",
+            weeklyDigest: "Weekly Digest",
+            title: "Title",
+            content: "Content",
+            blurFaces: "Blur faces in image",
+            schedulePublication: "Schedule Publication (optional)",
+            shareContent: "Share Content",
+            whatToShare: "What to Share",
+            sharePhotos: "Photos",
+            shareTestimonies: "Testimonies",
+            shareAchievements: "Achievements",
+            shareWeeklyDigest: "Weekly Digests",
+            privacySettings: "Privacy Settings",
+            blurFacesAutomatically: "Blur faces automatically",
+            publicationDelay: "Publication delay",
+            hours: "hours",
+            autoApprove: "Auto approve",
+            privacyGuaranteed: "Privacy Guaranteed",
+            noExactLocation: "No exact location, only general area",
+            exifRemoved: "All image EXIF data removed",
+            automaticDelay: "Automatic delay in publications",
+            blurOption: "Blur option for photos with people",
+            youDecide: "You always decide what to share",
+            saveSettings: "Save Settings",
+            accessCode: "Access code",
+            invitedOn: "Invited",
+            expiresOn: "Expires",
+            resend: "Resend",
+            viewDetails: "View Details",
+            revoke: "Revoke",
+            accepted: "Accepted",
+            pending: "Pending",
+            expired: "Expired",
+            published: "Published",
+            scheduled: "Scheduled",
+            draft: "Draft",
+            facesBlurred: "Faces blurred",
+            createdOn: "Created",
+            publishedOn: "Published",
+            scheduledFor: "Scheduled",
+            view: "View",
+            edit: "Edit",
+            delete: "Delete",
+        },
+        portalFamiliar: {
+            title: "Family Portal",
+            subtitle: "Connect with your family and sponsors securely",
+            feed: "Feed",
+            sponsorship: "Sponsorship",
+            reports: "Reports",
+            totalDonated: "Total donated",
+            activeSponsor: "Active Sponsor",
+            progressFeed: "Progress Feed",
+            lastUpdate: "Last update",
+            privacyProtected: "Privacy protected",
+            facesBlurred: "Faces blurred to protect privacy",
+            publishedDaysAgo: "Published {count} days ago",
+            supportMission: "Support the Mission",
+            yourSupport: "Your support makes it possible for {name} to continue serving",
+            familyPlan: "Family Plan",
+            bronze: "Bronze",
+            silver: "Silver",
+            gold: "Gold",
+            mostPopular: "Most Popular",
+            monthlySponsorship: "Monthly sponsorship",
+            selectPlan: "Select Plan",
+            oneTimeDonation: "One-time Donation",
+            preferOneTime: "Do you prefer to make a one-time donation instead of monthly sponsorship?",
+            donationHistory: "Donation History",
+            sponsorship: "Sponsorship",
+            oneTimeDonation: "One-time donation",
+            completed: "Completed",
+            pending: "Pending",
+            failed: "Failed",
+            impactReports: "Impact Reports",
+            totalDonated: "Total Donated",
+            donations: "Donations",
+            activeMonths: "Active Months",
+            impactOfSupport: "Impact of Your Support",
+            supportedActivities: "Supported Activities",
+            teachings: "Teachings",
+            baptisms: "Baptisms",
+            serviceHours: "Service Hours",
+            peopleContacted: "People Contacted",
+            providedResources: "Provided Resources",
+            teachingMaterials: "Teaching Materials",
+            transportation: "Transportation",
+            communication: "Communication",
+            otherExpenses: "Other Expenses",
+            monthlyReport: "Monthly Report",
+            downloadReport: "Download Report PDF",
+            confirmSponsorship: "Confirm Sponsorship",
+            proceedToPayment: "Proceed to Payment",
+            stripeRedirect: "You will be redirected to Stripe to complete payment securely",
+            cancelAnytime: "You can cancel your sponsorship at any time",
+        },
     },
 
     fr: {
@@ -678,6 +1023,221 @@ export const translations: Record<string, Translations> = {
             areaSouth: "Zone Sud",
             areaEast: "Zone Est",
             areaWest: "Zone Ouest",
+        },
+        photos: {
+            title: "Galerie Photos",
+            subtitle: "Gérez vos souvenirs missionnaires",
+            gallery: "Galerie Photos",
+            manageMemories: "Gérez vos souvenirs missionnaires",
+            uploadPhoto: "Télécharger Photo",
+            totalPhotos: "Total photos",
+            thisWeek: "Cette semaine",
+            backedUp: "Sauvegardé",
+            inCloud: "Dans le cloud",
+            stored: "Stocké",
+            all: "Tout",
+            recent: "Récent",
+            service: "Service",
+            teaching: "Enseignement",
+            companions: "Compagnons",
+            places: "Lieux",
+            loadMore: "Charger plus de photos",
+            uploadNewPhoto: "Télécharger Nouvelle Photo",
+            dragPhotoHere: "Glissez votre photo ici ou",
+            selectFile: "Sélectionner fichier",
+            photoTitle: "Titre",
+            describePhoto: "Décrivez votre photo",
+            category: "Catégorie",
+            selectCategory: "Sélectionner catégorie",
+            cancel: "Annuler",
+            upload: "Télécharger Photo",
+            delete: "Supprimer",
+            view: "Voir",
+            daysAgo: "Il y a {count} jours",
+            weeksAgo: "Il y a {count} semaines",
+            monthsAgo: "Il y a {count} mois",
+            teachingFamily: "Enseignement famille González",
+            communityService: "Service communautaire",
+            studyWithCompanion: "Étude avec compagnon",
+            localChapel: "Chapelle locale",
+            familyPhoto: "Famille Martínez",
+            zoneConference: "Conférence de zone",
+            areaView: "Vue de ma zone",
+            baptism: "Baptême de Carlos",
+        },
+        resources: {
+            title: "Ressources Missionnaires",
+            subtitle: "Outils et matériaux pour votre mission",
+            searchPlaceholder: "Rechercher ressources...",
+            allTypes: "Tous types",
+            allCategories: "Toutes catégories",
+            pdfs: "PDFs",
+            tips: "Conseils",
+            videos: "Vidéos",
+            featuredResources: "Ressources en vedette",
+            resources: "Ressources",
+            byCategories: "Par catégories",
+            recentDownloads: "Téléchargements récents",
+            download: "Télécharger",
+            view: "Voir",
+            downloads: "Téléchargements",
+            size: "Taille",
+            type: "Type",
+            category: "Catégorie",
+            date: "Date",
+            scriptures: "Écritures",
+            preachMyGospel: "Prêchez Mon Évangile",
+            recipes: "Recettes",
+            practicalTips: "Conseils Pratiques",
+        },
+        stages: {
+            title: "Étapes Missionnaires",
+            subtitle: "Vivez votre mission avec but et organisation",
+            currentStage: "Étape Actuelle",
+            completedStages: "Étapes Terminées",
+            upcomingStages: "Étapes à Venir",
+            progress: "Progrès",
+            monthsInService: "Mois de service",
+            stageProgress: "Progrès de l'Étape",
+            goals: "Objectifs",
+            reflections: "Réflexions",
+            notes: "Notes",
+            unlockCondition: "Condition de déverrouillage",
+            completed: "Terminé",
+            current: "Actuel",
+            locked: "Verrouillé",
+            unlocked: "Déverrouillé",
+            preMission: "Pré-Mission",
+            mtc: "CMT",
+            ccm: "CMT",
+            field: "Terrain",
+            postMission: "Post-Mission",
+        },
+        sponsors: {
+            title: "Partager avec Sponsors",
+            subtitle: "Gérez les invitations et partagez votre progrès missionnaire en sécurité",
+            shareWithSponsors: "Partager avec Sponsors",
+            manageInvitations: "Gérer Invitations",
+            shareContent: "Partager Contenu",
+            overview: "Aperçu",
+            invites: "Invitations",
+            content: "Contenu",
+            settings: "Paramètres",
+            activeSponsors: "Sponsors Actifs",
+            pendingInvites: "Invitations en Attente",
+            publishedContent: "Contenu Publié",
+            scheduledContent: "Programmé",
+            newInvite: "Nouvelle Invitation",
+            newContent: "Nouveau Contenu",
+            inviteSponsor: "Inviter Sponsor",
+            shareContent: "Partager Contenu",
+            name: "Nom",
+            email: "Email",
+            relationship: "Relation",
+            family: "Famille",
+            friend: "Ami",
+            ward: "Branche/Pieu",
+            organization: "Organisation",
+            other: "Autre",
+            sendInvite: "Envoyer Invitation",
+            contentType: "Type de Contenu",
+            testimony: "Témoignage",
+            achievement: "Réalisation",
+            photo: "Photo",
+            weeklyDigest: "Résumé Hebdomadaire",
+            title: "Titre",
+            content: "Contenu",
+            blurFaces: "Flouter les visages dans l'image",
+            schedulePublication: "Programmer Publication (optionnel)",
+            shareContent: "Partager Contenu",
+            whatToShare: "Que Partager",
+            sharePhotos: "Photos",
+            shareTestimonies: "Témoignages",
+            shareAchievements: "Réalisations",
+            shareWeeklyDigest: "Résumés Hebdomadaires",
+            privacySettings: "Paramètres de Confidentialité",
+            blurFacesAutomatically: "Flouter les visages automatiquement",
+            publicationDelay: "Délai de publication",
+            hours: "heures",
+            autoApprove: "Approbation automatique",
+            privacyGuaranteed: "Confidentialité Garantie",
+            noExactLocation: "Pas de localisation exacte, seulement zone générale",
+            exifRemoved: "Toutes les données EXIF des images supprimées",
+            automaticDelay: "Délai automatique dans les publications",
+            blurOption: "Option de flou pour photos avec personnes",
+            youDecide: "Vous décidez toujours de ce qui est partagé",
+            saveSettings: "Sauvegarder Paramètres",
+            accessCode: "Code d'accès",
+            invitedOn: "Invité",
+            expiresOn: "Expire",
+            resend: "Renvoyer",
+            viewDetails: "Voir Détails",
+            revoke: "Révoquer",
+            accepted: "Accepté",
+            pending: "En Attente",
+            expired: "Expiré",
+            published: "Publié",
+            scheduled: "Programmé",
+            draft: "Brouillon",
+            facesBlurred: "Visages floutés",
+            createdOn: "Créé",
+            publishedOn: "Publié",
+            scheduledFor: "Programmé",
+            view: "Voir",
+            edit: "Modifier",
+            delete: "Supprimer",
+        },
+        portalFamiliar: {
+            title: "Portail Familial",
+            subtitle: "Connectez-vous avec votre famille et sponsors en sécurité",
+            feed: "Flux",
+            sponsorship: "Parrainage",
+            reports: "Rapports",
+            totalDonated: "Total donné",
+            activeSponsor: "Sponsor Actif",
+            progressFeed: "Flux de Progrès",
+            lastUpdate: "Dernière mise à jour",
+            privacyProtected: "Confidentialité protégée",
+            facesBlurred: "Visages floutés pour protéger la confidentialité",
+            publishedDaysAgo: "Publié il y a {count} jours",
+            supportMission: "Soutenir la Mission",
+            yourSupport: "Votre soutien permet à {name} de continuer à servir",
+            familyPlan: "Plan Familial",
+            bronze: "Bronze",
+            silver: "Argent",
+            gold: "Or",
+            mostPopular: "Plus Populaire",
+            monthlySponsorship: "Parrainage mensuel",
+            selectPlan: "Sélectionner Plan",
+            oneTimeDonation: "Don Unique",
+            preferOneTime: "Préférez-vous faire un don unique au lieu d'un parrainage mensuel ?",
+            donationHistory: "Historique des Dons",
+            sponsorship: "Parrainage",
+            oneTimeDonation: "Don unique",
+            completed: "Terminé",
+            pending: "En Attente",
+            failed: "Échoué",
+            impactReports: "Rapports d'Impact",
+            totalDonated: "Total Donné",
+            donations: "Dons",
+            activeMonths: "Mois Actifs",
+            impactOfSupport: "Impact de Votre Soutien",
+            supportedActivities: "Activités Soutenues",
+            teachings: "Enseignements",
+            baptisms: "Baptêmes",
+            serviceHours: "Heures de Service",
+            peopleContacted: "Personnes Contactées",
+            providedResources: "Ressources Fournies",
+            teachingMaterials: "Matériel d'Enseignement",
+            transportation: "Transport",
+            communication: "Communication",
+            otherExpenses: "Autres Dépenses",
+            monthlyReport: "Rapport Mensuel",
+            downloadReport: "Télécharger Rapport PDF",
+            confirmSponsorship: "Confirmer Parrainage",
+            proceedToPayment: "Procéder au Paiement",
+            stripeRedirect: "Vous serez redirigé vers Stripe pour compléter le paiement en sécurité",
+            cancelAnytime: "Vous pouvez annuler votre parrainage à tout moment",
         },
     },
 
@@ -894,6 +1454,132 @@ export const translations: Record<string, Translations> = {
             ccm: "CCM",
             field: "Campo",
             postMission: "Post-Misión",
+        },
+        sponsors: {
+            title: "Compartilhar com Patrocinadores",
+            subtitle: "Gerencie convites e compartilhe seu progresso missionário com segurança",
+            shareWithSponsors: "Compartilhar com Patrocinadores",
+            manageInvitations: "Gerenciar Convites",
+            shareContent: "Compartilhar Conteúdo",
+            overview: "Visão Geral",
+            invites: "Convites",
+            content: "Conteúdo",
+            settings: "Configurações",
+            activeSponsors: "Patrocinadores Ativos",
+            pendingInvites: "Convites Pendentes",
+            publishedContent: "Conteúdo Publicado",
+            scheduledContent: "Agendado",
+            newInvite: "Nueva Invitación",
+            newContent: "Nuevo Contenido",
+            inviteSponsor: "Invitar Sponsor",
+            shareContent: "Compartir Contenido",
+            name: "Nombre",
+            email: "Email",
+            relationship: "Relación",
+            family: "Familia",
+            friend: "Amigo",
+            ward: "Barrio/Estaca",
+            organization: "Organización",
+            other: "Otro",
+            sendInvite: "Enviar Invitación",
+            contentType: "Tipo de Contenido",
+            testimony: "Testimonio",
+            achievement: "Logro",
+            photo: "Foto",
+            weeklyDigest: "Resumen Semanal",
+            title: "Título",
+            content: "Contenido",
+            blurFaces: "Difuminar caras en la imagen",
+            schedulePublication: "Programar Publicación (opcional)",
+            shareContent: "Compartir Contenido",
+            whatToShare: "Qué Compartir",
+            sharePhotos: "Fotos",
+            shareTestimonies: "Testimonios",
+            shareAchievements: "Logros",
+            shareWeeklyDigest: "Resúmenes Semanales",
+            privacySettings: "Configuración de Privacidad",
+            blurFacesAutomatically: "Difuminar caras automáticamente",
+            publicationDelay: "Retraso de publicación",
+            hours: "horas",
+            autoApprove: "Aprobación automática",
+            privacyGuaranteed: "Privacidad Garantizada",
+            noExactLocation: "Sin geolocalización exacta, solo área general",
+            exifRemoved: "Todos los EXIF de imágenes eliminados",
+            automaticDelay: "Delay automático en publicaciones",
+            blurOption: "Opción de blur en fotos con personas",
+            youDecide: "Tú decides siempre qué compartir",
+            saveSettings: "Guardar Configuración",
+            accessCode: "Código de acceso",
+            invitedOn: "Invitado",
+            expiresOn: "Expira",
+            resend: "Reenviar",
+            viewDetails: "Ver Detalles",
+            revoke: "Revocar",
+            accepted: "Aceptado",
+            pending: "Pendiente",
+            expired: "Expirado",
+            published: "Publicado",
+            scheduled: "Programado",
+            draft: "Borrador",
+            facesBlurred: "Caras difuminadas",
+            createdOn: "Creado",
+            publishedOn: "Publicado",
+            scheduledFor: "Programado",
+            view: "Ver",
+            edit: "Editar",
+            delete: "Eliminar",
+        },
+        portalFamiliar: {
+            title: "Portal da Família",
+            subtitle: "Conecte-se com sua família e patrocinadores com segurança",
+            feed: "Feed",
+            sponsorship: "Patrocínio",
+            reports: "Relatórios",
+            totalDonated: "Total doado",
+            activeSponsor: "Patrocinador Ativo",
+            progressFeed: "Feed de Progresso",
+            lastUpdate: "Última atualização",
+            privacyProtected: "Privacidad protegida",
+            facesBlurred: "Caras difuminadas para proteger la privacidad",
+            publishedDaysAgo: "Publicado hace {count} días",
+            supportMission: "Apoya la Misión",
+            yourSupport: "Tu apoyo hace posible que {name} continúe sirviendo",
+            familyPlan: "Plan Familiar",
+            bronze: "Bronce",
+            silver: "Plata",
+            gold: "Oro",
+            mostPopular: "Más Popular",
+            monthlySponsorship: "Patrocinio continuo",
+            selectPlan: "Seleccionar Plan",
+            oneTimeDonation: "Donación Única",
+            preferOneTime: "¿Prefieres hacer una donación única en lugar de un patrocinio mensual?",
+            donationHistory: "Historial de Donaciones",
+            sponsorship: "Patrocinio",
+            oneTimeDonation: "Donación única",
+            completed: "Completado",
+            pending: "Pendiente",
+            failed: "Fallido",
+            impactReports: "Reportes de Impacto",
+            totalDonated: "Total Donado",
+            donations: "Donaciones",
+            activeMonths: "Meses Activo",
+            impactOfSupport: "Impacto de tu Apoyo",
+            supportedActivities: "Actividades Apoyadas",
+            teachings: "Enseñanzas",
+            baptisms: "Bautismos",
+            serviceHours: "Horas de Servicio",
+            peopleContacted: "Personas Contactadas",
+            providedResources: "Recursos Proporcionados",
+            teachingMaterials: "Materiales de Enseñanza",
+            transportation: "Transporte",
+            communication: "Comunicación",
+            otherExpenses: "Otros Gastos",
+            monthlyReport: "Reporte Mensual",
+            downloadReport: "Descargar Reporte PDF",
+            confirmSponsorship: "Confirmar Patrocinio",
+            proceedToPayment: "Proceder al Pago",
+            stripeRedirect: "Serás redirigido a Stripe para completar el pago de forma segura",
+            cancelAnytime: "Puedes cancelar tu patrocinio en cualquier momento",
         },
     },
 };

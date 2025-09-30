@@ -39,6 +39,7 @@ export default function RecursosPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedType, setSelectedType] = useState('all');
     const [selectedCategory, setSelectedCategory] = useState('all');
+    const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
     const [tipModalOpen, setTipModalOpen] = useState(false);
     const [selectedTip, setSelectedTip] = useState<Resource | null>(null);
     const [favorites, setFavorites] = useState<string[]>([]);
@@ -53,6 +54,7 @@ export default function RecursosPage() {
 
     // Cargar recursos
     useEffect(() => {
+        console.log('Recursos page mounted, loading resources...');
         loadResources();
         loadRecentDownloads();
     }, []);
@@ -60,30 +62,44 @@ export default function RecursosPage() {
     const loadResources = async () => {
         try {
             setLoading(true);
-            const snapshot = await db.collection('resources').orderBy('createdAt', 'desc').get();
-            const resourcesData = snapshot.docs.map((doc: any) => ({
-                id: doc.id,
-                ...doc.data(),
-                createdAt: doc.data().createdAt?.toDate() || new Date()
-            })) as Resource[];
 
-            setResources(resourcesData);
+            // Cargar recursos de ejemplo inmediatamente
+            console.log('Loading sample resources...');
+            loadSampleResources();
+
+            // Intentar cargar desde Firebase también (opcional)
+            try {
+                const snapshot = await db.collection('resources').orderBy('createdAt', 'desc').get();
+                if (snapshot.docs.length > 0) {
+                    const resourcesData = snapshot.docs.map((doc: any) => ({
+                        id: doc.id,
+                        ...doc.data(),
+                        createdAt: doc.data().createdAt?.toDate() || new Date()
+                    })) as Resource[];
+
+                    console.log('Found', resourcesData.length, 'resources in Firebase');
+                    // Combinar recursos de Firebase con los de ejemplo
+                    setResources(prevResources => [...resourcesData, ...prevResources]);
+                }
+            } catch (firebaseError) {
+                console.log('Firebase not available, using sample resources only');
+            }
         } catch (error) {
             console.error('Error loading resources:', error);
-            // Cargar datos de ejemplo si hay error
-            loadSampleResources();
         } finally {
             setLoading(false);
         }
     };
 
     const loadSampleResources = () => {
+        console.log('Loading sample resources...');
         const sampleResources: Resource[] = [
+            // CATEGORÍA: ENSEÑANZA (8 recursos)
             {
-                id: '1',
+                id: 'teaching-1',
                 title: 'Guía de Enseñanza Efectiva',
                 description: 'Técnicas y principios para enseñar con el Espíritu y crear conexiones significativas.',
-                content: 'Esta guía te ayudará a desarrollar habilidades de enseñanza efectiva...',
+                content: 'Esta guía te ayudará a desarrollar habilidades de enseñanza efectiva, incluyendo cómo preparar lecciones, hacer preguntas inspiradas y crear un ambiente espiritual.',
                 type: 'pdf',
                 category: 'teaching',
                 downloads: 245,
@@ -96,10 +112,10 @@ export default function RecursosPage() {
                 isFavorite: false
             },
             {
-                id: '2',
+                id: 'teaching-2',
                 title: 'Tip: Manejo del Tiempo',
                 description: 'Consejos prácticos para organizar tu día y maximizar el tiempo de enseñanza.',
-                content: 'El manejo efectivo del tiempo es fundamental para maximizar tu impacto como misionero...',
+                content: 'El manejo efectivo del tiempo es fundamental para maximizar tu impacto como misionero. Incluye técnicas de planificación y priorización.',
                 type: 'tip',
                 category: 'teaching',
                 views: 156,
@@ -111,26 +127,186 @@ export default function RecursosPage() {
                 isFavorite: true
             },
             {
-                id: '3',
+                id: 'teaching-3',
+                title: 'Video: Técnicas de Contacto',
+                description: 'Video tutorial sobre cómo abordar a las personas de manera efectiva.',
+                content: 'Este video te enseñará técnicas efectivas para hacer contacto inicial con personas en la calle, en sus hogares y en lugares públicos.',
+                type: 'video',
+                category: 'teaching',
+                views: 89,
+                icon: 'fa-solid fa-play-circle',
+                iconColor: 'text-red-600',
+                tagColor: 'bg-red-100 text-red-700',
+                fileSize: '45 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'teaching-4',
+                title: 'Manual de Lecciones Principales',
+                description: 'Guía completa para enseñar las lecciones principales del Evangelio.',
+                content: 'Manual detallado que incluye objetivos, materiales necesarios y técnicas para enseñar cada lección principal de manera efectiva.',
+                type: 'pdf',
+                category: 'teaching',
+                downloads: 198,
+                icon: 'fa-solid fa-file-pdf',
+                iconColor: 'text-red-600',
+                tagColor: 'bg-blue-100 text-blue-700',
+                fileSize: '3.1 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'teaching-5',
+                title: 'Tip: Hacer Preguntas Inspiradas',
+                description: 'Cómo formular preguntas que inviten al Espíritu y fomenten la reflexión.',
+                content: 'Las preguntas correctas pueden abrir corazones y mentes. Aprende a hacer preguntas que inviten al Espíritu Santo.',
+                type: 'tip',
+                category: 'teaching',
+                views: 134,
+                icon: 'fa-solid fa-lightbulb',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-green-100 text-green-700',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000),
+                isFavorite: true
+            },
+            {
+                id: 'teaching-6',
+                title: 'Video: Testificando con Poder',
+                description: 'Cómo compartir tu testimonio de manera poderosa y auténtica.',
+                content: 'Aprende a compartir tu testimonio personal de manera que toque los corazones y invite al Espíritu Santo.',
+                type: 'video',
+                category: 'teaching',
+                views: 167,
+                icon: 'fa-solid fa-play-circle',
+                iconColor: 'text-red-600',
+                tagColor: 'bg-red-100 text-red-700',
+                fileSize: '38 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'teaching-7',
+                title: 'Guía de Seguimiento',
+                description: 'Técnicas para mantener el contacto y seguir el progreso de los investigadores.',
+                content: 'El seguimiento efectivo es clave para el progreso. Aprende técnicas para mantener el contacto y ayudar en el progreso.',
+                type: 'pdf',
+                category: 'teaching',
+                downloads: 156,
+                icon: 'fa-solid fa-file-pdf',
+                iconColor: 'text-red-600',
+                tagColor: 'bg-blue-100 text-blue-700',
+                fileSize: '1.9 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'teaching-8',
+                title: 'Tip: Trabajar con Compañeros',
+                description: 'Cómo enseñar efectivamente como equipo con tu compañero.',
+                content: 'El trabajo en equipo es fundamental. Aprende a complementarte con tu compañero para enseñar más efectivamente.',
+                type: 'tip',
+                category: 'teaching',
+                views: 98,
+                icon: 'fa-solid fa-lightbulb',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-green-100 text-green-700',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+
+            // CATEGORÍA: LIDERAZGO (5 recursos)
+            {
+                id: 'leadership-1',
                 title: 'Manual de Liderazgo',
                 description: 'Principios de liderazgo cristiano y desarrollo de habilidades de comunicación.',
-                content: 'Este manual cubre los principios fundamentales del liderazgo cristiano...',
+                content: 'Este manual cubre los principios fundamentales del liderazgo cristiano, incluyendo servicio, humildad y comunicación efectiva.',
                 type: 'pdf',
                 category: 'leadership',
                 downloads: 189,
                 icon: 'fa-solid fa-file-pdf',
                 iconColor: 'text-purple-600',
-                tagColor: 'bg-blue-100 text-blue-700',
+                tagColor: 'bg-purple-100 text-purple-700',
                 fileSize: '1.8 MB',
                 language: 'Español',
                 createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
                 isFavorite: false
             },
             {
-                id: '4',
+                id: 'leadership-2',
+                title: 'Tip: Delegación Efectiva',
+                description: 'Cómo delegar responsabilidades y desarrollar a otros misioneros.',
+                content: 'La delegación es una habilidad clave del liderazgo. Aprende a delegar de manera que desarrolle a otros y multiplique tu impacto.',
+                type: 'tip',
+                category: 'leadership',
+                views: 112,
+                icon: 'fa-solid fa-lightbulb',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-green-100 text-green-700',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000),
+                isFavorite: true
+            },
+            {
+                id: 'leadership-3',
+                title: 'Video: Liderazgo por Ejemplo',
+                description: 'Cómo liderar a través del ejemplo personal y la integridad.',
+                content: 'El mejor liderazgo se da por ejemplo. Aprende a ser un líder que inspira a través de acciones consistentes con principios.',
+                type: 'video',
+                category: 'leadership',
+                views: 145,
+                icon: 'fa-solid fa-play-circle',
+                iconColor: 'text-red-600',
+                tagColor: 'bg-red-100 text-red-700',
+                fileSize: '42 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 11 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'leadership-4',
+                title: 'Guía de Resolución de Conflictos',
+                description: 'Técnicas para resolver conflictos y mantener la unidad.',
+                content: 'Los conflictos son inevitables, pero se pueden resolver de manera cristiana. Aprende técnicas de resolución de conflictos.',
+                type: 'pdf',
+                category: 'leadership',
+                downloads: 123,
+                icon: 'fa-solid fa-file-pdf',
+                iconColor: 'text-purple-600',
+                tagColor: 'bg-purple-100 text-purple-700',
+                fileSize: '2.1 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 13 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'leadership-5',
+                title: 'Tip: Motivación y Estímulo',
+                description: 'Cómo motivar y animar a otros misioneros en momentos difíciles.',
+                content: 'El estímulo oportuno puede cambiar el día de alguien. Aprende técnicas para motivar y elevar a otros.',
+                type: 'tip',
+                category: 'leadership',
+                views: 89,
+                icon: 'fa-solid fa-lightbulb',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-green-100 text-green-700',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+
+            // CATEGORÍA: ESTUDIO (6 recursos)
+            {
+                id: 'study-1',
                 title: 'Tip: Estudio Personal',
                 description: 'Métodos efectivos para el estudio de las escrituras y la preparación diaria.',
-                content: 'El estudio personal es la base de una misión exitosa...',
+                content: 'El estudio personal es la base de una misión exitosa. Incluye técnicas de estudio, meditación y aplicación.',
                 type: 'tip',
                 category: 'study',
                 views: 203,
@@ -142,10 +318,154 @@ export default function RecursosPage() {
                 isFavorite: true
             },
             {
-                id: '5',
+                id: 'study-2',
+                title: 'Guía de Estudio de Escrituras',
+                description: 'Métodos sistemáticos para estudiar y comprender las escrituras.',
+                content: 'Aprende métodos probados para estudiar las escrituras de manera más profunda y obtener mayor comprensión.',
+                type: 'pdf',
+                category: 'study',
+                downloads: 278,
+                icon: 'fa-solid fa-file-pdf',
+                iconColor: 'text-green-600',
+                tagColor: 'bg-green-100 text-green-700',
+                fileSize: '2.7 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 16 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'study-3',
+                title: 'Video: Cómo Memorizar Escrituras',
+                description: 'Técnicas efectivas para memorizar versículos clave.',
+                content: 'La memorización de escrituras te permite tenerlas disponibles cuando las necesites. Aprende técnicas efectivas.',
+                type: 'video',
+                category: 'study',
+                views: 156,
+                icon: 'fa-solid fa-play-circle',
+                iconColor: 'text-red-600',
+                tagColor: 'bg-red-100 text-red-700',
+                fileSize: '33 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 18 * 24 * 60 * 60 * 1000),
+                isFavorite: true
+            },
+            {
+                id: 'study-4',
+                title: 'Tip: Preparación de Lecciones',
+                description: 'Cómo preparar lecciones efectivas usando las escrituras.',
+                content: 'La preparación adecuada es clave para enseñar con poder. Aprende a preparar lecciones que inviten al Espíritu.',
+                type: 'tip',
+                category: 'study',
+                views: 167,
+                icon: 'fa-solid fa-lightbulb',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-green-100 text-green-700',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'study-5',
+                title: 'Manual de Doctrina y Convenios',
+                description: 'Guía de estudio para entender mejor Doctrina y Convenios.',
+                content: 'Doctrina y Convenios contiene revelaciones importantes. Esta guía te ayudará a entender mejor su contexto y aplicación.',
+                type: 'pdf',
+                category: 'study',
+                downloads: 145,
+                icon: 'fa-solid fa-file-pdf',
+                iconColor: 'text-green-600',
+                tagColor: 'bg-green-100 text-green-700',
+                fileSize: '1.6 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 22 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'study-6',
+                title: 'Tip: Estudio en Compañía',
+                description: 'Cómo hacer el estudio personal más efectivo con tu compañero.',
+                content: 'El estudio en compañía puede ser muy enriquecedor. Aprende técnicas para estudiar juntos de manera efectiva.',
+                type: 'tip',
+                category: 'study',
+                views: 134,
+                icon: 'fa-solid fa-lightbulb',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-green-100 text-green-700',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 24 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+
+            // CATEGORÍA: BIENESTAR (4 recursos)
+            {
+                id: 'wellbeing-1',
+                title: 'Guía de Bienestar Emocional',
+                description: 'Cómo mantener tu bienestar emocional durante la misión.',
+                content: 'La misión puede ser emocionalmente desafiante. Aprende técnicas para mantener tu bienestar emocional y mental.',
+                type: 'pdf',
+                category: 'wellbeing',
+                downloads: 189,
+                icon: 'fa-solid fa-file-pdf',
+                iconColor: 'text-orange-600',
+                tagColor: 'bg-orange-100 text-orange-700',
+                fileSize: '2.4 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 26 * 24 * 60 * 60 * 1000),
+                isFavorite: true
+            },
+            {
+                id: 'wellbeing-2',
+                title: 'Tip: Manejo del Estrés',
+                description: 'Técnicas para manejar el estrés y la presión de la misión.',
+                content: 'El estrés es normal en la misión, pero se puede manejar. Aprende técnicas efectivas para reducir el estrés.',
+                type: 'tip',
+                category: 'wellbeing',
+                views: 178,
+                icon: 'fa-solid fa-lightbulb',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-green-100 text-green-700',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 28 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'wellbeing-3',
+                title: 'Video: Ejercicios para Misioneros',
+                description: 'Rutinas de ejercicio que puedes hacer en tu apartamento.',
+                content: 'Mantenerte físicamente activo es importante para tu bienestar. Aprende rutinas de ejercicio que puedes hacer en casa.',
+                type: 'video',
+                category: 'wellbeing',
+                views: 145,
+                icon: 'fa-solid fa-play-circle',
+                iconColor: 'text-red-600',
+                tagColor: 'bg-red-100 text-red-700',
+                fileSize: '52 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'wellbeing-4',
+                title: 'Tip: Comunicación con la Familia',
+                description: 'Cómo mantener relaciones saludables con tu familia durante la misión.',
+                content: 'Mantener una buena relación con tu familia es importante. Aprende a comunicarte de manera efectiva y saludable.',
+                type: 'tip',
+                category: 'wellbeing',
+                views: 156,
+                icon: 'fa-solid fa-lightbulb',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-green-100 text-green-700',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 32 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+
+            // CATEGORÍA: ESCRITURAS (12 recursos)
+            {
+                id: 'scriptures-1',
                 title: 'Versículos Clave para la Enseñanza',
                 description: 'Colección de versículos organizados por temas para usar en las enseñanzas.',
-                content: 'Esta colección incluye versículos organizados por temas comunes...',
+                content: 'Esta colección incluye versículos organizados por temas comunes que surgen en las enseñanzas, con explicaciones y contexto.',
                 type: 'scripture',
                 category: 'scriptures',
                 downloads: 312,
@@ -158,29 +478,203 @@ export default function RecursosPage() {
                 isFavorite: false
             },
             {
-                id: '6',
-                title: 'Video: Técnicas de Contacto',
-                description: 'Video tutorial sobre cómo abordar a las personas de manera efectiva.',
-                content: 'Este video te enseñará técnicas efectivas para hacer contacto inicial...',
+                id: 'scriptures-2',
+                title: 'El Libro de Mormón - Guía de Estudio',
+                description: 'Guía completa para estudiar El Libro de Mormón capítulo por capítulo.',
+                content: 'Esta guía te ayudará a entender mejor El Libro de Mormón con explicaciones, contexto histórico y aplicaciones modernas.',
+                type: 'pdf',
+                category: 'scriptures',
+                downloads: 456,
+                icon: 'fa-solid fa-file-pdf',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-yellow-100 text-yellow-700',
+                fileSize: '3.8 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 34 * 24 * 60 * 60 * 1000),
+                isFavorite: true
+            },
+            {
+                id: 'scriptures-3',
+                title: 'Tip: Aplicar Escrituras a la Vida',
+                description: 'Cómo ayudar a otros a aplicar las escrituras a su vida diaria.',
+                content: 'Las escrituras deben aplicarse a la vida diaria. Aprende técnicas para ayudar a otros a hacer esta conexión.',
+                type: 'tip',
+                category: 'scriptures',
+                views: 234,
+                icon: 'fa-solid fa-lightbulb',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-green-100 text-green-700',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 36 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'scriptures-4',
+                title: 'Video: Historia del Libro de Mormón',
+                description: 'Video educativo sobre la historia y origen del Libro de Mormón.',
+                content: 'Entender la historia del Libro de Mormón te ayudará a enseñarlo mejor. Este video cubre su origen y preservación.',
                 type: 'video',
-                category: 'teaching',
-                views: 89,
+                category: 'scriptures',
+                views: 189,
                 icon: 'fa-solid fa-play-circle',
                 iconColor: 'text-red-600',
                 tagColor: 'bg-red-100 text-red-700',
-                fileSize: '45 MB',
+                fileSize: '48 MB',
                 language: 'Español',
-                createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
+                createdAt: new Date(Date.now() - 38 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'scriptures-5',
+                title: 'Versículos sobre la Fe',
+                description: 'Colección de versículos sobre la fe organizados por temas.',
+                content: 'La fe es un principio fundamental. Esta colección incluye versículos sobre diferentes aspectos de la fe.',
+                type: 'scripture',
+                category: 'scriptures',
+                downloads: 267,
+                icon: 'fa-solid fa-book-bible',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-yellow-100 text-yellow-700',
+                fileSize: '0.8 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'scriptures-6',
+                title: 'Tip: Enseñar con Escrituras',
+                description: 'Cómo usar las escrituras efectivamente en tus enseñanzas.',
+                content: 'Las escrituras son la base de toda enseñanza. Aprende técnicas para usarlas de manera más efectiva.',
+                type: 'tip',
+                category: 'scriptures',
+                views: 198,
+                icon: 'fa-solid fa-lightbulb',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-green-100 text-green-700',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 42 * 24 * 60 * 60 * 1000),
+                isFavorite: true
+            },
+            {
+                id: 'scriptures-7',
+                title: 'Versículos sobre la Oración',
+                description: 'Colección de versículos sobre la oración y su importancia.',
+                content: 'La oración es fundamental en la vida cristiana. Esta colección incluye versículos sobre diferentes aspectos de la oración.',
+                type: 'scripture',
+                category: 'scriptures',
+                downloads: 189,
+                icon: 'fa-solid fa-book-bible',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-yellow-100 text-yellow-700',
+                fileSize: '0.6 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 44 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'scriptures-8',
+                title: 'Video: El Plan de Salvación',
+                description: 'Video explicativo sobre el Plan de Salvación usando las escrituras.',
+                content: 'El Plan de Salvación es fundamental. Este video lo explica usando las escrituras de manera clara y comprensible.',
+                type: 'video',
+                category: 'scriptures',
+                views: 267,
+                icon: 'fa-solid fa-play-circle',
+                iconColor: 'text-red-600',
+                tagColor: 'bg-red-100 text-red-700',
+                fileSize: '55 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 46 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'scriptures-9',
+                title: 'Versículos sobre la Familia',
+                description: 'Colección de versículos sobre la familia eterna y el matrimonio.',
+                content: 'La familia es central en el plan de Dios. Esta colección incluye versículos sobre la familia eterna y el matrimonio.',
+                type: 'scripture',
+                category: 'scriptures',
+                downloads: 234,
+                icon: 'fa-solid fa-book-bible',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-yellow-100 text-yellow-700',
+                fileSize: '0.7 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 48 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'scriptures-10',
+                title: 'Tip: Contexto Histórico',
+                description: 'Cómo usar el contexto histórico para enseñar las escrituras.',
+                content: 'Entender el contexto histórico enriquece el estudio de las escrituras. Aprende a usar esta información en tus enseñanzas.',
+                type: 'tip',
+                category: 'scriptures',
+                views: 145,
+                icon: 'fa-solid fa-lightbulb',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-green-100 text-green-700',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 50 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'scriptures-11',
+                title: 'Versículos sobre el Arrepentimiento',
+                description: 'Colección de versículos sobre el arrepentimiento y la conversión.',
+                content: 'El arrepentimiento es un principio fundamental. Esta colección incluye versículos sobre el arrepentimiento y la conversión.',
+                type: 'scripture',
+                category: 'scriptures',
+                downloads: 198,
+                icon: 'fa-solid fa-book-bible',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-yellow-100 text-yellow-700',
+                fileSize: '0.5 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 52 * 24 * 60 * 60 * 1000),
+                isFavorite: false
+            },
+            {
+                id: 'scriptures-12',
+                title: 'Video: La Expiación',
+                description: 'Video explicativo sobre la Expiación de Jesucristo.',
+                content: 'La Expiación es el evento más importante en la historia. Este video la explica de manera clara y conmovedora.',
+                type: 'video',
+                category: 'scriptures',
+                views: 312,
+                icon: 'fa-solid fa-play-circle',
+                iconColor: 'text-red-600',
+                tagColor: 'bg-red-100 text-red-700',
+                fileSize: '62 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 54 * 24 * 60 * 60 * 1000),
+                isFavorite: true
+            },
+            {
+                id: 'scriptures-13',
+                title: 'Versículos sobre el Bautismo',
+                description: 'Colección de versículos sobre el bautismo y los convenios.',
+                content: 'El bautismo es el primer convenio. Esta colección incluye versículos sobre el bautismo y los convenios bautismales.',
+                type: 'scripture',
+                category: 'scriptures',
+                downloads: 167,
+                icon: 'fa-solid fa-book-bible',
+                iconColor: 'text-yellow-600',
+                tagColor: 'bg-yellow-100 text-yellow-700',
+                fileSize: '0.4 MB',
+                language: 'Español',
+                createdAt: new Date(Date.now() - 56 * 24 * 60 * 60 * 1000),
                 isFavorite: false
             }
         ];
+        console.log('Setting resources:', sampleResources.length, 'resources loaded');
         setResources(sampleResources);
     };
 
     const loadRecentDownloads = () => {
         const sampleDownloads: RecentDownload[] = [
             {
-                id: '1',
+                id: 'download-1',
                 title: 'Guía de Enseñanza Efectiva',
                 type: 'pdf',
                 downloadedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
@@ -188,7 +682,7 @@ export default function RecursosPage() {
                 iconColor: 'text-red-600',
             },
             {
-                id: '3',
+                id: 'download-2',
                 title: 'Manual de Liderazgo',
                 type: 'pdf',
                 downloadedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
@@ -196,7 +690,7 @@ export default function RecursosPage() {
                 iconColor: 'text-purple-600',
             },
             {
-                id: '5',
+                id: 'download-3',
                 title: 'Versículos Clave para la Enseñanza',
                 type: 'scripture',
                 downloadedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
@@ -223,13 +717,25 @@ export default function RecursosPage() {
     };
 
     const filteredResources = resources.filter(resource => {
-        const matchesSearch = resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            resource.description.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearch = searchTerm === '' ||
+            resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            resource.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            resource.content.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesType = selectedType === 'all' || resource.type === selectedType;
         const matchesCategory = selectedCategory === 'all' || resource.category === selectedCategory;
+        const matchesFavorites = !showFavoritesOnly || resource.isFavorite;
 
-        return matchesSearch && matchesType && matchesCategory;
+        return matchesSearch && matchesType && matchesCategory && matchesFavorites;
     });
+
+    // Debug log para verificar recursos
+    useEffect(() => {
+        console.log('Resources state updated:', resources.length, 'total resources');
+        console.log('Filtered resources:', filteredResources.length, 'filtered resources');
+        console.log('Selected category:', selectedCategory);
+        console.log('Selected type:', selectedType);
+        console.log('Search term:', searchTerm);
+    }, [resources, filteredResources, selectedCategory, selectedType, searchTerm]);
 
     const handleTipClick = (resource: Resource) => {
         if (resource.type === 'tip') {
@@ -252,7 +758,7 @@ export default function RecursosPage() {
 
             // Agregar a descargas recientes
             const newDownload: RecentDownload = {
-                id: resource.id,
+                id: `download-${resource.id}-${Date.now()}`,
                 title: resource.title,
                 type: resource.type,
                 downloadedAt: new Date(),
@@ -346,6 +852,16 @@ export default function RecursosPage() {
                         </div>
                     </div>
                     <div className="flex gap-2">
+                        <button
+                            onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                            className={`px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm transition-colors ${showFavoritesOnly
+                                    ? 'bg-yellow-100 border-yellow-300 text-yellow-700'
+                                    : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                                }`}
+                        >
+                            <i className={`fa-solid fa-star mr-1 ${showFavoritesOnly ? 'text-yellow-500' : 'text-gray-400'}`}></i>
+                            Favoritos
+                        </button>
                         <select
                             value={selectedType}
                             onChange={(e) => setSelectedType(e.target.value)}
@@ -375,23 +891,123 @@ export default function RecursosPage() {
 
             {/* Categories */}
             <section className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Por Categorías</h3>
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                    {categories.map((category) => (
-                        <div
-                            key={category.key}
-                            className="bg-white p-4 rounded-lg border border-gray-200 text-center hover:shadow-md transition-shadow cursor-pointer"
-                            onClick={() => setSelectedCategory(category.key)}
+                <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-gray-800">Por Categorías</h3>
+                    {selectedCategory !== 'all' && (
+                        <button
+                            onClick={() => setSelectedCategory('all')}
+                            className="text-sm text-primary hover:text-primary/80 flex items-center space-x-1"
                         >
-                            <div className={`w-10 h-10 ${category.color} rounded-lg mx-auto mb-2 flex items-center justify-center`}>
-                                <i className={category.icon}></i>
+                            <i className="fa-solid fa-times"></i>
+                            <span>Limpiar filtro</span>
+                        </button>
+                    )}
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                    {categories.map((category) => {
+                        const isSelected = selectedCategory === category.key;
+                        const actualCount = resources.filter(r => r.category === category.key).length;
+
+                        return (
+                            <div
+                                key={category.key}
+                                className={`p-4 rounded-lg border text-center hover:shadow-md transition-all cursor-pointer ${isSelected
+                                    ? 'bg-primary/5 border-primary shadow-md'
+                                    : 'bg-white border-gray-200'
+                                    }`}
+                                onClick={() => setSelectedCategory(category.key)}
+                            >
+                                <div className={`w-10 h-10 ${category.color} rounded-lg mx-auto mb-2 flex items-center justify-center ${isSelected ? 'ring-2 ring-primary/20' : ''
+                                    }`}>
+                                    <i className={category.icon}></i>
+                                </div>
+                                <h4 className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-gray-800'
+                                    }`}>
+                                    {category.label}
+                                </h4>
+                                <p className={`text-xs mt-1 ${isSelected ? 'text-primary/70' : 'text-gray-500'
+                                    }`}>
+                                    {actualCount} recursos
+                                </p>
+                                {isSelected && (
+                                    <div className="mt-2">
+                                        <div className="w-2 h-2 bg-primary rounded-full mx-auto"></div>
+                                    </div>
+                                )}
                             </div>
-                            <h4 className="text-sm font-medium text-gray-800">{category.label}</h4>
-                            <p className="text-xs text-gray-500 mt-1">{category.count} recursos</p>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </section>
+
+            {/* Active Filters */}
+            {(searchTerm || selectedType !== 'all' || selectedCategory !== 'all' || showFavoritesOnly) && (
+                <section className="mb-4">
+                    <div className="flex items-center flex-wrap gap-2">
+                        <span className="text-sm text-gray-600">Filtros activos:</span>
+                        {searchTerm && (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                <i className="fa-solid fa-search mr-1"></i>
+                                "{searchTerm}"
+                                <button
+                                    onClick={() => setSearchTerm('')}
+                                    className="ml-2 text-blue-600 hover:text-blue-800"
+                                >
+                                    <i className="fa-solid fa-times"></i>
+                                </button>
+                            </span>
+                        )}
+                        {selectedType !== 'all' && (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                <i className="fa-solid fa-tag mr-1"></i>
+                                Tipo: {selectedType === 'pdf' ? 'PDF' : selectedType === 'tip' ? 'Tip' : selectedType === 'video' ? 'Video' : 'Escritura'}
+                                <button
+                                    onClick={() => setSelectedType('all')}
+                                    className="ml-2 text-green-600 hover:text-green-800"
+                                >
+                                    <i className="fa-solid fa-times"></i>
+                                </button>
+                            </span>
+                        )}
+                        {selectedCategory !== 'all' && (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                <i className="fa-solid fa-folder mr-1"></i>
+                                Categoría: {categories.find(c => c.key === selectedCategory)?.label}
+                                <button
+                                    onClick={() => setSelectedCategory('all')}
+                                    className="ml-2 text-purple-600 hover:text-purple-800"
+                                >
+                                    <i className="fa-solid fa-times"></i>
+                                </button>
+                            </span>
+                        )}
+                        {showFavoritesOnly && (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                <i className="fa-solid fa-star mr-1"></i>
+                                Solo favoritos
+                                <button
+                                    onClick={() => setShowFavoritesOnly(false)}
+                                    className="ml-2 text-yellow-600 hover:text-yellow-800"
+                                >
+                                    <i className="fa-solid fa-times"></i>
+                                </button>
+                            </span>
+                        )}
+                        <button
+                            onClick={() => {
+                                setSearchTerm('');
+                                setSelectedType('all');
+                                setSelectedCategory('all');
+                                setShowFavoritesOnly(false);
+                            }}
+                            className="text-sm text-gray-500 hover:text-gray-700 flex items-center space-x-1"
+                        >
+                            <i className="fa-solid fa-trash"></i>
+                            <span>Limpiar todo</span>
+                        </button>
+                    </div>
+                </section>
+            )}
 
             {/* Resources Grid */}
             {loading ? (
@@ -402,7 +1018,12 @@ export default function RecursosPage() {
             ) : filteredResources.length > 0 ? (
                 <section className="space-y-4">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-gray-800">Recursos Disponibles</h3>
+                        <h3 className="text-lg font-semibold text-gray-800">
+                            {selectedCategory !== 'all' ?
+                                `Recursos de ${categories.find(c => c.key === selectedCategory)?.label}` :
+                                'Recursos Disponibles'
+                            }
+                        </h3>
                         <span className="text-sm text-gray-500">{filteredResources.length} recursos encontrados</span>
                     </div>
 
@@ -418,8 +1039,8 @@ export default function RecursosPage() {
                                             <button
                                                 onClick={() => toggleFavorite(resource.id)}
                                                 className={`p-1 rounded-full transition-colors ${resource.isFavorite
-                                                        ? 'text-yellow-500 hover:text-yellow-600'
-                                                        : 'text-gray-400 hover:text-yellow-500'
+                                                    ? 'text-yellow-500 hover:text-yellow-600'
+                                                    : 'text-gray-400 hover:text-yellow-500'
                                                     }`}
                                             >
                                                 <i className={`fa-solid ${resource.isFavorite ? 'fa-star' : 'fa-star-o'}`}></i>

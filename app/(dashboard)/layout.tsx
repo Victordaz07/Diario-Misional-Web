@@ -19,7 +19,9 @@ export default function DashboardLayout({
         { name: 'Fotos', href: '/fotos', icon: 'fa-camera' },
         { name: 'Recursos', href: '/recursos', icon: 'fa-folder' },
         { name: 'Etapas', href: '/etapas', icon: 'fa-seedling' },
+        { name: 'Sponsors', href: '/sponsors', icon: 'fa-handshake' },
         { name: 'Perfil', href: '/perfil', icon: 'fa-user' },
+        { name: 'Admin', href: '/admin', icon: 'fa-chart-pie' },
     ];
 
     const isActive = (href: string) => {
@@ -53,8 +55,8 @@ export default function DashboardLayout({
                                 <Link
                                     href={item.href}
                                     className={`flex items-center space-x-3 p-3 rounded-lg transition-colors cursor-pointer ${isActive(item.href)
-                                            ? 'bg-primary text-white'
-                                            : 'text-gray-600 hover:bg-gray-100'
+                                        ? 'bg-primary text-white'
+                                        : 'text-gray-600 hover:bg-gray-100'
                                         }`}
                                 >
                                     <i className={`fa-solid ${item.icon}`}></i>

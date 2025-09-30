@@ -168,6 +168,53 @@ class MockStorage {
             });
         }
 
+        // Sample mission stats
+        const missionStats = this.getAll('missionStats');
+        if (missionStats.length === 0) {
+            this.create('missionStats', {
+                id: 'current',
+                monthsInService: 8,
+                teachings: 127,
+                baptisms: 3,
+                transfers: 2,
+                teachingHours: 45,
+                commitmentsFulfilled: 92,
+                investigators: 8,
+                companions: 3
+            });
+        }
+
+        // Sample recent activities
+        const recentActivities = this.getAll('recentActivities');
+        if (recentActivities.length === 0) {
+            this.create('recentActivities', {
+                type: 'diary',
+                title: 'Experiencia con la familia González',
+                description: 'Enseñanza sobre la familia eterna',
+                date: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+                icon: 'fa-solid fa-book-open',
+                color: 'text-blue-600'
+            });
+
+            this.create('recentActivities', {
+                type: 'photo',
+                title: 'Fotos del servicio comunitario',
+                description: '3 fotos subidas',
+                date: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+                icon: 'fa-solid fa-camera',
+                color: 'text-green-600'
+            });
+
+            this.create('recentActivities', {
+                type: 'teaching',
+                title: 'Lección con Carlos',
+                description: 'Primera lección sobre el Plan de Salvación',
+                date: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
+                icon: 'fa-solid fa-chalkboard-teacher',
+                color: 'text-purple-600'
+            });
+        }
+
         console.log('Mock: Sample data initialized');
     }
 }

@@ -147,9 +147,65 @@ try {
                     return Promise.resolve({ id: result.id });
                 },
                 where: (field: string, operator: string, value: any) => ({
+                    orderBy: (field: string, direction: string = 'asc') => ({
+                        limit: (count: number) => ({
+                            get: async () => {
+                                const docs = await mockStorage.query(collectionName, field, operator, value);
+                                const sorted = docs.sort((a, b) => {
+                                    const aVal = a[field];
+                                    const bVal = b[field];
+                                    if (direction === 'desc') {
+                                        return bVal > aVal ? 1 : -1;
+                                    }
+                                    return aVal > bVal ? 1 : -1;
+                                });
+                                return { docs: sorted.slice(0, count).map(doc => ({ data: () => doc, id: doc.id })) };
+                            }
+                        }),
+                        get: async () => {
+                            const docs = await mockStorage.query(collectionName, field, operator, value);
+                            const sorted = docs.sort((a, b) => {
+                                const aVal = a[field];
+                                const bVal = b[field];
+                                if (direction === 'desc') {
+                                    return bVal > aVal ? 1 : -1;
+                                }
+                                return aVal > bVal ? 1 : -1;
+                            });
+                            return { docs: sorted.map(doc => ({ data: () => doc, id: doc.id })) };
+                        }
+                    }),
                     get: async () => {
                         const docs = await mockStorage.query(collectionName, field, operator, value);
                         return { docs: docs.map(doc => ({ data: () => doc, id: doc.id })) };
+                    }
+                }),
+                orderBy: (field: string, direction: string = 'asc') => ({
+                    limit: (count: number) => ({
+                        get: async () => {
+                            const docs = await mockStorage.read(collectionName);
+                            const sorted = docs.sort((a, b) => {
+                                const aVal = a[field];
+                                const bVal = b[field];
+                                if (direction === 'desc') {
+                                    return bVal > aVal ? 1 : -1;
+                                }
+                                return aVal > bVal ? 1 : -1;
+                            });
+                            return { docs: sorted.slice(0, count).map(doc => ({ data: () => doc, id: doc.id })) };
+                        }
+                    }),
+                    get: async () => {
+                        const docs = await mockStorage.read(collectionName);
+                        const sorted = docs.sort((a, b) => {
+                            const aVal = a[field];
+                            const bVal = b[field];
+                            if (direction === 'desc') {
+                                return bVal > aVal ? 1 : -1;
+                            }
+                            return aVal > bVal ? 1 : -1;
+                        });
+                        return { docs: sorted.map(doc => ({ data: () => doc, id: doc.id })) };
                     }
                 }),
                 get: async () => {
@@ -210,9 +266,65 @@ try {
                 return Promise.resolve({ id: result.id });
             },
             where: (field: string, operator: string, value: any) => ({
+                orderBy: (field: string, direction: string = 'asc') => ({
+                    limit: (count: number) => ({
+                        get: async () => {
+                            const docs = await mockStorage.query(collectionName, field, operator, value);
+                            const sorted = docs.sort((a, b) => {
+                                const aVal = a[field];
+                                const bVal = b[field];
+                                if (direction === 'desc') {
+                                    return bVal > aVal ? 1 : -1;
+                                }
+                                return aVal > bVal ? 1 : -1;
+                            });
+                            return { docs: sorted.slice(0, count).map(doc => ({ data: () => doc, id: doc.id })) };
+                        }
+                    }),
+                    get: async () => {
+                        const docs = await mockStorage.query(collectionName, field, operator, value);
+                        const sorted = docs.sort((a, b) => {
+                            const aVal = a[field];
+                            const bVal = b[field];
+                            if (direction === 'desc') {
+                                return bVal > aVal ? 1 : -1;
+                            }
+                            return aVal > bVal ? 1 : -1;
+                        });
+                        return { docs: sorted.map(doc => ({ data: () => doc, id: doc.id })) };
+                    }
+                }),
                 get: async () => {
                     const docs = await mockStorage.query(collectionName, field, operator, value);
                     return { docs: docs.map((doc: any) => ({ data: () => doc, id: doc.id })) };
+                }
+            }),
+            orderBy: (field: string, direction: string = 'asc') => ({
+                limit: (count: number) => ({
+                    get: async () => {
+                        const docs = await mockStorage.read(collectionName);
+                        const sorted = docs.sort((a, b) => {
+                            const aVal = a[field];
+                            const bVal = b[field];
+                            if (direction === 'desc') {
+                                return bVal > aVal ? 1 : -1;
+                            }
+                            return aVal > bVal ? 1 : -1;
+                        });
+                        return { docs: sorted.slice(0, count).map(doc => ({ data: () => doc, id: doc.id })) };
+                    }
+                }),
+                get: async () => {
+                    const docs = await mockStorage.read(collectionName);
+                    const sorted = docs.sort((a, b) => {
+                        const aVal = a[field];
+                        const bVal = b[field];
+                        if (direction === 'desc') {
+                            return bVal > aVal ? 1 : -1;
+                        }
+                        return aVal > bVal ? 1 : -1;
+                    });
+                    return { docs: sorted.map(doc => ({ data: () => doc, id: doc.id })) };
                 }
             }),
             get: async () => {

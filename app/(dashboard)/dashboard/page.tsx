@@ -144,8 +144,11 @@ export default function DashboardPage() {
 
             // Cargar estadísticas de misión
             const statsSnapshot = await db.collection('missionStats').doc('current').get();
-            if (statsSnapshot.exists) {
+            if (statsSnapshot.exists()) {
                 setMissionStats(statsSnapshot.data() as MissionStats);
+            } else {
+                // Si no hay datos en Firebase, mantener los datos por defecto
+                console.log('No mission stats found in Firebase, using default values');
             }
 
             // Cargar actividades recientes
