@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { db } from '@/lib/firebase';
+import { convertFirebaseDate } from '@/lib/utils';
 
 interface Resource {
     id: string;
@@ -74,7 +75,7 @@ export default function RecursosPage() {
                     const resourcesData = snapshot.docs.map((doc: any) => ({
                         id: doc.id,
                         ...doc.data(),
-                        createdAt: doc.data().createdAt?.toDate() || new Date()
+                        createdAt: convertFirebaseDate(doc.data().createdAt)
                     })) as Resource[];
 
                     console.log('Found', resourcesData.length, 'resources in Firebase');

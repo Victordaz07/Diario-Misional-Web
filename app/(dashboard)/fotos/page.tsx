@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { db } from '@/lib/firebase';
+import { convertFirebaseDate } from '@/lib/utils';
 
 interface Photo {
     id: string;
@@ -64,7 +65,7 @@ export default function FotosPage() {
             const photosData = snapshot.docs.map((doc: any) => ({
                 id: doc.id,
                 ...doc.data(),
-                date: doc.data().date?.toDate() || new Date()
+                date: convertFirebaseDate(doc.data().date)
             })) as Photo[];
 
             setPhotos(photosData);

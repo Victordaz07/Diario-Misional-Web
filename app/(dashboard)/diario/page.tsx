@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { db } from '@/lib/firebase';
+import { convertFirebaseDate } from '@/lib/utils';
 
 interface DiaryEntry {
     id: string;
@@ -57,7 +58,7 @@ export default function DiaryPage() {
             const entriesData = snapshot.docs.map((doc: any) => ({
                 id: doc.id,
                 ...doc.data(),
-                createdAt: doc.data().createdAt?.toDate() || new Date()
+                createdAt: convertFirebaseDate(doc.data().createdAt)
             })) as DiaryEntry[];
 
             setEntries(entriesData);

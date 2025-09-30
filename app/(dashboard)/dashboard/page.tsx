@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { db } from '@/lib/firebase';
+import { convertFirebaseDate } from '@/lib/utils';
 import Link from 'next/link';
 
 interface MissionStats {
@@ -156,7 +157,7 @@ export default function DashboardPage() {
             const activitiesData = activitiesSnapshot.docs.map((doc: any) => ({
                 id: doc.id,
                 ...doc.data(),
-                date: doc.data().date?.toDate() || new Date()
+                date: convertFirebaseDate(doc.data().date)
             })) as RecentActivity[];
 
             setRecentActivities(activitiesData);
