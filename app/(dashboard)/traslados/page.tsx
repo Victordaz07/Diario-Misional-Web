@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from '@/lib/use-translations';
 import { db } from '@/lib/firebase';
 
 interface Transfer {
@@ -16,6 +17,7 @@ interface Transfer {
 }
 
 export default function TrasladosPage() {
+    const { t } = useTranslations();
     const [transfers, setTransfers] = useState<Transfer[]>([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);

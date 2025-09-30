@@ -834,7 +834,7 @@ export default function RecursosPage() {
                     </div>
                     <div>
                         <h2 className="text-2xl font-bold text-gray-800">{t('resourcesTitle')}</h2>
-                        <p className="text-gray-600">{resources.length} recursos disponibles</p>
+                        <p className="text-gray-600">{resources.length} {t('resourcesAvailable')}</p>
                     </div>
                 </div>
             </section>
@@ -847,7 +847,7 @@ export default function RecursosPage() {
                             <i className="fa-solid fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                             <input
                                 type="text"
-                                placeholder="Buscar recursos..."
+                                placeholder={t('searchResources')}
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
@@ -863,14 +863,14 @@ export default function RecursosPage() {
                                 }`}
                         >
                             <i className={`fa-solid fa-star mr-1 ${showFavoritesOnly ? 'text-yellow-500' : 'text-gray-400'}`}></i>
-                            Favoritos
+                            {t('favorites')}
                         </button>
                         <select
                             value={selectedType}
                             onChange={(e) => setSelectedType(e.target.value)}
                             className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                         >
-                            <option value="all">Todos los tipos</option>
+                            <option value="all">{t('allTypes')}</option>
                             <option value="pdf">PDFs</option>
                             <option value="tip">Tips</option>
                             <option value="video">Videos</option>
@@ -881,7 +881,7 @@ export default function RecursosPage() {
                             onChange={(e) => setSelectedCategory(e.target.value)}
                             className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                         >
-                            <option value="all">Todas las categorías</option>
+                            <option value="all">{t('allCategories')}</option>
                             <option value="teaching">Enseñanza</option>
                             <option value="leadership">Liderazgo</option>
                             <option value="study">Estudio</option>
@@ -895,7 +895,7 @@ export default function RecursosPage() {
             {/* Categories */}
             <section className="mb-6">
                 <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-800">Por Categorías</h3>
+                    <h3 className="text-lg font-semibold text-gray-800">{t('byCategories')}</h3>
                     {selectedCategory !== 'all' && (
                         <button
                             onClick={() => setSelectedCategory('all')}
@@ -1024,7 +1024,7 @@ export default function RecursosPage() {
                         <h3 className="text-lg font-semibold text-gray-800">
                             {selectedCategory !== 'all' ?
                                 `Recursos de ${categories.find(c => c.key === selectedCategory)?.label}` :
-                                'Recursos Disponibles'
+                                {t('availableResources')}
                             }
                         </h3>
                         <span className="text-sm text-gray-500">{filteredResources.length} recursos encontrados</span>

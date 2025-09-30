@@ -340,7 +340,7 @@ export default function FotosPage() {
                         </div>
                     </div>
                     <div className="text-2xl font-bold text-gray-800 mb-1">{photos.length}</div>
-                    <div className="text-sm text-gray-600">Total de fotos</div>
+                    <div className="text-sm text-gray-600">{t('totalPhotos')}</div>
                 </div>
 
                 <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
