@@ -858,8 +858,8 @@ export default function RecursosPage() {
                         <button
                             onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
                             className={`px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm transition-colors ${showFavoritesOnly
-                                    ? 'bg-yellow-100 border-yellow-300 text-yellow-700'
-                                    : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                                ? 'bg-yellow-100 border-yellow-300 text-yellow-700'
+                                : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
                                 }`}
                         >
                             <i className={`fa-solid fa-star mr-1 ${showFavoritesOnly ? 'text-yellow-500' : 'text-gray-400'}`}></i>

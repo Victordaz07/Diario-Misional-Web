@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SidebarProvider, useSidebar } from '@/lib/contexts/sidebar-context';
+import { useAuth } from '@/lib/auth-context';
 import LanguageSelector from '@/components/language-selector';
 import { useTranslations } from '@/lib/use-translations';
 
@@ -12,6 +13,7 @@ function DashboardLayoutContent({
     children: React.ReactNode;
 }) {
     const { sidebarOpen, toggleSidebar } = useSidebar();
+    const { user, logout } = useAuth();
     const { t } = useTranslations();
     const pathname = usePathname();
 
@@ -34,6 +36,15 @@ function DashboardLayoutContent({
         return pathname.startsWith(href);
     };
 
+    const handleLogout = async () => {
+        try {
+            await logout();
+            // El redirect se maneja automáticamente por el middleware
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Sidebar */}
@@ -44,10 +55,10 @@ function DashboardLayoutContent({
                         <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
                             <i className="fa-solid fa-book text-white text-lg"></i>
                         </div>
-                               <div>
-                                   <h2 className="text-lg font-semibold text-gray-800">{t('dashboard')}</h2>
-                                   <p className="text-xs text-gray-500">Web App</p>
-                               </div>
+                        <div>
+                            <h2 className="text-lg font-semibold text-gray-800">{t('dashboard')}</h2>
+                            <p className="text-xs text-gray-500">Web App</p>
+                        </div>
                     </div>
                 </div>
 
@@ -102,28 +113,32 @@ function DashboardLayoutContent({
                                 >
                                     <i className="fa-solid fa-bars text-gray-600"></i>
                                 </button>
-                                       <div>
-                                           <h1 className="text-xl font-semibold text-gray-800">
-                                               {navigation.find(item => isActive(item.href))?.name || t('dashboard')}
-                                           </h1>
-                                           <p className="text-sm text-gray-500">
-                                               {navigation.find(item => isActive(item.href))?.name === t('home')
-                                                   ? t('welcomeBack')
-                                                   : `${t('manage')} ${navigation.find(item => isActive(item.href))?.name.toLowerCase()}`
-                                               }
-                                           </p>
-                                       </div>
+                                <div>
+                                    <h1 className="text-xl font-semibold text-gray-800">
+                                        {navigation.find(item => isActive(item.href))?.name || t('dashboard')}
+                                    </h1>
+                                    <p className="text-sm text-gray-500">
+                                        {navigation.find(item => isActive(item.href))?.name === t('home')
+                                            ? t('welcomeBack')
+                                            : `${t('manage')} ${navigation.find(item => isActive(item.href))?.name.toLowerCase()}`
+                                        }
+                                    </p>
+                                </div>
                             </div>
 
-                                   <div className="flex items-center space-x-3">
-                                       <LanguageSelector />
+                            <div className="flex items-center space-x-3">
+                                <LanguageSelector />
 
                                 <div className="flex items-center space-x-2">
                                     <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="User" className="w-8 h-8 rounded-full" />
-                                    <span className="text-sm font-medium text-gray-700 hidden sm:block">Elder Smith</span>
+                                    <span className="text-sm font-medium text-gray-700 hidden sm:block">{user?.displayName || 'Elder Smith'}</span>
                                 </div>
 
-                                <button className="p-2 text-gray-500 hover:text-gray-700">
+                                <button 
+                                    onClick={handleLogout}
+                                    className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
+                                    title={t('logout')}
+                                >
                                     <i className="fa-solid fa-sign-out-alt"></i>
                                 </button>
                             </div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
+import { useTranslations } from '@/lib/use-translations';
 import { db } from '@/lib/firebase';
 import { convertFirebaseDate } from '@/lib/utils';
 import Link from 'next/link';
@@ -54,6 +55,7 @@ interface Investigator {
 
 export default function DashboardPage() {
     const { user } = useAuth();
+    const { t, language } = useTranslations();
     const [missionStats, setMissionStats] = useState<MissionStats>({
         monthsInService: 8,
         teachings: 127,
@@ -422,10 +424,10 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-2xl font-bold mb-2">
-                            {getGreeting()}, {user?.displayName || 'Elder Smith'}!
+                            {t('welcomeBack')}, {user?.displayName || 'Elder Smith'}!
                         </h1>
                         <p className="text-blue-100">
-                            {currentTime.toLocaleDateString('es-ES', {
+                            {currentTime.toLocaleDateString(language === 'es' ? 'es-ES' : language === 'en' ? 'en-US' : language === 'fr' ? 'fr-FR' : 'pt-BR', {
                                 weekday: 'long',
                                 year: 'numeric',
                                 month: 'long',
@@ -433,7 +435,7 @@ export default function DashboardPage() {
                             })}
                         </p>
                         <p className="text-blue-200 text-sm">
-                            {currentTime.toLocaleTimeString('es-ES', {
+                            {currentTime.toLocaleTimeString(language === 'es' ? 'es-ES' : language === 'en' ? 'en-US' : language === 'fr' ? 'fr-FR' : 'pt-BR', {
                                 hour: '2-digit',
                                 minute: '2-digit'
                             })}
@@ -441,7 +443,7 @@ export default function DashboardPage() {
                     </div>
                     <div className="text-right">
                         <div className="text-3xl font-bold">{missionStats.monthsInService}</div>
-                        <div className="text-blue-200 text-sm">Meses en servicio</div>
+                        <div className="text-blue-200 text-sm">{t('monthsInService')}</div>
                     </div>
                 </div>
             </section>
@@ -456,7 +458,7 @@ export default function DashboardPage() {
                         <span className="text-xs text-gray-500">Esta semana</span>
                     </div>
                     <div className="text-2xl font-bold text-gray-800 mb-1">{missionStats.teachings}</div>
-                    <div className="text-sm text-gray-600">Enseñanzas</div>
+                    <div className="text-sm text-gray-600">{t('teachings')}</div>
                     <div className="mt-2 bg-gray-200 rounded-full h-2">
                         <div
                             className="bg-blue-600 h-2 rounded-full transition-all duration-300"
