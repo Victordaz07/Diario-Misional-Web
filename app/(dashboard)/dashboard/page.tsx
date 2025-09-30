@@ -99,29 +99,29 @@ export default function DashboardPage() {
 
     const quickActions: QuickAction[] = [
         {
-            title: 'Nueva Entrada',
-            description: 'Registra tu experiencia del día',
+            title: t('newEntry'),
+            description: t('recordDailyExperience'),
             icon: 'fa-solid fa-book-open',
             color: 'bg-blue-500',
             href: '/diario'
         },
         {
-            title: 'Subir Fotos',
-            description: 'Comparte tus recuerdos',
+            title: t('uploadPhotos'),
+            description: t('shareMemories'),
             icon: 'fa-solid fa-camera',
             color: 'bg-green-500',
             href: '/fotos'
         },
         {
-            title: 'Ver Recursos',
-            description: 'Accede a materiales',
+            title: t('viewResources'),
+            description: t('accessMaterials'),
             icon: 'fa-solid fa-folder',
             color: 'bg-purple-500',
             href: '/recursos'
         },
         {
-            title: 'Mi Perfil',
-            description: 'Actualiza tu información',
+            title: t('myProfile'),
+            description: t('updateInformation'),
             icon: 'fa-solid fa-user',
             color: 'bg-orange-500',
             href: '/perfil'
@@ -584,7 +584,7 @@ export default function DashboardPage() {
                     ) : (
                         <div className="text-center py-8 text-gray-500">
                             <i className="fa-solid fa-calendar-plus text-4xl mb-2"></i>
-                            <p>No hay citas programadas para hoy</p>
+                            <p>{t('noAppointmentsToday')}</p>
                         </div>
                     )}
                 </div>
@@ -594,7 +594,7 @@ export default function DashboardPage() {
                     className="w-full mt-4 bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 cursor-pointer"
                 >
                     <i className="fa-solid fa-plus"></i>
-                    <span>Añadir cita</span>
+                    <span>{t('addAppointment')}</span>
                 </button>
             </section>
 
