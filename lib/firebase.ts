@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
+import { mockStorage } from './mock-storage';
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "demo-api-key-for-development",
@@ -44,6 +45,36 @@ const mockSignInWithPopup = (auth: any, provider: any) => {
     });
 };
 
+// Mock onAuthStateChanged
+const mockOnAuthStateChanged = (auth: any, callback: any) => {
+    console.log('Mock onAuthStateChanged called with callback:', typeof callback);
+
+    // Simulate user logged in after a short delay
+    if (typeof callback === 'function') {
+        console.log('Mock: Simulating user login...');
+        setTimeout(() => {
+            const mockUser = {
+                uid: "demo-user",
+                displayName: "Elder Smith",
+                email: "demo@example.com"
+            };
+            console.log('Mock: Calling callback with user:', mockUser);
+            callback(mockUser);
+        }, 100);
+    } else {
+        console.log('Mock: Callback is not a function, skipping');
+    }
+
+    return () => {
+        console.log('Mock: Unsubscribe called');
+    };
+};
+
+// Mock signOut
+const mockSignOut = () => {
+    return Promise.resolve();
+};
+
 try {
     // Check if we have real Firebase config
     const hasRealConfig = process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
@@ -57,31 +88,62 @@ try {
         storage = getStorage(app);
         console.log("🔥 Firebase initialized successfully with real config");
     } else {
+        // Initialize mock storage with sample data
+        mockStorage.initializeSampleData();
         // Create mock objects for development
         console.log("🔧 Running in development mode with mock Firebase services");
         auth = {
             currentUser: null,
             signInWithEmailAndPassword: () => Promise.resolve({ user: { uid: "demo-user", email: "demo@example.com" } }),
             createUserWithEmailAndPassword: () => Promise.resolve({ user: { uid: "demo-user", email: "demo@example.com" } }),
-            signOut: () => Promise.resolve(),
-            onAuthStateChanged: (callback: any) => {
-                // Simulate user logged in
-                setTimeout(() => callback({ uid: "demo-user", displayName: "Elder Smith", email: "demo@example.com" }), 100);
-                return () => { };
-            }
+            signOut: mockSignOut,
+            onAuthStateChanged: mockOnAuthStateChanged
         };
         db = {
-            collection: () => ({
-                doc: () => ({
-                    get: () => Promise.resolve({ exists: false }),
-                    set: () => Promise.resolve(),
-                    update: () => Promise.resolve(),
-                    delete: () => Promise.resolve()
+            collection: (collectionName: string) => ({
+                doc: (docId?: string) => ({
+                    get: async () => {
+                        if (docId) {
+                            const data = await mockStorage.read(collectionName, docId);
+                            return { exists: () => !!data, data: () => data };
+                        }
+                        return { exists: () => false };
+                    },
+                    set: async (data: any) => {
+                        if (docId) {
+                            await mockStorage.update(collectionName, docId, data);
+                        } else {
+                            await mockStorage.create(collectionName, data);
+                        }
+                        return Promise.resolve();
+                    },
+                    update: async (data: any) => {
+                        if (docId) {
+                            await mockStorage.update(collectionName, docId, data);
+                        }
+                        return Promise.resolve();
+                    },
+                    delete: async () => {
+                        if (docId) {
+                            await mockStorage.delete(collectionName, docId);
+                        }
+                        return Promise.resolve();
+                    }
                 }),
-                add: () => Promise.resolve({ id: "demo-id" }),
-                where: () => ({
-                    get: () => Promise.resolve({ docs: [] })
-                })
+                add: async (data: any) => {
+                    const result = await mockStorage.create(collectionName, data);
+                    return Promise.resolve({ id: result.id });
+                },
+                where: (field: string, operator: string, value: any) => ({
+                    get: async () => {
+                        const docs = await mockStorage.query(collectionName, field, operator, value);
+                        return { docs: docs.map(doc => ({ data: () => doc, id: doc.id })) };
+                    }
+                }),
+                get: async () => {
+                    const docs = await mockStorage.read(collectionName);
+                    return { docs: docs.map((doc: any) => ({ data: () => doc, id: doc.id })) };
+                }
             })
         };
         storage = {
@@ -97,24 +159,54 @@ try {
         currentUser: null,
         signInWithEmailAndPassword: () => Promise.resolve({ user: { uid: "demo-user", email: "demo@example.com" } }),
         createUserWithEmailAndPassword: () => Promise.resolve({ user: { uid: "demo-user", email: "demo@example.com" } }),
-        signOut: () => Promise.resolve(),
-        onAuthStateChanged: (callback: any) => {
-            setTimeout(() => callback({ uid: "demo-user", displayName: "Elder Smith", email: "demo@example.com" }), 100);
-            return () => { };
-        }
+        signOut: mockSignOut,
+        onAuthStateChanged: mockOnAuthStateChanged
     };
     db = {
-        collection: () => ({
-            doc: () => ({
-                get: () => Promise.resolve({ exists: false }),
-                set: () => Promise.resolve(),
-                update: () => Promise.resolve(),
-                delete: () => Promise.resolve()
+        collection: (collectionName: string) => ({
+            doc: (docId?: string) => ({
+                get: async () => {
+                    if (docId) {
+                        const data = await mockStorage.read(collectionName, docId);
+                        return { exists: () => !!data, data: () => data };
+                    }
+                    return { exists: () => false };
+                },
+                set: async (data: any) => {
+                    if (docId) {
+                        await mockStorage.update(collectionName, docId, data);
+                    } else {
+                        await mockStorage.create(collectionName, data);
+                    }
+                    return Promise.resolve();
+                },
+                update: async (data: any) => {
+                    if (docId) {
+                        await mockStorage.update(collectionName, docId, data);
+                    }
+                    return Promise.resolve();
+                },
+                delete: async () => {
+                    if (docId) {
+                        await mockStorage.delete(collectionName, docId);
+                    }
+                    return Promise.resolve();
+                }
             }),
-            add: () => Promise.resolve({ id: "demo-id" }),
-            where: () => ({
-                get: () => Promise.resolve({ docs: [] })
-            })
+            add: async (data: any) => {
+                const result = await mockStorage.create(collectionName, data);
+                return Promise.resolve({ id: result.id });
+            },
+            where: (field: string, operator: string, value: any) => ({
+                get: async () => {
+                    const docs = await mockStorage.query(collectionName, field, operator, value);
+                    return { docs: docs.map((doc: any) => ({ data: () => doc, id: doc.id })) };
+                }
+            }),
+            get: async () => {
+                const docs = await mockStorage.read(collectionName);
+                return { docs: docs.map((doc: any) => ({ data: () => doc, id: doc.id })) };
+            }
         })
     };
     storage = {
@@ -124,12 +216,39 @@ try {
     };
 }
 
-// Export mock functions for development
-export { mockUpdateProfile as updateProfile };
-export { mockGoogleAuthProvider as GoogleAuthProvider };
-export { mockOAuthProvider as OAuthProvider };
-export { mockSignInWithPopup as signInWithPopup };
+// Export providers and functions
+let updateProfile: any;
+let GoogleAuthProvider: any;
+let OAuthProvider: any;
+let signInWithPopup: any;
+let onAuthStateChanged: any;
+let signOut: any;
 
+// Check if we have real Firebase config
+const hasRealConfig = process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "demo-api-key-for-development" &&
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "your-api-key-here";
+
+if (hasRealConfig) {
+    // Import from Firebase when we have real config
+    const firebaseAuth = require('firebase/auth');
+    updateProfile = firebaseAuth.updateProfile;
+    GoogleAuthProvider = firebaseAuth.GoogleAuthProvider;
+    OAuthProvider = firebaseAuth.OAuthProvider;
+    signInWithPopup = firebaseAuth.signInWithPopup;
+    onAuthStateChanged = firebaseAuth.onAuthStateChanged;
+    signOut = firebaseAuth.signOut;
+} else {
+    // Mock functions for development
+    updateProfile = mockUpdateProfile;
+    GoogleAuthProvider = mockGoogleAuthProvider;
+    OAuthProvider = mockOAuthProvider;
+    signInWithPopup = mockSignInWithPopup;
+    onAuthStateChanged = mockOnAuthStateChanged;
+    signOut = mockSignOut;
+}
+
+export { updateProfile, GoogleAuthProvider, OAuthProvider, signInWithPopup, onAuthStateChanged, signOut };
 export { auth, db, storage };
 
 export default app;

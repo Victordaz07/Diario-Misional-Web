@@ -31,8 +31,20 @@ export default function RootLayout({
                     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
                     crossOrigin="anonymous"
                 />
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            // Prevent FontAwesome from causing hydration issues
+                            if (typeof window !== 'undefined') {
+                                window.FontAwesomeConfig = {
+                                    autoReplaceSvg: false
+                                };
+                            }
+                        `
+                    }}
+                />
             </head>
-            <body className={inter.className}>
+            <body className={inter.className} suppressHydrationWarning={true}>
                 <Providers>
                     {children}
                 </Providers>

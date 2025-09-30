@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider, OAuthProvider } from 'firebase/auth';
+import { AuthService } from '@/lib/auth-service';
 import { doc, setDoc } from 'firebase/firestore';
-import { auth, db, updateProfile as mockUpdateProfile, GoogleAuthProvider as MockGoogleAuthProvider, OAuthProvider as MockOAuthProvider, signInWithPopup as mockSignInWithPopup } from '@/lib/firebase';
+import { db } from '@/lib/firebase';
 import Link from 'next/link';
 
 export default function RegisterPage() {
@@ -34,13 +34,7 @@ export default function RegisterPage() {
 
         try {
             // Crear usuario con email y contraseña
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-
-            // Actualizar el perfil con el nombre
-            await mockUpdateProfile(user, {
-                displayName: nombre,
-            });
+            const user = await AuthService.signUpWithEmail(email, password, nombre);
 
             // Crear perfil en Firestore
             const userProfile = {
@@ -69,9 +63,7 @@ export default function RegisterPage() {
         setError('');
 
         try {
-            const provider = new MockGoogleAuthProvider();
-            const result = await mockSignInWithPopup(auth, provider);
-            const user = result.user;
+            const user = await AuthService.signInWithGoogle();
 
             // Crear perfil en Firestore si no existe
             const userProfile = {
@@ -98,11 +90,7 @@ export default function RegisterPage() {
         setError('');
 
         try {
-            const provider = new MockOAuthProvider('apple.com');
-            provider.addScope('email');
-            provider.addScope('name');
-            const result = await mockSignInWithPopup(auth, provider);
-            const user = result.user;
+            const user = await AuthService.signInWithApple();
 
             // Crear perfil en Firestore si no existe
             const userProfile = {

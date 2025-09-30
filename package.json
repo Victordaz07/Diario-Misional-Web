@@ -8,6 +8,7 @@
         "start": "next start",
         "lint": "next lint",
         "type-check": "tsc --noEmit",
+        "test-firebase": "node scripts/test-firebase.js",
         "setup-firebase": "powershell -ExecutionPolicy Bypass -File scripts/setup-firebase.ps1",
         "deploy": "powershell -ExecutionPolicy Bypass -File scripts/deploy.ps1",
         "firebase:emulators": "firebase emulators:start",

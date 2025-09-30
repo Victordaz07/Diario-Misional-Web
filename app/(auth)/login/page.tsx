@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthProvider } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { AuthService } from '@/lib/auth-service';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from '@/lib/use-translations';
@@ -25,7 +24,7 @@ export default function LoginPage() {
         setError('');
 
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            await AuthService.signInWithEmail(email, password);
             router.push('/dashboard');
         } catch (error: any) {
             setError(error.message);
@@ -39,8 +38,7 @@ export default function LoginPage() {
         setError('');
 
         try {
-            const provider = new GoogleAuthProvider();
-            await signInWithPopup(auth, provider);
+            await AuthService.signInWithGoogle();
             router.push('/dashboard');
         } catch (error: any) {
             setError(error.message);
@@ -54,10 +52,7 @@ export default function LoginPage() {
         setError('');
 
         try {
-            const provider = new OAuthProvider('apple.com');
-            provider.addScope('email');
-            provider.addScope('name');
-            await signInWithPopup(auth, provider);
+            await AuthService.signInWithApple();
             router.push('/dashboard');
         } catch (error: any) {
             setError(error.message);

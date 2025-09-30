@@ -393,7 +393,7 @@ export default function EtapasPage() {
                         {stages.map((stage, index) => {
                             const statusInfo = getStageStatusInfo(stage.status);
                             const isCurrent = stage.status === 'current';
-                            const isDisabled = stage.status === 'pending' || stage.status === 'future';
+                            const isDisabled = stage.status === 'locked' || stage.status === 'unlocked';
 
                             return (
                                 <div key={stage.id} className="relative mb-8">
@@ -413,17 +413,17 @@ export default function EtapasPage() {
                                             <div className="space-y-3">
                                                 <div className="flex items-center text-sm text-gray-500">
                                                     <i className="fa-solid fa-calendar-check mr-2"></i>
-                                                    <span>{stage.startDate}{stage.endDate ? ` - ${stage.endDate}` : ''}</span>
+                                                    <span>{stage.startDate?.toLocaleDateString()}{stage.endDate ? ` - ${stage.endDate.toLocaleDateString()}` : ''}</span>
                                                 </div>
 
                                                 <div className={`rounded-lg p-4 ${isCurrent ? 'bg-primary/5 border border-primary/10' : 'bg-gray-50'}`}>
                                                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                        {stage.status === 'future' ? 'Metas y Reflexiones' : 'Reflexiones y Notas'}
+                                                        {stage.status === 'locked' ? 'Metas y Reflexiones' : 'Reflexiones y Notas'}
                                                     </label>
                                                     <textarea
                                                         className={`w-full p-3 border border-gray-300 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary ${isDisabled ? 'bg-gray-100' : ''}`}
                                                         rows={stage.status === 'current' ? 4 : 3}
-                                                        placeholder={isDisabled ? `${stage.status === 'future' ? 'Metas para después de la misión...' : 'Reflexiones futuras sobre esta etapa...'}` : 'Escribe tus reflexiones sobre esta etapa...'}
+                                                        placeholder={isDisabled ? `${stage.status === 'locked' ? 'Metas para después de la misión...' : 'Reflexiones futuras sobre esta etapa...'}` : 'Escribe tus reflexiones sobre esta etapa...'}
                                                         value={stage.notes}
                                                         onChange={(e) => handleNotesChange(stage.id, e.target.value)}
                                                         disabled={isDisabled}

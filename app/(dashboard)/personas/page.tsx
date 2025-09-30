@@ -154,7 +154,7 @@ export default function PersonasPage() {
             case 'companions':
                 return 'bg-green-100 text-green-700';
             case 'friends':
-                return type === 'members' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700';
+                return 'bg-purple-100 text-purple-700';
             case 'investigators':
                 return 'bg-yellow-100 text-yellow-700';
             default:

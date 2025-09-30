@@ -33,21 +33,54 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            setUser(user);
+        // Check if we're in development mode or if Firebase is not properly configured
+        const isDevelopmentMode = process.env.NODE_ENV === 'development' &&
+            process.env.NEXT_PUBLIC_DEV_MODE === 'true';
 
-            if (user) {
-                // Aquí podrías cargar el perfil del usuario desde Firestore
-                // Por ahora lo dejamos como null
-                setUserProfile(null);
-            } else {
-                setUserProfile(null);
-            }
+        // Also check if we're in production but Firebase is not configured
+        const isProductionWithoutFirebase = process.env.NODE_ENV === 'production' &&
+            (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY ||
+                process.env.NEXT_PUBLIC_FIREBASE_API_KEY === 'demo-api-key-for-development');
 
+        if (isDevelopmentMode || isProductionWithoutFirebase) {
+            console.log('AuthProvider: Mock mode detected, using mock user');
+            // Simulate a logged-in user immediately
+            const mockUser = {
+                uid: "demo-user",
+                displayName: "Elder Smith",
+                email: "demo@example.com"
+            } as User;
+
+            setUser(mockUser);
+            setUserProfile(null);
             setLoading(false);
+            return;
+        }
+
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            console.log('AuthProvider: Auth state changed:', user ? 'User logged in' : 'No user');
+            try {
+                setUser(user);
+
+                if (user) {
+                    // Aquí podrías cargar el perfil del usuario desde Firestore
+                    // Por ahora lo dejamos como null
+                    setUserProfile(null);
+                } else {
+                    setUserProfile(null);
+                }
+            } catch (error) {
+                console.error('Error in auth state change:', error);
+            } finally {
+                console.log('AuthProvider: Setting loading to false');
+                setLoading(false);
+            }
         });
 
-        return () => unsubscribe();
+        return () => {
+            console.log('AuthProvider: Cleaning up auth listener');
+            unsubscribe();
+        };
     }, []);
 
     const logout = async () => {
