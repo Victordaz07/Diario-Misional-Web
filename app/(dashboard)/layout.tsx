@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SidebarProvider, useSidebar } from '@/lib/contexts/sidebar-context';
+import LanguageSelector from '@/components/language-selector';
+import { useTranslations } from '@/lib/use-translations';
 
 function DashboardLayoutContent({
     children,
@@ -10,18 +12,19 @@ function DashboardLayoutContent({
     children: React.ReactNode;
 }) {
     const { sidebarOpen, toggleSidebar } = useSidebar();
+    const { t } = useTranslations();
     const pathname = usePathname();
 
     const navigation = [
-        { name: 'Inicio', href: '/dashboard', icon: 'fa-home' },
-        { name: 'Diario', href: '/diario', icon: 'fa-book-open' },
-        { name: 'Traslados', href: '/traslados', icon: 'fa-route' },
-        { name: 'Fotos', href: '/fotos', icon: 'fa-camera' },
-        { name: 'Recursos', href: '/recursos', icon: 'fa-folder' },
-        { name: 'Etapas', href: '/etapas', icon: 'fa-seedling' },
-        { name: 'Sponsors', href: '/sponsors', icon: 'fa-handshake' },
-        { name: 'Perfil', href: '/perfil', icon: 'fa-user' },
-        { name: 'Admin', href: '/admin', icon: 'fa-chart-pie' },
+        { name: t('home'), href: '/dashboard', icon: 'fa-home' },
+        { name: t('diary'), href: '/diario', icon: 'fa-book-open' },
+        { name: t('transfers'), href: '/traslados', icon: 'fa-route' },
+        { name: t('photos'), href: '/fotos', icon: 'fa-camera' },
+        { name: t('resources'), href: '/recursos', icon: 'fa-folder' },
+        { name: t('stages'), href: '/etapas', icon: 'fa-seedling' },
+        { name: t('sponsors'), href: '/sponsors', icon: 'fa-handshake' },
+        { name: t('profile'), href: '/perfil', icon: 'fa-user' },
+        { name: t('admin'), href: '/admin', icon: 'fa-chart-pie' },
     ];
 
     const isActive = (href: string) => {
@@ -41,10 +44,10 @@ function DashboardLayoutContent({
                         <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
                             <i className="fa-solid fa-book text-white text-lg"></i>
                         </div>
-                        <div>
-                            <h2 className="text-lg font-semibold text-gray-800">Diario Misional</h2>
-                            <p className="text-xs text-gray-500">Web App</p>
-                        </div>
+                               <div>
+                                   <h2 className="text-lg font-semibold text-gray-800">{t('dashboard')}</h2>
+                                   <p className="text-xs text-gray-500">Web App</p>
+                               </div>
                     </div>
                 </div>
 
@@ -99,25 +102,21 @@ function DashboardLayoutContent({
                                 >
                                     <i className="fa-solid fa-bars text-gray-600"></i>
                                 </button>
-                                <div>
-                                    <h1 className="text-xl font-semibold text-gray-800">
-                                        {navigation.find(item => isActive(item.href))?.name || 'Dashboard'}
-                                    </h1>
-                                    <p className="text-sm text-gray-500">
-                                        {navigation.find(item => isActive(item.href))?.name === 'Inicio'
-                                            ? 'Resumen de tu misión'
-                                            : `Gestiona tu ${navigation.find(item => isActive(item.href))?.name.toLowerCase()}`
-                                        }
-                                    </p>
-                                </div>
+                                       <div>
+                                           <h1 className="text-xl font-semibold text-gray-800">
+                                               {navigation.find(item => isActive(item.href))?.name || t('dashboard')}
+                                           </h1>
+                                           <p className="text-sm text-gray-500">
+                                               {navigation.find(item => isActive(item.href))?.name === t('home')
+                                                   ? t('welcomeBack')
+                                                   : `${t('manage')} ${navigation.find(item => isActive(item.href))?.name.toLowerCase()}`
+                                               }
+                                           </p>
+                                       </div>
                             </div>
 
-                            <div className="flex items-center space-x-3">
-                                <select className="text-sm border border-gray-300 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-primary">
-                                    <option>Español</option>
-                                    <option>English</option>
-                                    <option>Português</option>
-                                </select>
+                                   <div className="flex items-center space-x-3">
+                                       <LanguageSelector />
 
                                 <div className="flex items-center space-x-2">
                                     <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="User" className="w-8 h-8 rounded-full" />
