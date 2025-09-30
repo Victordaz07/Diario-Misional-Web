@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
+import { useTranslations } from '@/lib/use-translations';
 import { db } from '@/lib/firebase';
 import { convertFirebaseDate } from '@/lib/utils';
 
@@ -24,6 +25,7 @@ interface Photo {
 
 export default function FotosPage() {
     const { user } = useAuth();
+    const { t } = useTranslations();
     const [photos, setPhotos] = useState<Photo[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedFilter, setSelectedFilter] = useState('all');
@@ -315,8 +317,8 @@ export default function FotosPage() {
                         <i className="fa-solid fa-camera text-white text-lg"></i>
                     </div>
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-800">Mis Fotos</h2>
-                        <p className="text-gray-600">{photos.length} fotos subidas</p>
+                        <h2 className="text-2xl font-bold text-gray-800">{t('photoGallery')}</h2>
+                        <p className="text-gray-600">{photos.length} {t('photosUploaded')}</p>
                     </div>
                 </div>
 
@@ -325,7 +327,7 @@ export default function FotosPage() {
                     className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-medium transition-colors flex items-center space-x-2 cursor-pointer"
                 >
                     <i className="fa-solid fa-plus"></i>
-                    <span>Subir Fotos</span>
+                    <span>{t('uploadPhoto')}</span>
                 </button>
             </section>
 
@@ -499,7 +501,7 @@ export default function FotosPage() {
                     <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
                         <div className="p-6 border-b border-gray-200">
                             <div className="flex items-center justify-between">
-                                <h3 className="text-xl font-semibold text-gray-800">Subir Fotos</h3>
+                                <h3 className="text-xl font-semibold text-gray-800">{t('uploadPhoto')}</h3>
                                 <button
                                     onClick={() => {
                                         setUploadModalOpen(false);

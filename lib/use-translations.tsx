@@ -5,133 +5,133 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 export type Language = 'es' | 'en' | 'fr' | 'pt-BR';
 
 interface TranslationContextType {
-  language: Language;
-  setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
+    language: Language;
+    setLanguage: (lang: Language) => void;
+    t: (key: string) => string;
 }
 
 const TranslationContext = createContext<TranslationContextType | undefined>(undefined);
 
 // Traducciones básicas para las 4 secciones principales
 const translations = {
-  es: {
-    // Navegación
-    home: "Inicio",
-    diary: "Diario", 
-    transfers: "Traslados",
-    photos: "Fotos",
-    resources: "Recursos",
-    stages: "Etapas",
-    sponsors: "Sponsors",
-    profile: "Perfil",
-    admin: "Admin",
-    
-    // Común
-    loading: "Cargando...",
-    save: "Guardar",
-    cancel: "Cancelar",
-    delete: "Eliminar",
-    edit: "Editar",
-    add: "Agregar",
-    search: "Buscar",
-    filter: "Filtrar",
-    all: "Todos",
-    close: "Cerrar",
-    manage: "Gestiona tu",
-    
-    // Dashboard
-    dashboard: "Dashboard",
-    welcomeBack: "Bienvenido de vuelta",
-    mission: "Misión",
-    daysServed: "días servidos",
-    diaryEntries: "Entradas del diario",
-    transfers: "Traslados",
-    photosUploaded: "Fotos subidas",
-    recentActivity: "Actividad Reciente",
-    
-    // Diario
-    diary: "Diario",
-    newEntry: "Nueva Entrada",
-    title: "Título",
-    content: "Contenido",
-    date: "Fecha",
-    time: "Hora",
-    location: "Ubicación",
-    companion: "Compañero",
-    category: "Categoría",
-    exportPDF: "Exportar PDF",
-    exportJSON: "Exportar JSON",
-    
-    // Fotos
-    photoGallery: "Galería de Fotos",
-    uploadPhoto: "Subir Foto",
-    totalPhotos: "Total de fotos",
-    thisWeek: "Esta semana",
-    all: "Todas",
-    recent: "Recientes",
-    service: "Servicio",
-    teaching: "Enseñanza",
-    companions: "Compañeros",
-    places: "Lugares",
-    
-    // Recursos
-    missionaryResources: "Recursos Misionales",
-    searchResources: "Buscar recursos...",
-    allTypes: "Todos los tipos",
-    allCategories: "Todas las categorías",
-    pdfs: "PDFs",
-    tips: "Consejos",
-    videos: "Videos",
-    featuredResources: "Recursos destacados",
-    recentDownloads: "Descargas recientes",
-    download: "Descargar",
-    view: "Ver",
-    
-    // Etapas
-    missionaryStages: "Etapas Misionales",
-    currentStage: "Etapa Actual",
-    completedStages: "Etapas Completadas",
-    upcomingStages: "Próximas Etapas",
-    progress: "Progreso",
-    preMission: "Pre-Misión",
-    mtc: "Centro de Capacitación Misional",
-    field: "Campo Misional",
-    postMission: "Post-Misión",
-    
-    // Sponsors
-    shareWithSponsors: "Compartir con Sponsors",
-    manageInvitations: "Gestionar Invitaciones",
-    shareContent: "Compartir Contenido",
-    overview: "Resumen",
-    invites: "Invitaciones",
-    content: "Contenido",
-    settings: "Configuración",
-    activeSponsors: "Sponsors Activos",
-    pendingInvites: "Invitaciones Pendientes",
-    
-    // Portal Familiar
-    familyPortal: "Portal Familiar",
-    feed: "Feed",
-    sponsorship: "Patrocinio",
-    reports: "Reportes",
-    totalDonated: "Total donado",
-    activeSponsor: "Sponsor Activo",
-    supportMission: "Apoya la Misión",
-    familyPlan: "Plan Familiar",
-    bronze: "Bronce",
-    silver: "Plata",
-    gold: "Oro",
-    
-    // Perfil
-    profile: "Perfil",
-    personalInfo: "Información Personal",
-    missionProgress: "Progreso de la Misión",
-    accountSettings: "Configuración de Cuenta",
-    notifications: "Notificaciones",
-    privacy: "Privacidad",
-    changePhoto: "Cambiar Foto",
-    exportData: "Exportar Datos",
-    
+    es: {
+        // Navegación
+        home: "Inicio",
+        diary: "Diario",
+        transfers: "Traslados",
+        photos: "Fotos",
+        resources: "Recursos",
+        stages: "Etapas",
+        sponsors: "Sponsors",
+        profile: "Perfil",
+        admin: "Admin",
+
+        // Común
+        loading: "Cargando...",
+        save: "Guardar",
+        cancel: "Cancelar",
+        delete: "Eliminar",
+        edit: "Editar",
+        add: "Agregar",
+        search: "Buscar",
+        filter: "Filtrar",
+        all: "Todos",
+        close: "Cerrar",
+        manage: "Gestiona tu",
+
+        // Dashboard
+        dashboard: "Dashboard",
+        welcomeBack: "Bienvenido de vuelta",
+        mission: "Misión",
+        daysServed: "días servidos",
+        diaryEntries: "Entradas del diario",
+        transfers: "Traslados",
+        photosUploaded: "Fotos subidas",
+        recentActivity: "Actividad Reciente",
+
+        // Diario
+        diary: "Diario",
+        newEntry: "Nueva Entrada",
+        title: "Título",
+        content: "Contenido",
+        date: "Fecha",
+        time: "Hora",
+        location: "Ubicación",
+        companion: "Compañero",
+        category: "Categoría",
+        exportPDF: "Exportar PDF",
+        exportJSON: "Exportar JSON",
+
+        // Fotos
+        photoGallery: "Galería de Fotos",
+        uploadPhoto: "Subir Foto",
+        totalPhotos: "Total de fotos",
+        thisWeek: "Esta semana",
+        all: "Todas",
+        recent: "Recientes",
+        service: "Servicio",
+        teaching: "Enseñanza",
+        companions: "Compañeros",
+        places: "Lugares",
+
+        // Recursos
+        missionaryResources: "Recursos Misionales",
+        searchResources: "Buscar recursos...",
+        allTypes: "Todos los tipos",
+        allCategories: "Todas las categorías",
+        pdfs: "PDFs",
+        tips: "Consejos",
+        videos: "Videos",
+        featuredResources: "Recursos destacados",
+        recentDownloads: "Descargas recientes",
+        download: "Descargar",
+        view: "Ver",
+
+        // Etapas
+        missionaryStages: "Etapas Misionales",
+        currentStage: "Etapa Actual",
+        completedStages: "Etapas Completadas",
+        upcomingStages: "Próximas Etapas",
+        progress: "Progreso",
+        preMission: "Pre-Misión",
+        mtc: "Centro de Capacitación Misional",
+        field: "Campo Misional",
+        postMission: "Post-Misión",
+
+        // Sponsors
+        shareWithSponsors: "Compartir con Sponsors",
+        manageInvitations: "Gestionar Invitaciones",
+        shareContent: "Compartir Contenido",
+        overview: "Resumen",
+        invites: "Invitaciones",
+        content: "Contenido",
+        settings: "Configuración",
+        activeSponsors: "Sponsors Activos",
+        pendingInvites: "Invitaciones Pendientes",
+
+        // Portal Familiar
+        familyPortal: "Portal Familiar",
+        feed: "Feed",
+        sponsorship: "Patrocinio",
+        reports: "Reportes",
+        totalDonated: "Total donado",
+        activeSponsor: "Sponsor Activo",
+        supportMission: "Apoya la Misión",
+        familyPlan: "Plan Familiar",
+        bronze: "Bronce",
+        silver: "Plata",
+        gold: "Oro",
+
+        // Perfil
+        profile: "Perfil",
+        personalInfo: "Información Personal",
+        missionProgress: "Progreso de la Misión",
+        accountSettings: "Configuración de Cuenta",
+        notifications: "Notificaciones",
+        privacy: "Privacidad",
+        changePhoto: "Cambiar Foto",
+        exportData: "Exportar Datos",
+
     // Admin
     adminPanel: "Panel de Administración",
     metrics: "Métricas",
@@ -143,440 +143,718 @@ const translations = {
     activeSubscriptions: "Suscripciones Activas",
     mrr: "MRR",
     activeConnections: "Conexiones Activas",
-  },
-  
-  en: {
-    // Navigation
-    home: "Home",
-    diary: "Diary",
-    transfers: "Transfers", 
-    photos: "Photos",
-    resources: "Resources",
-    stages: "Stages",
-    sponsors: "Sponsors",
-    profile: "Profile",
-    admin: "Admin",
     
-    // Common
-    loading: "Loading...",
-    save: "Save",
-    cancel: "Cancel",
-    delete: "Delete",
-    edit: "Edit",
-    add: "Add",
-    search: "Search",
-    filter: "Filter",
-    all: "All",
-    close: "Close",
-    manage: "Manage your",
+    // Diario específico
+    diaryTitle: "Mi Diario Misional",
+    diarySubtitle: "Registra tus experiencias y momentos especiales",
+    noEntries: "No hay entradas aún",
+    createFirstEntry: "Crear primera entrada",
+    entryTitle: "Título de la entrada",
+    entryContent: "Escribe tu experiencia...",
+    entryLocation: "Ubicación (opcional)",
+    entryCompanion: "Compañero (opcional)",
+    entryCategory: "Categoría",
+    teaching: "Enseñanza",
+    service: "Servicio",
+    study: "Estudio",
+    personal: "Personal",
+    other: "Otro",
+    saveEntry: "Guardar Entrada",
+    editEntry: "Editar Entrada",
+    deleteEntry: "Eliminar Entrada",
+    confirmDelete: "¿Estás seguro de que quieres eliminar esta entrada?",
+    entrySaved: "Entrada guardada exitosamente",
+    entryDeleted: "Entrada eliminada",
+    exportDiary: "Exportar Diario",
     
-    // Dashboard
-    dashboard: "Dashboard",
-    welcomeBack: "Welcome back",
-    mission: "Mission",
-    daysServed: "days served",
-    diaryEntries: "Diary entries",
-    transfers: "Transfers",
-    photosUploaded: "Photos uploaded",
-    recentActivity: "Recent Activity",
+    // Fotos específico
+    photoGallery: "Galería de Fotos",
+    photoSubtitle: "Administra tus recuerdos misionales",
+    uploadNewPhoto: "Subir Nueva Foto",
+    dragPhotoHere: "Arrastra tu foto aquí o",
+    selectFile: "Seleccionar archivo",
+    photoTitle: "Título de la foto",
+    describePhoto: "Describe tu foto",
+    selectCategory: "Seleccionar categoría",
+    uploadPhoto: "Subir Foto",
+    photoUploaded: "Foto subida exitosamente",
+    photoDeleted: "Foto eliminada",
+    loadMorePhotos: "Cargar más fotos",
+    noPhotos: "No hay fotos aún",
+    uploadFirstPhoto: "Subir primera foto",
     
-    // Diary
-    diary: "Diary",
-    newEntry: "New Entry",
-    title: "Title",
-    content: "Content",
-    date: "Date",
-    time: "Time",
-    location: "Location",
-    companion: "Companion",
-    category: "Category",
-    exportPDF: "Export PDF",
-    exportJSON: "Export JSON",
-    
-    // Photos
-    photoGallery: "Photo Gallery",
-    uploadPhoto: "Upload Photo",
-    totalPhotos: "Total photos",
-    thisWeek: "This week",
-    all: "All",
-    recent: "Recent",
-    service: "Service",
-    teaching: "Teaching",
-    companions: "Companions",
-    places: "Places",
-    
-    // Resources
-    missionaryResources: "Missionary Resources",
-    searchResources: "Search resources...",
-    allTypes: "All types",
-    allCategories: "All categories",
-    pdfs: "PDFs",
-    tips: "Tips",
-    videos: "Videos",
-    featuredResources: "Featured resources",
-    recentDownloads: "Recent downloads",
-    download: "Download",
-    view: "View",
-    
-    // Stages
-    missionaryStages: "Missionary Stages",
-    currentStage: "Current Stage",
-    completedStages: "Completed Stages",
-    upcomingStages: "Upcoming Stages",
-    progress: "Progress",
-    preMission: "Pre-Mission",
-    mtc: "Missionary Training Center",
-    field: "Mission Field",
-    postMission: "Post-Mission",
-    
-    // Sponsors
-    shareWithSponsors: "Share with Sponsors",
-    manageInvitations: "Manage Invitations",
-    shareContent: "Share Content",
-    overview: "Overview",
-    invites: "Invites",
-    content: "Content",
-    settings: "Settings",
-    activeSponsors: "Active Sponsors",
-    pendingInvites: "Pending Invites",
-    
-    // Family Portal
-    familyPortal: "Family Portal",
-    feed: "Feed",
-    sponsorship: "Sponsorship",
-    reports: "Reports",
-    totalDonated: "Total donated",
-    activeSponsor: "Active Sponsor",
-    supportMission: "Support the Mission",
-    familyPlan: "Family Plan",
-    bronze: "Bronze",
-    silver: "Silver",
-    gold: "Gold",
-    
-    // Profile
-    profile: "Profile",
-    personalInfo: "Personal Information",
-    missionProgress: "Mission Progress",
-    accountSettings: "Account Settings",
-    notifications: "Notifications",
-    privacy: "Privacy",
-    changePhoto: "Change Photo",
-    exportData: "Export Data",
-    
-    // Admin
-    adminPanel: "Admin Panel",
-    metrics: "Metrics",
-    users: "Users",
-    analytics: "Analytics",
-    notifications: "Notifications",
-    realtime: "Real-time",
-    totalRevenue: "Total Revenue",
-    activeSubscriptions: "Active Subscriptions",
-    mrr: "MRR",
-    activeConnections: "Active Connections",
-  },
-  
-  fr: {
-    // Navigation
-    home: "Accueil",
-    diary: "Journal",
-    transfers: "Transferts",
-    photos: "Photos", 
-    resources: "Ressources",
-    stages: "Étapes",
-    sponsors: "Sponsors",
-    profile: "Profil",
-    admin: "Admin",
-    
-    // Common
-    loading: "Chargement...",
-    save: "Enregistrer",
-    cancel: "Annuler",
-    delete: "Supprimer",
-    edit: "Modifier",
-    add: "Ajouter",
-    search: "Rechercher",
-    filter: "Filtrer",
-    all: "Tous",
-    close: "Fermer",
-    manage: "Gérez votre",
-    
-    // Dashboard
-    dashboard: "Tableau de bord",
-    welcomeBack: "Bon retour",
-    mission: "Mission",
-    daysServed: "jours de service",
-    diaryEntries: "Entrées du journal",
-    transfers: "Transferts",
-    photosUploaded: "Photos téléchargées",
-    recentActivity: "Activité récente",
-    
-    // Diary
-    diary: "Journal",
-    newEntry: "Nouvelle entrée",
-    title: "Titre",
-    content: "Contenu",
-    date: "Date",
-    time: "Heure",
-    location: "Emplacement",
-    companion: "Compagnon",
-    category: "Catégorie",
-    exportPDF: "Exporter PDF",
-    exportJSON: "Exporter JSON",
-    
-    // Photos
-    photoGallery: "Galerie Photos",
-    uploadPhoto: "Télécharger Photo",
-    totalPhotos: "Total photos",
-    thisWeek: "Cette semaine",
-    all: "Tout",
-    recent: "Récent",
-    service: "Service",
-    teaching: "Enseignement",
-    companions: "Compagnons",
-    places: "Lieux",
-    
-    // Resources
-    missionaryResources: "Ressources Missionnaires",
-    searchResources: "Rechercher ressources...",
-    allTypes: "Tous types",
-    allCategories: "Toutes catégories",
-    pdfs: "PDFs",
-    tips: "Conseils",
-    videos: "Vidéos",
-    featuredResources: "Ressources en vedette",
-    recentDownloads: "Téléchargements récents",
-    download: "Télécharger",
-    view: "Voir",
-    
-    // Stages
-    missionaryStages: "Étapes Missionnaires",
-    currentStage: "Étape Actuelle",
-    completedStages: "Étapes Terminées",
-    upcomingStages: "Étapes à Venir",
-    progress: "Progrès",
-    preMission: "Pré-Mission",
-    mtc: "Centre de Formation Missionnaire",
-    field: "Terrain Missionnaire",
-    postMission: "Post-Mission",
-    
-    // Sponsors
-    shareWithSponsors: "Partager avec Sponsors",
-    manageInvitations: "Gérer Invitations",
-    shareContent: "Partager Contenu",
-    overview: "Aperçu",
-    invites: "Invitations",
-    content: "Contenu",
-    settings: "Paramètres",
-    activeSponsors: "Sponsors Actifs",
-    pendingInvites: "Invitations en Attente",
-    
-    // Family Portal
-    familyPortal: "Portail Familial",
-    feed: "Flux",
-    sponsorship: "Parrainage",
-    reports: "Rapports",
-    totalDonated: "Total donné",
-    activeSponsor: "Sponsor Actif",
-    supportMission: "Soutenir la Mission",
-    familyPlan: "Plan Familial",
-    bronze: "Bronze",
-    silver: "Argent",
-    gold: "Or",
-    
-    // Profile
-    profile: "Profil",
-    personalInfo: "Informations Personnelles",
-    missionProgress: "Progrès de la Mission",
-    accountSettings: "Paramètres du Compte",
-    notifications: "Notifications",
-    privacy: "Confidentialité",
-    changePhoto: "Changer Photo",
-    exportData: "Exporter Données",
-    
-    // Admin
-    adminPanel: "Panneau d'Administration",
-    metrics: "Métriques",
-    users: "Utilisateurs",
-    analytics: "Analytiques",
-    notifications: "Notifications",
-    realtime: "Temps Réel",
-    totalRevenue: "Revenus Totaux",
-    activeSubscriptions: "Abonnements Actifs",
-    mrr: "MRR",
-    activeConnections: "Connexions Actives",
-  },
-  
-  "pt-BR": {
-    // Navigation
-    home: "Início",
-    diary: "Diário",
-    transfers: "Transferências",
-    photos: "Fotos",
-    resources: "Recursos", 
-    stages: "Etapas",
-    sponsors: "Patrocinadores",
-    profile: "Perfil",
-    admin: "Admin",
-    
-    // Common
-    loading: "Carregando...",
-    save: "Salvar",
-    cancel: "Cancelar",
-    delete: "Excluir",
-    edit: "Editar",
-    add: "Adicionar",
-    search: "Buscar",
-    filter: "Filtrar",
-    all: "Todos",
-    close: "Fechar",
-    manage: "Gerencie seu",
-    
-    // Dashboard
-    dashboard: "Painel",
-    welcomeBack: "Bem-vindo de volta",
-    mission: "Missão",
-    daysServed: "dias servidos",
-    diaryEntries: "Entradas do diário",
-    transfers: "Transferências",
-    photosUploaded: "Fotos enviadas",
-    recentActivity: "Atividade Recente",
-    
-    // Diary
-    diary: "Diário",
-    newEntry: "Nova Entrada",
-    title: "Título",
-    content: "Conteúdo",
-    date: "Data",
-    time: "Hora",
-    location: "Localização",
-    companion: "Companheiro",
-    category: "Categoria",
-    exportPDF: "Exportar PDF",
-    exportJSON: "Exportar JSON",
-    
-    // Photos
-    photoGallery: "Galeria de Fotos",
-    uploadPhoto: "Enviar Foto",
-    totalPhotos: "Total de fotos",
-    thisWeek: "Esta semana",
-    all: "Todas",
-    recent: "Recentes",
-    service: "Serviço",
-    teaching: "Ensino",
-    companions: "Companheiros",
-    places: "Lugares",
-    
-    // Resources
-    missionaryResources: "Recursos Missionários",
+    // Recursos específico
+    resourcesTitle: "Recursos Misionales",
+    resourcesSubtitle: "Herramientas y materiales para tu misión",
     searchResources: "Buscar recursos...",
-    allTypes: "Todos os tipos",
-    allCategories: "Todas as categorias",
-    pdfs: "PDFs",
-    tips: "Dicas",
-    videos: "Vídeos",
-    featuredResources: "Recursos em destaque",
-    recentDownloads: "Downloads recentes",
-    download: "Download",
-    view: "Ver",
+    clearFilters: "Limpiar filtros",
+    activeFilters: "Filtros activos",
+    favoritesOnly: "Solo favoritos",
+    clearAllFilters: "Limpiar todos los filtros",
+    noResources: "No se encontraron recursos",
+    resourceDownloaded: "Recurso descargado",
+    addToFavorites: "Agregar a favoritos",
+    removeFromFavorites: "Quitar de favoritos",
+    viewResource: "Ver recurso",
+    downloadResource: "Descargar recurso",
     
-    // Stages
-    missionaryStages: "Etapas Missionárias",
-    currentStage: "Etapa Atual",
+    // Etapas específico
+    stagesTitle: "Etapas Misionales",
+    stagesSubtitle: "Vive tu misión con propósito y organización",
+    journeyTitle: "Tu Viaje Misional",
+    journeySubtitle: "Cada etapa tiene su propósito y lecciones únicas",
+    dayOfService: "Día de servicio",
+    stageCompleted: "Etapa Completada",
+    stageCurrent: "Etapa Actual",
+    stagePending: "Etapa Pendiente",
+    stageFuture: "Etapa Futura",
+    preMissionDesc: "Preparación espiritual, física y mental para el servicio misional",
+    mtcDesc: "Entrenamiento intensivo en métodos de enseñanza y doctrina",
+    fieldDesc: "Servicio activo enseñando el evangelio y bendiciendo vidas",
+    postMissionDesc: "Aplicar las lecciones aprendidas en la vida diaria y continuar sirviendo",
+    reflections: "Reflexiones",
+    saveNotes: "Guardar Notas",
+    exportReflections: "Exportar Reflexiones",
+    shareProgress: "Compartir Progreso",
+    progressSummary: "Resumen de Progreso",
     completedStages: "Etapas Completadas",
-    upcomingStages: "Próximas Etapas",
-    progress: "Progresso",
-    preMission: "Pré-Missão",
-    mtc: "Centro de Treinamento Missionário",
-    field: "Campo Missionário",
-    postMission: "Pós-Missão",
+    currentStageCount: "Etapa Actual",
+    futureStages: "Etapas Futuras",
+    currentStageMessage: "Estás en la etapa",
     
-    // Sponsors
-    shareWithSponsors: "Compartilhar com Patrocinadores",
-    manageInvitations: "Gerenciar Convites",
-    shareContent: "Compartilhar Conteúdo",
-    overview: "Visão Geral",
-    invites: "Convites",
-    content: "Conteúdo",
-    settings: "Configurações",
-    activeSponsors: "Patrocinadores Ativos",
-    pendingInvites: "Convites Pendentes",
+    // Sponsors específico
+    sponsorsTitle: "Compartir con Sponsors",
+    sponsorsSubtitle: "Gestiona invitaciones y comparte tu progreso misional de forma segura",
+    shareWithSponsors: "Compartir con Sponsors",
+    manageInvitations: "Gestionar Invitaciones",
+    shareContent: "Compartir Contenido",
+    overview: "Resumen",
+    invites: "Invitaciones",
+    content: "Contenido",
+    settings: "Configuración",
+    activeSponsors: "Sponsors Activos",
+    pendingInvites: "Invitaciones Pendientes",
+    publishedContent: "Contenido Publicado",
+    scheduledContent: "Contenido Programado",
+    newInvite: "Nueva Invitación",
+    newContent: "Nuevo Contenido",
+    inviteSponsor: "Invitar Sponsor",
+    name: "Nombre",
+    email: "Email",
+    relationship: "Relación",
+    family: "Familia",
+    friend: "Amigo",
+    ward: "Barrio/Estaca",
+    organization: "Organización",
+    other: "Otro",
+    sendInvite: "Enviar Invitación",
+    contentType: "Tipo de Contenido",
+    testimony: "Testimonio",
+    achievement: "Logro",
+    photo: "Foto",
+    weeklyDigest: "Resumen Semanal",
+    title: "Título",
+    content: "Contenido",
+    blurFaces: "Difuminar caras en la imagen",
+    schedulePublication: "Programar Publicación (opcional)",
+    whatToShare: "Qué Compartir",
+    sharePhotos: "Fotos",
+    shareTestimonies: "Testimonios",
+    shareAchievements: "Logros",
+    shareWeeklyDigest: "Resúmenes Semanales",
+    privacySettings: "Configuración de Privacidad",
+    blurFacesAutomatically: "Difuminar caras automáticamente",
+    publicationDelay: "Retraso de publicación",
+    hours: "horas",
+    autoApprove: "Aprobación automática",
+    privacyGuaranteed: "Privacidad Garantizada",
+    noExactLocation: "Sin geolocalización exacta, solo área general",
+    exifRemoved: "Todos los EXIF de imágenes eliminados",
+    automaticDelay: "Retraso automático en publicaciones",
+    blurOption: "Opción de difuminado para fotos con personas",
+    youDecide: "Tú decides siempre qué compartir",
+    saveSettings: "Guardar Configuración",
+    accessCode: "Código de acceso",
+    invitedOn: "Invitado",
+    expiresOn: "Expira",
+    resend: "Reenviar",
+    viewDetails: "Ver Detalles",
+    revoke: "Revocar",
+    accepted: "Aceptado",
+    pending: "Pendiente",
+    expired: "Expirado",
+    published: "Publicado",
+    scheduled: "Programado",
+    draft: "Borrador",
+    facesBlurred: "Caras difuminadas",
+    createdOn: "Creado",
+    publishedOn: "Publicado",
+    scheduledFor: "Programado",
+    view: "Ver",
+    edit: "Editar",
+    delete: "Eliminar",
     
-    // Family Portal
-    familyPortal: "Portal da Família",
+    // Portal Familiar específico
+    familyPortal: "Portal Familiar",
+    familySubtitle: "Conéctate con tu familia y sponsors de forma segura",
     feed: "Feed",
-    sponsorship: "Patrocínio",
-    reports: "Relatórios",
-    totalDonated: "Total doado",
-    activeSponsor: "Patrocinador Ativo",
-    supportMission: "Apoiar a Missão",
-    familyPlan: "Plano Familiar",
-    bronze: "Bronze",
-    silver: "Prata",
-    gold: "Ouro",
+    sponsorship: "Patrocinio",
+    reports: "Reportes",
+    totalDonated: "Total donado",
+    activeSponsor: "Sponsor Activo",
+    progressFeed: "Feed de Progreso",
+    lastUpdate: "Última actualización",
+    privacyProtected: "Privacidad protegida",
+    facesBlurred: "Caras difuminadas para proteger la privacidad",
+    publishedDaysAgo: "Publicado hace {count} días",
+    supportMission: "Apoya la Misión",
+    yourSupport: "Tu apoyo hace posible que {name} continúe sirviendo",
+    familyPlan: "Plan Familiar",
+    bronze: "Bronce",
+    silver: "Plata",
+    gold: "Oro",
+    mostPopular: "Más Popular",
+    monthlySponsorship: "Patrocinio mensual",
+    selectPlan: "Seleccionar Plan",
+    oneTimeDonation: "Donación Única",
+    preferOneTime: "¿Prefieres hacer una donación única en lugar de un patrocinio mensual?",
+    donationHistory: "Historial de Donaciones",
+    sponsorship: "Patrocinio",
+    oneTimeDonation: "Donación única",
+    completed: "Completado",
+    pending: "Pendiente",
+    failed: "Fallido",
+    impactReports: "Reportes de Impacto",
+    totalDonated: "Total Donado",
+    donations: "Donaciones",
+    activeMonths: "Meses Activos",
+    impactOfSupport: "Impacto de tu Apoyo",
+    supportedActivities: "Actividades Apoyadas",
+    teachings: "Enseñanzas",
+    baptisms: "Bautismos",
+    serviceHours: "Horas de Servicio",
+    peopleContacted: "Personas Contactadas",
+    providedResources: "Recursos Proporcionados",
+    teachingMaterials: "Materiales de Enseñanza",
+    transportation: "Transporte",
+    communication: "Comunicación",
+    otherExpenses: "Otros Gastos",
+    monthlyReport: "Reporte Mensual",
+    downloadReport: "Descargar Reporte PDF",
+    confirmSponsorship: "Confirmar Patrocinio",
+    proceedToPayment: "Proceder al Pago",
+    stripeRedirect: "Serás redirigido a Stripe para completar el pago de forma segura",
+    cancelAnytime: "Puedes cancelar tu patrocinio en cualquier momento",
     
-    // Profile
-    profile: "Perfil",
-    personalInfo: "Informações Pessoais",
-    missionProgress: "Progresso da Missão",
-    accountSettings: "Configurações da Conta",
-    notifications: "Notificações",
-    privacy: "Privacidade",
-    changePhoto: "Alterar Foto",
-    exportData: "Exportar Dados",
+    // Perfil específico
+    profileTitle: "Mi Perfil",
+    profileSubtitle: "Gestiona tu información personal y configuración",
+    personalInfo: "Información Personal",
+    missionProgress: "Progreso de la Misión",
+    accountSettings: "Configuración de Cuenta",
+    notifications: "Notificaciones",
+    privacy: "Privacidad",
+    changePhoto: "Cambiar Foto",
+    exportData: "Exportar Datos",
+    fullName: "Nombre completo",
+    mission: "Misión",
+    email: "Email",
+    phone: "Teléfono",
+    birthDate: "Fecha de nacimiento",
+    missionStart: "Inicio de misión",
+    missionEnd: "Fin de misión",
+    currentArea: "Área actual",
+    currentCompanion: "Compañero actual",
+    missionPresident: "Presidente de misión",
+    missionOffice: "Oficina de misión",
+    updateProfile: "Actualizar Perfil",
+    profileUpdated: "Perfil actualizado exitosamente",
+    notificationSettings: "Configuración de Notificaciones",
+    emailNotifications: "Notificaciones por email",
+    pushNotifications: "Notificaciones push",
+    smsNotifications: "Notificaciones SMS",
+    weeklyDigest: "Resumen semanal",
+    monthlyReport: "Reporte mensual",
+    privacySettings: "Configuración de Privacidad",
+    profileVisibility: "Visibilidad del perfil",
+    shareWithFamily: "Compartir con familia",
+    shareWithSponsors: "Compartir con sponsors",
+    locationSharing: "Compartir ubicación",
+    photoSharing: "Compartir fotos",
+    dataExport: "Exportar Datos",
+    exportAllData: "Exportar todos los datos",
+    exportDiary: "Exportar diario",
+    exportPhotos: "Exportar fotos",
+    exportContacts: "Exportar contactos",
+    dataExported: "Datos exportados exitosamente",
     
-    // Admin
-    adminPanel: "Painel de Administração",
-    metrics: "Métricas",
-    users: "Usuários",
-    analytics: "Analíticas",
-    notifications: "Notificações",
-    realtime: "Tempo Real",
-    totalRevenue: "Receita Total",
-    activeSubscriptions: "Assinaturas Ativas",
+    // Admin específico
+    adminTitle: "Panel de Administración",
+    adminSubtitle: "Métricas y estadísticas del sistema",
+    overview: "Resumen",
+    users: "Usuarios",
+    analytics: "Analytics",
+    notifications: "Notificaciones",
+    realtime: "Tiempo Real",
+    totalRevenue: "Ingresos Totales",
+    activeSubscriptions: "Suscripciones Activas",
     mrr: "MRR",
-    activeConnections: "Conexões Ativas",
-  }
+    activeConnections: "Conexiones Activas",
+    topPages: "Páginas Más Visitadas",
+    topFeatures: "Funcionalidades Más Usadas",
+    userStats: "Estadísticas de Usuarios",
+    totalConnections: "Conexiones Totales",
+    activeUsers: "Usuarios Activos",
+    uniqueUsers: "Usuarios Únicos",
+    recentEvents: "Eventos Recientes",
+    notificationSystem: "Sistema de Notificaciones",
+    notificationTypes: "Tipos de Notificaciones",
+    successfulPayments: "Pagos Exitosos",
+    failedPayments: "Pagos Fallidos",
+    newContent: "Nuevo Contenido",
+    sponsorshipUpdates: "Actualizaciones de Patrocinio",
+    pushEnabled: "Notificaciones Push",
+    emailEnabled: "Notificaciones Email",
+    inAppEnabled: "Notificaciones In-App",
+    realtimeConnections: "Conexiones en Tiempo Real",
+    realtimeEvents: "Eventos en Tiempo Real",
+    totalConnections: "Conexiones Totales",
+    activeConnections: "Conexiones Activas",
+    uniqueUsers: "Usuarios Únicos",
+    },
+
+    en: {
+        // Navigation
+        home: "Home",
+        diary: "Diary",
+        transfers: "Transfers",
+        photos: "Photos",
+        resources: "Resources",
+        stages: "Stages",
+        sponsors: "Sponsors",
+        profile: "Profile",
+        admin: "Admin",
+
+        // Common
+        loading: "Loading...",
+        save: "Save",
+        cancel: "Cancel",
+        delete: "Delete",
+        edit: "Edit",
+        add: "Add",
+        search: "Search",
+        filter: "Filter",
+        all: "All",
+        close: "Close",
+        manage: "Manage your",
+
+        // Dashboard
+        dashboard: "Dashboard",
+        welcomeBack: "Welcome back",
+        mission: "Mission",
+        daysServed: "days served",
+        diaryEntries: "Diary entries",
+        transfers: "Transfers",
+        photosUploaded: "Photos uploaded",
+        recentActivity: "Recent Activity",
+
+        // Diary
+        diary: "Diary",
+        newEntry: "New Entry",
+        title: "Title",
+        content: "Content",
+        date: "Date",
+        time: "Time",
+        location: "Location",
+        companion: "Companion",
+        category: "Category",
+        exportPDF: "Export PDF",
+        exportJSON: "Export JSON",
+
+        // Photos
+        photoGallery: "Photo Gallery",
+        uploadPhoto: "Upload Photo",
+        totalPhotos: "Total photos",
+        thisWeek: "This week",
+        all: "All",
+        recent: "Recent",
+        service: "Service",
+        teaching: "Teaching",
+        companions: "Companions",
+        places: "Places",
+
+        // Resources
+        missionaryResources: "Missionary Resources",
+        searchResources: "Search resources...",
+        allTypes: "All types",
+        allCategories: "All categories",
+        pdfs: "PDFs",
+        tips: "Tips",
+        videos: "Videos",
+        featuredResources: "Featured resources",
+        recentDownloads: "Recent downloads",
+        download: "Download",
+        view: "View",
+
+        // Stages
+        missionaryStages: "Missionary Stages",
+        currentStage: "Current Stage",
+        completedStages: "Completed Stages",
+        upcomingStages: "Upcoming Stages",
+        progress: "Progress",
+        preMission: "Pre-Mission",
+        mtc: "Missionary Training Center",
+        field: "Mission Field",
+        postMission: "Post-Mission",
+
+        // Sponsors
+        shareWithSponsors: "Share with Sponsors",
+        manageInvitations: "Manage Invitations",
+        shareContent: "Share Content",
+        overview: "Overview",
+        invites: "Invites",
+        content: "Content",
+        settings: "Settings",
+        activeSponsors: "Active Sponsors",
+        pendingInvites: "Pending Invites",
+
+        // Family Portal
+        familyPortal: "Family Portal",
+        feed: "Feed",
+        sponsorship: "Sponsorship",
+        reports: "Reports",
+        totalDonated: "Total donated",
+        activeSponsor: "Active Sponsor",
+        supportMission: "Support the Mission",
+        familyPlan: "Family Plan",
+        bronze: "Bronze",
+        silver: "Silver",
+        gold: "Gold",
+
+        // Profile
+        profile: "Profile",
+        personalInfo: "Personal Information",
+        missionProgress: "Mission Progress",
+        accountSettings: "Account Settings",
+        notifications: "Notifications",
+        privacy: "Privacy",
+        changePhoto: "Change Photo",
+        exportData: "Export Data",
+
+        // Admin
+        adminPanel: "Admin Panel",
+        metrics: "Metrics",
+        users: "Users",
+        analytics: "Analytics",
+        notifications: "Notifications",
+        realtime: "Real-time",
+        totalRevenue: "Total Revenue",
+        activeSubscriptions: "Active Subscriptions",
+        mrr: "MRR",
+        activeConnections: "Active Connections",
+    },
+
+    fr: {
+        // Navigation
+        home: "Accueil",
+        diary: "Journal",
+        transfers: "Transferts",
+        photos: "Photos",
+        resources: "Ressources",
+        stages: "Étapes",
+        sponsors: "Sponsors",
+        profile: "Profil",
+        admin: "Admin",
+
+        // Common
+        loading: "Chargement...",
+        save: "Enregistrer",
+        cancel: "Annuler",
+        delete: "Supprimer",
+        edit: "Modifier",
+        add: "Ajouter",
+        search: "Rechercher",
+        filter: "Filtrer",
+        all: "Tous",
+        close: "Fermer",
+        manage: "Gérez votre",
+
+        // Dashboard
+        dashboard: "Tableau de bord",
+        welcomeBack: "Bon retour",
+        mission: "Mission",
+        daysServed: "jours de service",
+        diaryEntries: "Entrées du journal",
+        transfers: "Transferts",
+        photosUploaded: "Photos téléchargées",
+        recentActivity: "Activité récente",
+
+        // Diary
+        diary: "Journal",
+        newEntry: "Nouvelle entrée",
+        title: "Titre",
+        content: "Contenu",
+        date: "Date",
+        time: "Heure",
+        location: "Emplacement",
+        companion: "Compagnon",
+        category: "Catégorie",
+        exportPDF: "Exporter PDF",
+        exportJSON: "Exporter JSON",
+
+        // Photos
+        photoGallery: "Galerie Photos",
+        uploadPhoto: "Télécharger Photo",
+        totalPhotos: "Total photos",
+        thisWeek: "Cette semaine",
+        all: "Tout",
+        recent: "Récent",
+        service: "Service",
+        teaching: "Enseignement",
+        companions: "Compagnons",
+        places: "Lieux",
+
+        // Resources
+        missionaryResources: "Ressources Missionnaires",
+        searchResources: "Rechercher ressources...",
+        allTypes: "Tous types",
+        allCategories: "Toutes catégories",
+        pdfs: "PDFs",
+        tips: "Conseils",
+        videos: "Vidéos",
+        featuredResources: "Ressources en vedette",
+        recentDownloads: "Téléchargements récents",
+        download: "Télécharger",
+        view: "Voir",
+
+        // Stages
+        missionaryStages: "Étapes Missionnaires",
+        currentStage: "Étape Actuelle",
+        completedStages: "Étapes Terminées",
+        upcomingStages: "Étapes à Venir",
+        progress: "Progrès",
+        preMission: "Pré-Mission",
+        mtc: "Centre de Formation Missionnaire",
+        field: "Terrain Missionnaire",
+        postMission: "Post-Mission",
+
+        // Sponsors
+        shareWithSponsors: "Partager avec Sponsors",
+        manageInvitations: "Gérer Invitations",
+        shareContent: "Partager Contenu",
+        overview: "Aperçu",
+        invites: "Invitations",
+        content: "Contenu",
+        settings: "Paramètres",
+        activeSponsors: "Sponsors Actifs",
+        pendingInvites: "Invitations en Attente",
+
+        // Family Portal
+        familyPortal: "Portail Familial",
+        feed: "Flux",
+        sponsorship: "Parrainage",
+        reports: "Rapports",
+        totalDonated: "Total donné",
+        activeSponsor: "Sponsor Actif",
+        supportMission: "Soutenir la Mission",
+        familyPlan: "Plan Familial",
+        bronze: "Bronze",
+        silver: "Argent",
+        gold: "Or",
+
+        // Profile
+        profile: "Profil",
+        personalInfo: "Informations Personnelles",
+        missionProgress: "Progrès de la Mission",
+        accountSettings: "Paramètres du Compte",
+        notifications: "Notifications",
+        privacy: "Confidentialité",
+        changePhoto: "Changer Photo",
+        exportData: "Exporter Données",
+
+        // Admin
+        adminPanel: "Panneau d'Administration",
+        metrics: "Métriques",
+        users: "Utilisateurs",
+        analytics: "Analytiques",
+        notifications: "Notifications",
+        realtime: "Temps Réel",
+        totalRevenue: "Revenus Totaux",
+        activeSubscriptions: "Abonnements Actifs",
+        mrr: "MRR",
+        activeConnections: "Connexions Actives",
+    },
+
+    "pt-BR": {
+        // Navigation
+        home: "Início",
+        diary: "Diário",
+        transfers: "Transferências",
+        photos: "Fotos",
+        resources: "Recursos",
+        stages: "Etapas",
+        sponsors: "Patrocinadores",
+        profile: "Perfil",
+        admin: "Admin",
+
+        // Common
+        loading: "Carregando...",
+        save: "Salvar",
+        cancel: "Cancelar",
+        delete: "Excluir",
+        edit: "Editar",
+        add: "Adicionar",
+        search: "Buscar",
+        filter: "Filtrar",
+        all: "Todos",
+        close: "Fechar",
+        manage: "Gerencie seu",
+
+        // Dashboard
+        dashboard: "Painel",
+        welcomeBack: "Bem-vindo de volta",
+        mission: "Missão",
+        daysServed: "dias servidos",
+        diaryEntries: "Entradas do diário",
+        transfers: "Transferências",
+        photosUploaded: "Fotos enviadas",
+        recentActivity: "Atividade Recente",
+
+        // Diary
+        diary: "Diário",
+        newEntry: "Nova Entrada",
+        title: "Título",
+        content: "Conteúdo",
+        date: "Data",
+        time: "Hora",
+        location: "Localização",
+        companion: "Companheiro",
+        category: "Categoria",
+        exportPDF: "Exportar PDF",
+        exportJSON: "Exportar JSON",
+
+        // Photos
+        photoGallery: "Galeria de Fotos",
+        uploadPhoto: "Enviar Foto",
+        totalPhotos: "Total de fotos",
+        thisWeek: "Esta semana",
+        all: "Todas",
+        recent: "Recentes",
+        service: "Serviço",
+        teaching: "Ensino",
+        companions: "Companheiros",
+        places: "Lugares",
+
+        // Resources
+        missionaryResources: "Recursos Missionários",
+        searchResources: "Buscar recursos...",
+        allTypes: "Todos os tipos",
+        allCategories: "Todas as categorias",
+        pdfs: "PDFs",
+        tips: "Dicas",
+        videos: "Vídeos",
+        featuredResources: "Recursos em destaque",
+        recentDownloads: "Downloads recentes",
+        download: "Download",
+        view: "Ver",
+
+        // Stages
+        missionaryStages: "Etapas Missionárias",
+        currentStage: "Etapa Atual",
+        completedStages: "Etapas Completadas",
+        upcomingStages: "Próximas Etapas",
+        progress: "Progresso",
+        preMission: "Pré-Missão",
+        mtc: "Centro de Treinamento Missionário",
+        field: "Campo Missionário",
+        postMission: "Pós-Missão",
+
+        // Sponsors
+        shareWithSponsors: "Compartilhar com Patrocinadores",
+        manageInvitations: "Gerenciar Convites",
+        shareContent: "Compartilhar Conteúdo",
+        overview: "Visão Geral",
+        invites: "Convites",
+        content: "Conteúdo",
+        settings: "Configurações",
+        activeSponsors: "Patrocinadores Ativos",
+        pendingInvites: "Convites Pendentes",
+
+        // Family Portal
+        familyPortal: "Portal da Família",
+        feed: "Feed",
+        sponsorship: "Patrocínio",
+        reports: "Relatórios",
+        totalDonated: "Total doado",
+        activeSponsor: "Patrocinador Ativo",
+        supportMission: "Apoiar a Missão",
+        familyPlan: "Plano Familiar",
+        bronze: "Bronze",
+        silver: "Prata",
+        gold: "Ouro",
+
+        // Profile
+        profile: "Perfil",
+        personalInfo: "Informações Pessoais",
+        missionProgress: "Progresso da Missão",
+        accountSettings: "Configurações da Conta",
+        notifications: "Notificações",
+        privacy: "Privacidade",
+        changePhoto: "Alterar Foto",
+        exportData: "Exportar Dados",
+
+        // Admin
+        adminPanel: "Painel de Administração",
+        metrics: "Métricas",
+        users: "Usuários",
+        analytics: "Analíticas",
+        notifications: "Notificações",
+        realtime: "Tempo Real",
+        totalRevenue: "Receita Total",
+        activeSubscriptions: "Assinaturas Ativas",
+        mrr: "MRR",
+        activeConnections: "Conexões Ativas",
+    }
 };
 
 export function TranslationProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('es');
+    const [language, setLanguage] = useState<Language>('es');
 
-  useEffect(() => {
-    // Cargar idioma guardado del localStorage
-    const savedLanguage = localStorage.getItem('language') as Language;
-    if (savedLanguage && ['es', 'en', 'fr', 'pt-BR'].includes(savedLanguage)) {
-      setLanguage(savedLanguage);
-    }
-  }, []);
+    useEffect(() => {
+        // Cargar idioma guardado del localStorage
+        const savedLanguage = localStorage.getItem('language') as Language;
+        if (savedLanguage && ['es', 'en', 'fr', 'pt-BR'].includes(savedLanguage)) {
+            setLanguage(savedLanguage);
+        }
+    }, []);
 
-  useEffect(() => {
-    // Guardar idioma en localStorage
-    localStorage.setItem('language', language);
-  }, [language]);
+    useEffect(() => {
+        // Guardar idioma en localStorage
+        localStorage.setItem('language', language);
+    }, [language]);
 
-  const t = (key: string): string => {
-    const keys = key.split('.');
-    let value: any = translations[language];
+    const t = (key: string): string => {
+        const keys = key.split('.');
+        let value: any = translations[language];
 
-    for (const k of keys) {
-      value = value?.[k];
-    }
+        for (const k of keys) {
+            value = value?.[k];
+        }
 
-    return value || key;
-  };
+        return value || key;
+    };
 
-  return (
-    <TranslationContext.Provider value={{ language, setLanguage, t }}>
-      {children}
-    </TranslationContext.Provider>
-  );
+    return (
+        <TranslationContext.Provider value={{ language, setLanguage, t }}>
+            {children}
+        </TranslationContext.Provider>
+    );
 }
 
 export function useTranslations() {
-  const context = useContext(TranslationContext);
-  if (context === undefined) {
-    throw new Error('useTranslations must be used within a TranslationProvider');
-  }
-  return context;
+    const context = useContext(TranslationContext);
+    if (context === undefined) {
+        throw new Error('useTranslations must be used within a TranslationProvider');
+    }
+    return context;
 }

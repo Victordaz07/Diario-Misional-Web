@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
+import { useTranslations } from '@/lib/use-translations';
 import { db } from '@/lib/firebase';
 import { convertFirebaseDate, exportDiaryToPDF, exportToJSON } from '@/lib/utils';
 
@@ -25,6 +26,7 @@ interface DiaryEntry {
 
 export default function DiaryPage() {
     const { user } = useAuth();
+    const { t } = useTranslations();
     const [entries, setEntries] = useState<DiaryEntry[]>([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
@@ -36,7 +38,7 @@ export default function DiaryPage() {
         time: new Date().toTimeString().slice(0, 5),
         location: '',
         companion: 'Elder Johnson',
-        category: 'Enseñanza',
+        category: t('teaching'),
         photos: [] as string[],
         privacySettings: {
             blurFaces: false,
@@ -361,8 +363,8 @@ export default function DiaryPage() {
             <section className="mb-6">
                 <div className="flex items-center justify-between mb-4">
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-800">Mis Entradas</h2>
-                        <p className="text-gray-600">{entries.length} entradas registradas</p>
+                        <h2 className="text-2xl font-bold text-gray-800">{t('diaryTitle')}</h2>
+                        <p className="text-gray-600">{entries.length} {t('diaryEntries')}</p>
                     </div>
                     <div className="flex items-center space-x-3">
                         <div className="relative">
@@ -372,7 +374,7 @@ export default function DiaryPage() {
                                 className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 <i className="fa-solid fa-download text-gray-600"></i>
-                                <span className="text-sm font-medium text-gray-700">Exportar</span>
+                                <span className="text-sm font-medium text-gray-700">{t('exportDiary')}</span>
                                 <i className="fa-solid fa-chevron-down text-gray-400 text-xs"></i>
                             </button>
 
@@ -409,7 +411,7 @@ export default function DiaryPage() {
                             className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors cursor-pointer"
                         >
                             <i className="fa-solid fa-plus"></i>
-                            <span className="font-medium">Nueva Entrada</span>
+                            <span className="font-medium">{t('newEntry')}</span>
                         </button>
                     </div>
                 </div>
@@ -544,7 +546,7 @@ export default function DiaryPage() {
                         <div className="p-6 border-b border-gray-200">
                             <div className="flex items-center justify-between">
                                 <h3 className="text-xl font-semibold text-gray-800">
-                                    {editingEntry ? 'Editar Entrada' : 'Nueva Entrada del Diario'}
+                                    {editingEntry ? t('editEntry') : t('newEntry')}
                                 </h3>
                                 <button
                                     onClick={() => {
@@ -561,13 +563,13 @@ export default function DiaryPage() {
 
                         <form onSubmit={handleSubmit} className="p-6 space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Título de la entrada</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('entryTitle')}</label>
                                 <input
                                     type="text"
                                     value={formData.title}
                                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                                    placeholder="Describe tu experiencia..."
+                                    placeholder={t('entryContent')}
                                     required
                                 />
                             </div>
@@ -602,12 +604,12 @@ export default function DiaryPage() {
                                     value={formData.location}
                                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                                    placeholder="¿Dónde ocurrió?"
+                                    placeholder={t('entryLocation')}
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Compañero</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('companion')}</label>
                                 <select
                                     value={formData.companion}
                                     onChange={(e) => setFormData({ ...formData, companion: e.target.value })}
@@ -642,7 +644,7 @@ export default function DiaryPage() {
                                     value={formData.content}
                                     onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                                    placeholder="Cuenta tu experiencia en detalle..."
+                                    placeholder={t('entryContent')}
                                     required
                                 />
                             </div>
@@ -751,14 +753,14 @@ export default function DiaryPage() {
                                     }}
                                     className="px-4 py-2 text-gray-600 hover:text-gray-800 cursor-pointer"
                                 >
-                                    Cancelar
+                                    {t('cancel')}
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={loading}
                                     className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 cursor-pointer"
                                 >
-                                    {loading ? 'Guardando...' : editingEntry ? 'Actualizar Entrada' : 'Guardar Entrada'}
+                                    {loading ? t('loading') : editingEntry ? t('editEntry') : t('saveEntry')}
                                 </button>
                             </div>
                         </form>
