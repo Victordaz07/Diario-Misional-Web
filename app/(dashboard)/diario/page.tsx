@@ -11,11 +11,11 @@ interface DiaryEntry {
     content: string;
     date: string;
     time: string;
-    location: string;
-    companion: string;
+    location?: string;
+    companion?: string;
     category: string;
-    photos: string[];
-    privacySettings: {
+    photos?: string[];
+    privacySettings?: {
         blurFaces: boolean;
         sensitiveContent: boolean;
         shareWithParents: boolean;
@@ -371,7 +371,7 @@ export default function DiaryPage() {
                                     <p className="text-gray-700 leading-relaxed mb-4">{entry.content}</p>
 
                                     {/* Fotos */}
-                                    {entry.photos.length > 0 && (
+                                    {entry.photos && entry.photos.length > 0 && (
                                         <div className="mb-4">
                                             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                                 {entry.photos.map((photo, photoIndex) => (
@@ -381,7 +381,7 @@ export default function DiaryPage() {
                                                             alt={`Foto ${photoIndex + 1}`}
                                                             className="w-full h-24 object-cover rounded-lg"
                                                         />
-                                                        {entry.privacySettings.blurFaces && (
+                                                        {entry.privacySettings?.blurFaces && (
                                                             <div className="absolute inset-0 bg-black bg-opacity-20 rounded-lg flex items-center justify-center">
                                                                 <i className="fa-solid fa-eye-slash text-white text-lg"></i>
                                                             </div>
@@ -394,19 +394,19 @@ export default function DiaryPage() {
 
                                     {/* Configuraciones de privacidad */}
                                     <div className="flex items-center space-x-4 text-xs text-gray-500 mb-4">
-                                        {entry.privacySettings.blurFaces && (
+                                        {entry.privacySettings?.blurFaces && (
                                             <span className="flex items-center space-x-1 bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
                                                 <i className="fa-solid fa-eye-slash"></i>
                                                 <span>Rostros difuminados</span>
                                             </span>
                                         )}
-                                        {entry.privacySettings.sensitiveContent && (
+                                        {entry.privacySettings?.sensitiveContent && (
                                             <span className="flex items-center space-x-1 bg-red-100 text-red-700 px-2 py-1 rounded-full">
                                                 <i className="fa-solid fa-shield-alt"></i>
                                                 <span>Contenido sensible</span>
                                             </span>
                                         )}
-                                        {entry.privacySettings.shareWithParents && (
+                                        {entry.privacySettings?.shareWithParents && (
                                             <span className="flex items-center space-x-1 bg-green-100 text-green-700 px-2 py-1 rounded-full">
                                                 <i className="fa-solid fa-share"></i>
                                                 <span>Compartir con padres</span>
