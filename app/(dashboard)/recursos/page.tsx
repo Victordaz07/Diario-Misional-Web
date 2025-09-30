@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
+import { useTranslations } from '@/lib/use-translations';
 import { db } from '@/lib/firebase';
 import { convertFirebaseDate } from '@/lib/utils';
 
@@ -34,6 +35,7 @@ interface RecentDownload {
 
 export default function RecursosPage() {
     const { user } = useAuth();
+    const { t } = useTranslations();
     const [resources, setResources] = useState<Resource[]>([]);
     const [recentDownloads, setRecentDownloads] = useState<RecentDownload[]>([]);
     const [loading, setLoading] = useState(true);
@@ -831,7 +833,7 @@ export default function RecursosPage() {
                         <i className="fa-solid fa-folder text-white text-lg"></i>
                     </div>
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-800">Recursos Misionales</h2>
+                        <h2 className="text-2xl font-bold text-gray-800">{t('resourcesTitle')}</h2>
                         <p className="text-gray-600">{resources.length} recursos disponibles</p>
                     </div>
                 </div>
