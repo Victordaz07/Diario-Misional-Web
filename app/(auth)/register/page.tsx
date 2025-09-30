@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthService } from '@/lib/auth-service';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db, doc, setDoc } from '@/lib/firebase';
 import Link from 'next/link';
 
 export default function RegisterPage() {

@@ -223,6 +223,12 @@ let OAuthProvider: any;
 let signInWithPopup: any;
 let onAuthStateChanged: any;
 let signOut: any;
+let doc: any;
+let setDoc: any;
+let collection: any;
+let getDoc: any;
+let updateDoc: any;
+let deleteDoc: any;
 
 // Check if we have real Firebase config
 const hasRealConfig = process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
@@ -232,12 +238,19 @@ const hasRealConfig = process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
 if (hasRealConfig) {
     // Import from Firebase when we have real config
     const firebaseAuth = require('firebase/auth');
+    const firebaseFirestore = require('firebase/firestore');
     updateProfile = firebaseAuth.updateProfile;
     GoogleAuthProvider = firebaseAuth.GoogleAuthProvider;
     OAuthProvider = firebaseAuth.OAuthProvider;
     signInWithPopup = firebaseAuth.signInWithPopup;
     onAuthStateChanged = firebaseAuth.onAuthStateChanged;
     signOut = firebaseAuth.signOut;
+    doc = firebaseFirestore.doc;
+    setDoc = firebaseFirestore.setDoc;
+    collection = firebaseFirestore.collection;
+    getDoc = firebaseFirestore.getDoc;
+    updateDoc = firebaseFirestore.updateDoc;
+    deleteDoc = firebaseFirestore.deleteDoc;
 } else {
     // Mock functions for development
     updateProfile = mockUpdateProfile;
@@ -246,9 +259,26 @@ if (hasRealConfig) {
     signInWithPopup = mockSignInWithPopup;
     onAuthStateChanged = mockOnAuthStateChanged;
     signOut = mockSignOut;
+    doc = (db: any, collection: string, id?: string) => ({
+        id: id || 'mock-doc-id',
+        collection,
+        data: () => ({}),
+        exists: () => true
+    });
+    setDoc = () => Promise.resolve();
+    collection = (db: any, collectionName: string) => ({
+        doc: (id: string) => doc(db, collectionName, id)
+    });
+    getDoc = () => Promise.resolve({
+        exists: () => false,
+        data: () => ({})
+    });
+    updateDoc = () => Promise.resolve();
+    deleteDoc = () => Promise.resolve();
 }
 
 export { updateProfile, GoogleAuthProvider, OAuthProvider, signInWithPopup, onAuthStateChanged, signOut };
+export { doc, setDoc, collection, getDoc, updateDoc, deleteDoc };
 export { auth, db, storage };
 
 export default app;
