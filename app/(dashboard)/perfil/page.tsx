@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
+import { useTranslations } from '@/lib/use-translations';
 import { db } from '@/lib/firebase';
 
 export default function PerfilPage() {
     const { user } = useAuth();
+    const { t } = useTranslations();
     const [loading, setLoading] = useState(false);
     const [stats, setStats] = useState({
         diaryEntries: 0,
@@ -281,10 +283,10 @@ export default function PerfilPage() {
             <section className="bg-white rounded-xl shadow-sm border border-gray-200">
                 <div className="p-6 border-b border-gray-200">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-gray-800">Información Personal</h3>
+                        <h3 className="text-lg font-semibold text-gray-800">{t('personalInfo')}</h3>
                         <button id="editBtn" onClick={handleEdit} className="text-blue-600 text-sm font-medium hover:text-blue-700 flex items-center space-x-1 cursor-pointer">
                             <i className="fa-solid fa-edit"></i>
-                            <span>Editar</span>
+                            <span>{t('edit')}</span>
                         </button>
                     </div>
                 </div>
@@ -292,7 +294,7 @@ export default function PerfilPage() {
                 <form id="profileForm" onSubmit={handleSubmit} className="p-6 space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Nombre Completo</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('fullName')}</label>
                             <input
                                 type="text"
                                 value={formData.nombreCompleto}
@@ -303,7 +305,7 @@ export default function PerfilPage() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Título Misional</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('missionaryTitle')}</label>
                             <input
                                 type="text"
                                 value={formData.tituloMisional}
@@ -314,7 +316,7 @@ export default function PerfilPage() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Misión</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('mission')}</label>
                             <select
                                 value={formData.mision}
                                 onChange={(e) => setFormData({ ...formData, mision: e.target.value })}
@@ -328,7 +330,7 @@ export default function PerfilPage() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Compañero Actual</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('currentCompanion')}</label>
                             <input
                                 type="text"
                                 value={formData.companeroActual}
@@ -339,7 +341,7 @@ export default function PerfilPage() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Presidente de Misión</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('missionPresident')}</label>
                             <input
                                 type="text"
                                 value={formData.presidenteMision}
@@ -350,7 +352,7 @@ export default function PerfilPage() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Idioma Preferido</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('preferredLanguage')}</label>
                             <select
                                 value={formData.idiomaPreferido}
                                 onChange={(e) => setFormData({ ...formData, idiomaPreferido: e.target.value })}
@@ -365,7 +367,7 @@ export default function PerfilPage() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Fecha de Inicio de Misión</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('missionStart')}</label>
                         <input
                             type="date"
                             value={formData.fechaInicioMision}
@@ -376,7 +378,7 @@ export default function PerfilPage() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Área Actual</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('currentArea')}</label>
                         <input
                             type="text"
                             value={formData.areaActual}
@@ -448,27 +450,27 @@ export default function PerfilPage() {
             {/* Mission Progress */}
             <section className="bg-white rounded-xl shadow-sm border border-gray-200">
                 <div className="p-6 border-b border-gray-200">
-                    <h3 className="text-lg font-semibold text-gray-800">Progreso de la Misión</h3>
+                    <h3 className="text-lg font-semibold text-gray-800">{t('missionProgress')}</h3>
                 </div>
 
                 <div className="p-6 space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="text-center p-4 bg-primary/5 rounded-lg">
                             <div className="text-3xl font-bold text-primary mb-2">{daysServed}</div>
-                            <div className="text-sm text-gray-600">Días servidos</div>
-                            <div className="text-xs text-gray-500 mt-1">de {totalDays} días totales</div>
+                            <div className="text-sm text-gray-600">{t('daysServed')}</div>
+                            <div className="text-xs text-gray-500 mt-1">{t('of')} {totalDays} {t('totalDays')}</div>
                         </div>
 
                         <div className="text-center p-4 bg-secondary/5 rounded-lg">
                             <div className="text-3xl font-bold text-secondary mb-2">{daysRemaining}</div>
-                            <div className="text-sm text-gray-600">Días restantes</div>
-                            <div className="text-xs text-gray-500 mt-1">{progressPercentage.toFixed(1)}% completado</div>
+                            <div className="text-sm text-gray-600">{t('daysRemaining')}</div>
+                            <div className="text-xs text-gray-500 mt-1">{progressPercentage.toFixed(1)}% {t('completed')}</div>
                         </div>
 
                         <div className="text-center p-4 bg-green-50 rounded-lg">
                             <div className="text-3xl font-bold text-green-600 mb-2">{monthsRemaining}</div>
-                            <div className="text-sm text-gray-600">Meses restantes</div>
-                            <div className="text-xs text-gray-500 mt-1">aprox.</div>
+                            <div className="text-sm text-gray-600">{t('monthsRemaining')}</div>
+                            <div className="text-xs text-gray-500 mt-1">{t('approx')}</div>
                         </div>
                     </div>
 
