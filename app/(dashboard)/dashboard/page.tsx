@@ -489,10 +489,10 @@ export default function DashboardPage() {
                         <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
                             <i className="fa-solid fa-users text-purple-600"></i>
                         </div>
-                        <span className="text-xs text-gray-500">Activos</span>
+                        <span className="text-xs text-gray-500">{t('active')}</span>
                     </div>
                     <div className="text-2xl font-bold text-gray-800 mb-1">{missionStats.investigators}</div>
-                    <div className="text-sm text-gray-600">Investigadores</div>
+                    <div className="text-sm text-gray-600">{t('investigators')}</div>
                     <div className="mt-2 bg-gray-200 rounded-full h-2">
                         <div
                             className="bg-purple-600 h-2 rounded-full transition-all duration-300"
@@ -521,7 +521,7 @@ export default function DashboardPage() {
 
             {/* Quick Actions */}
             <section>
-                <h2 className="text-lg font-semibold text-gray-800 mb-4">Acciones Rápidas</h2>
+                <h2 className="text-lg font-semibold text-gray-800 mb-4">{t('quickActions')}</h2>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     {quickActions.map((action, index) => (
                         <Link
@@ -550,13 +550,13 @@ export default function DashboardPage() {
                         <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                             <i className="fa-solid fa-calendar-check text-blue-600"></i>
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-800">Agenda Diaria</h3>
+                        <h3 className="text-lg font-semibold text-gray-800">{t('dailyAgenda')}</h3>
                     </div>
                     <button
                         onClick={() => setShowAppointmentModal(true)}
                         className="text-primary text-sm font-medium cursor-pointer"
                     >
-                        Ver semana
+                        {t('viewWeek')}
                     </button>
                 </div>
 
@@ -648,9 +648,9 @@ export default function DashboardPage() {
                         <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
                             <i className="fa-solid fa-users text-indigo-600"></i>
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-800">Investigadores / Amigos</h3>
+                        <h3 className="text-lg font-semibold text-gray-800">{t('investigators')} / {t('friends')}</h3>
                     </div>
-                    <button className="text-indigo-600 text-sm font-medium cursor-pointer">Ver todos</button>
+                    <button className="text-indigo-600 text-sm font-medium cursor-pointer">{t('viewAll')}</button>
                 </div>
 
                 <div className="space-y-3">
